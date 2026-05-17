@@ -1,46 +1,305 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>杨利伟 - 个人网站</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>杨利伟｜个人网站</title>
 
 <style>
-body {
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;
+  background:#07111f;
+  color:#e5e7eb;
+  line-height:1.7;
+}
+
+a{text-decoration:none;color:inherit}
+
+header{
+  min-height:100vh;
+  padding:40px 8%;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(37,99,235,.35),transparent 35%),
+    radial-gradient(circle at 80% 10%,rgba(234,179,8,.18),transparent 30%),
+    linear-gradient(135deg,#020617,#0f172a);
+}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:120px;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:800;
+  color:#facc15;
+}
+
+nav a{
+  margin-left:28px;
+  color:#cbd5e1;
+  font-size:15px;
+}
+
+nav a:hover{color:#facc15}
+
+.hero{
+  max-width:900px;
+}
+
+.tag{
+  display:inline-block;
+  padding:8px 18px;
+  border:1px solid rgba(250,204,21,.4);
+  border-radius:999px;
+  color:#facc15;
+  margin-bottom:24px;
+}
+
+h1{
+  font-size:68px;
+  color:white;
+  margin-bottom:20px;
+}
+
+.subtitle{
+  font-size:26px;
+  color:#facc15;
+  margin-bottom:25px;
+}
+
+.desc{
+  font-size:18px;
+  color:#cbd5e1;
+  max-width:760px;
+}
+
+.buttons{
+  margin-top:35px;
+}
+
+.btn{
+  display:inline-block;
+  padding:13px 28px;
+  border-radius:10px;
+  margin-right:14px;
+  font-weight:700;
+}
+
+.primary{
+  background:#facc15;
+  color:#111827;
+}
+
+.secondary{
+  border:1px solid #facc15;
+  color:#facc15;
+}
+
+section{
+  padding:80px 8%;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+.section-title{
+  font-size:34px;
+  color:#facc15;
+  margin-bottom:30px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:22px;
+}
+
+.card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;
+  padding:26px;
+  transition:.25s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:#facc15;
+  background:rgba(255,255,255,.09);
+}
+
+.card h3{
+  color:#fff;
+  margin-bottom:10px;
+  font-size:21px;
+}
+
+.card p{
+  color:#94a3b8;
+  font-size:15px;
+}
+
+.article-list{
+  display:grid;
+  gap:18px;
+}
+
+.article{
+  padding:24px;
   background:#0f172a;
-  color:#e2e8f0;
-  font-family: -apple-system;
+  border-left:4px solid #facc15;
+  border-radius:12px;
+}
+
+.article h3{
+  color:#fff;
+}
+
+.article span{
+  color:#94a3b8;
+  font-size:14px;
+}
+
+footer{
+  padding:35px;
   text-align:center;
-  padding:80px;
+  color:#94a3b8;
+  background:#020617;
 }
 
-h1 {
-  font-size:48px;
-  color:#38bdf8;
-}
-
-a {
-  display:block;
-  margin:20px;
-  color:#22c55e;
-  font-size:20px;
-  text-decoration:none;
-}
-
-a:hover {
-  color:#4ade80;
+@media(max-width:700px){
+  h1{font-size:42px}
+  nav{display:block}
+  nav div{margin-top:15px}
+  nav a{display:inline-block;margin:8px 12px 0 0}
 }
 </style>
-
 </head>
 
 <body>
 
-<h1>杨利伟</h1>
-<p>个人网站 / 博客</p>
+<header>
+  <nav>
+    <div class="logo">杨利伟</div>
+    <div>
+      <a href="#about">关于我</a>
+      <a href="#articles">文章分类</a>
+      <a href="#resources">资源分类</a>
+      <a href="#latest">最新文章</a>
+      <a href="#contact">联系</a>
+    </div>
+  </nav>
 
-<hr>
+  <div class="hero">
+    <div class="tag">Independent Voice · Personal Website</div>
+    <h1>杨利伟</h1>
+    <div class="subtitle">个人网站 / 博客 / 资料库</div>
+    <p class="desc">
+      这里是我的个人主页，用来整理我的文章、观点、经历记录、资料资源与公开声明。
+      我关注中国政治、人权、言论自由、社会制度、国际局势以及个人独立思考。
+    </p>
 
-<a href="post1.html">👉 第一篇文章</a>
+    <div class="buttons">
+      <a class="btn primary" href="#latest">阅读文章</a>
+      <a class="btn secondary" href="#resources">查看资源</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <h2 class="section-title">关于我</h2>
+  <div class="card">
+    <p>
+      我是杨利伟，一名坚持独立表达的人。这个网站用于保存我的文字、观点、经历与资料，
+      也作为一个长期公开展示的平台。
+    </p>
+  </div>
+</section>
+
+<section id="articles">
+  <h2 class="section-title">文章分类</h2>
+  <div class="grid">
+    <a class="card" href="post1.html">
+      <h3>政治观点</h3>
+      <p>关于中国政治、极权体制、自由与人权的文章。</p>
+    </a>
+
+    <a class="card" href="#">
+      <h3>个人经历</h3>
+      <p>记录个人遭遇、生活状态、海外经历与真实见证。</p>
+    </a>
+
+    <a class="card" href="#">
+      <h3>国际局势</h3>
+      <p>分析中国、韩国、日本、美国及全球政治变化。</p>
+    </a>
+
+    <a class="card" href="#">
+      <h3>社会评论</h3>
+      <p>关于社会制度、普通人处境、公共事件的评论。</p>
+    </a>
+  </div>
+</section>
+
+<section id="resources">
+  <h2 class="section-title">资源分类</h2>
+  <div class="grid">
+    <a class="card" href="#">
+      <h3>公开声明</h3>
+      <p>个人声明、立场说明、对外公开材料。</p>
+    </a>
+
+    <a class="card" href="#">
+      <h3>证据资料</h3>
+      <p>用于保存重要截图、文件、链接与相关记录。</p>
+    </a>
+
+    <a class="card" href="#">
+      <h3>人权资料</h3>
+      <p>国际人权机构、难民申请、人权法律相关资料。</p>
+    </a>
+
+    <a class="card" href="#">
+      <h3>媒体联系</h3>
+      <p>用于对外沟通、媒体联系、采访或资料提交。</p>
+    </a>
+  </div>
+</section>
+
+<section id="latest">
+  <h2 class="section-title">最新文章</h2>
+
+  <div class="article-list">
+    <a class="article" href="post1.html">
+      <h3>我的第一篇文章</h3>
+      <span>2026-05-17 · 个人记录</span>
+    </a>
+
+    <a class="article" href="#">
+      <h3>后续文章标题</h3>
+      <span>待更新 · 政治观点</span>
+    </a>
+
+    <a class="article" href="#">
+      <h3>资料整理页面</h3>
+      <span>待更新 · 资源分类</span>
+    </a>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">联系我</h2>
+  <div class="card">
+    <p>Email：lyy12788@gmail.com</p>
+  </div>
+</section>
+
+<footer>
+  © 2026 杨利伟 · Personal Website
+</footer>
 
 </body>
 </html>
