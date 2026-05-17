@@ -1,27 +1,169 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>杨利伟</title>
-  <style>
-    body {
-      background: #111;
-      color: white;
-      text-align: center;
-      font-family: Arial;
-      padding-top: 100px;
-    }
-    h1 {
-      font-size: 40px;
-    }
-    p {
-      color: #aaa;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>杨利伟｜个人主页</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;
+  background:linear-gradient(135deg,#050816,#0b1026,#111827);
+  color:#f5f5f5;
+  line-height:1.7;
+}
+header{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding:80px 10%;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(59,130,246,.35),transparent 35%),
+    radial-gradient(circle at 80% 40%,rgba(220,38,38,.25),transparent 30%);
+}
+.hero{max-width:900px}
+.tag{
+  display:inline-block;
+  padding:8px 18px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;
+  color:#facc15;
+  margin-bottom:25px;
+}
+h1{
+  font-size:64px;
+  color:#fff;
+  margin-bottom:20px;
+  letter-spacing:4px;
+}
+.subtitle{
+  font-size:28px;
+  color:#facc15;
+  margin-bottom:25px;
+}
+.desc{
+  font-size:19px;
+  color:#d1d5db;
+  max-width:780px;
+}
+.buttons{margin-top:35px}
+a.btn{
+  display:inline-block;
+  margin-right:15px;
+  padding:13px 28px;
+  border-radius:8px;
+  text-decoration:none;
+  border:1px solid #facc15;
+  color:#facc15;
+}
+a.btn.primary{
+  background:#facc15;
+  color:#111827;
+  font-weight:bold;
+}
+section{
+  padding:90px 10%;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+h2{
+  font-size:36px;
+  color:#facc15;
+  margin-bottom:25px;
+}
+.card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:30px;
+  margin-top:20px;
+  backdrop-filter:blur(10px);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+.card h3{color:#fff;margin-bottom:10px}
+.card p{color:#d1d5db}
+footer{
+  padding:35px 10%;
+  text-align:center;
+  color:#9ca3af;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+@media(max-width:700px){
+  h1{font-size:44px}
+  .subtitle{font-size:22px}
+}
+</style>
 </head>
+
 <body>
-  <h1>杨利伟</h1>
-  <p>欢迎来到我的个人网站</p>
-  <p>Welcome to my personal website</p>
+
+<header>
+  <div class="hero">
+    <div class="tag">个人主页｜Independent Voice</div>
+    <h1>杨利伟</h1>
+    <div class="subtitle">中国政治异见者 / 自由表达者</div>
+    <p class="desc">
+      我是杨利伟，一名来自中国的政治异见者。因为坚持独立思考、公开表达反对专制与极权统治的立场，
+      我长期承受来自中共体制的打压与迫害。这个网站用于记录我的经历、观点、文章与公开声明。
+    </p>
+    <div class="buttons">
+      <a class="btn primary" href="#about">了解我</a>
+      <a class="btn" href="#contact">联系我</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <h2>关于我</h2>
+  <div class="card">
+    <p>
+      我关注中国的人权、言论自由、政治压迫与制度性不公。我反对独裁统治，主张人的尊严、自由与基本权利。
+      我相信真实的声音不应被恐惧压制，个人也有责任把经历和见证记录下来。
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>我的立场</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>反对极权</h3>
+      <p>反对任何以国家机器压制人民自由、思想和尊严的政治制度。</p>
+    </div>
+    <div class="card">
+      <h3>支持言论自由</h3>
+      <p>每个人都应拥有表达观点、批评权力、追求真相的权利。</p>
+    </div>
+    <div class="card">
+      <h3>记录真实</h3>
+      <p>用文字和公开资料记录个人经历，让外界看到被压制者的声音。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>公开声明</h2>
+  <div class="card">
+    <p>
+      我愿意与国际社会、人权组织、媒体以及关注中国问题的人士保持联系，
+      共同推动对中国政治迫害、人权侵犯和言论审查问题的关注。
+    </p>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>联系方式</h2>
+  <div class="card">
+    <p>Email: lyy12788@gmail.com</p>
+  </div>
+</section>
+
+<footer>
+  © 2026 杨利伟. All rights reserved.
+</footer>
+
 </body>
 </html>
