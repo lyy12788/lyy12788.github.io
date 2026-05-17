@@ -1,49 +1,46 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>杨利伟｜博客</title>
+<title>杨利伟 - 个人网站</title>
+
 <style>
-body{
-  font-family:-apple-system,Arial;
-  background:#0b0f1a;
-  color:#eee;
-  padding:40px;
+body {
+  background:#0f172a;
+  color:#e2e8f0;
+  font-family: -apple-system;
+  text-align:center;
+  padding:80px;
 }
-h1{color:#facc15}
-a{color:#60a5fa;text-decoration:none}
-.post{margin:20px 0;padding:20px;background:#111827;border-radius:10px}
-.date{color:#999;font-size:14px}
+
+h1 {
+  font-size:48px;
+  color:#38bdf8;
+}
+
+a {
+  display:block;
+  margin:20px;
+  color:#22c55e;
+  font-size:20px;
+  text-decoration:none;
+}
+
+a:hover {
+  color:#4ade80;
+}
 </style>
+
 </head>
 
 <body>
 
-<h1>杨利伟｜博客</h1>
-<p>记录我的经历与观点</p>
+<h1>杨利伟</h1>
+<p>个人网站 / 博客</p>
 
-<div id="posts"></div>
+<hr>
 
-<script>
-const posts = [
-  {
-    title:"我的第一篇文章",
-    date:"2026-05-17",
-    file:"post1.html"
-  }
-];
-
-const container = document.getElementById("posts");
-
-posts.forEach(p=>{
-  container.innerHTML += `
-    <div class="post">
-      <h2><a href="${p.file}">${p.title}</a></h2>
-      <div class="date">${p.date}</div>
-    </div>
-  `;
-});
-</script>
+<a href="post1.html">👉 第一篇文章</a>
 
 </body>
 </html>
