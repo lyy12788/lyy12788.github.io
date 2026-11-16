@@ -22,14 +22,14 @@ collections:
           - {label: "网站副标题", name: "brand_subtitle", widget: "string"}
           - {label: "浏览器标题", name: "page_title", widget: "string"}
           - {label: "搜索引擎简介", name: "meta_description", widget: "text"}
-          - {label: "页面背景（#六位颜色值）", name: "background", widget: "string", default: "#081321", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
-          - {label: "卡片背景（#六位颜色值）", name: "panel", widget: "string", default: "#101f30", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
-          - {label: "次级卡片（#六位颜色值）", name: "panel_secondary", widget: "string", default: "#15263a", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
-          - {label: "边框（#六位颜色值）", name: "border", widget: "string", default: "#2a3b4e", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
-          - {label: "正文文字（#六位颜色值）", name: "text", widget: "string", default: "#edf3f9", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
-          - {label: "辅助文字（#六位颜色值）", name: "muted", widget: "string", default: "#a6b6c8", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
-          - {label: "主强调色/按钮（#六位颜色值）", name: "accent", widget: "string", default: "#f5c84b", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
-          - {label: "浅金强调色（#六位颜色值）", name: "accent_light", widget: "string", default: "#ffe18a", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "页面背景（#六位颜色值）", name: "background", widget: "color", default: "#081321", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "卡片背景（#六位颜色值）", name: "panel", widget: "color", default: "#101f30", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "次级卡片（#六位颜色值）", name: "panel_secondary", widget: "color", default: "#15263a", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "边框（#六位颜色值）", name: "border", widget: "color", default: "#2a3b4e", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "正文文字（#六位颜色值）", name: "text", widget: "color", default: "#edf3f9", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "辅助文字（#六位颜色值）", name: "muted", widget: "color", default: "#a6b6c8", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "主强调色/按钮（#六位颜色值）", name: "accent", widget: "color", default: "#f5c84b", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "浅金强调色（#六位颜色值）", name: "accent_light", widget: "color", default: "#ffe18a", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
           - {label: "首页大背景图片（可上传）", name: "hero_image", widget: "image", required: false}
           - {label: "首页英文眉题", name: "hero_eyebrow", widget: "string"}
           - {label: "首页主标题第一行", name: "hero_title", widget: "string"}
