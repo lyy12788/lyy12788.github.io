@@ -12,11 +12,9 @@ where table_schema='public' and table_name in
 ('comments','comment_reports','site_admins','forum_profiles','forum_posts','forum_comments','forum_reports')
 order by table_name, ordinal_position;
 
-select 'rls' as section, schemaname, tablename, rowsecurity, forcerowsecurity
-from pg_tables t
-join pg_class c on c.relname=t.tablename
-join pg_namespace n on n.oid=c.relnamespace and n.nspname=t.schemaname
-where schemaname='public' and tablename in
+select 'rls' as section, n.nspname as schemaname, c.relname as tablename, c.relrowsecurity as rowsecurity, c.relforcerowsecurity as forcerowsecurity
+from pg_class c join pg_namespace n on n.oid=c.relnamespace
+where n.nspname='public' and c.relname in
 ('comments','comment_reports','site_admins','forum_profiles','forum_posts','forum_comments','forum_reports');
 
 select 'policies' as section, schemaname, tablename, policyname, permissive, roles, cmd, qual, with_check
