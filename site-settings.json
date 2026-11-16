@@ -29,5 +29,48 @@
   "contact_description": "媒体联系、采访及资料沟通",
   "contact_email": "lyy12788@gmail.com",
   "show_categories": true,
-  "show_contact": true
+  "show_contact": true,
+  "social_links": [
+    {
+      "platform": "Facebook",
+      "label": "个人主页",
+      "url": "https://www.facebook.com/share/1Mqjmpp1Wa/"
+    },
+    {
+      "platform": "X",
+      "label": "@lyy12788",
+      "url": "https://x.com/lyy12788"
+    },
+    {
+      "platform": "X",
+      "label": "@ylw8904",
+      "url": "https://x.com/ylw8904"
+    },
+    {
+      "platform": "TikTok",
+      "label": "@lyy75938",
+      "url": "https://www.tiktok.com/@lyy75938"
+    },
+    {
+      "platform": "TikTok",
+      "label": "@nfd5613",
+      "url": "https://www.tiktok.com/@nfd5613"
+    },
+    {
+      "platform": "TikTok",
+      "label": "@923577g",
+      "url": "https://www.tiktok.com/@923577g"
+    },
+    {
+      "platform": "TikTok",
+      "label": "@ylw75938",
+      "url": "https://www.tiktok.com/@ylw75938"
+    },
+    {
+      "platform": "YouTube",
+      "label": "@lwy8964",
+      "url": "https://youtube.com/@lwy8964"
+    }
+  ],
+  "show_social": true
 }
