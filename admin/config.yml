@@ -3,6 +3,8 @@ backend:
   name: github
   repo: lyy12788/lyy12788.github.io
   branch: main
+  base_url: https://github-oauth.lyy12788.workers.dev
+  auth_endpoint: auth
 
 locale: zh_Hans
 
