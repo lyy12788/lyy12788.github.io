@@ -1,0 +1,84 @@
+
+name: Update article index
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "posts/**"
+      - ".github/workflows/articles.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate articles.json
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import re
+
+          posts = pathlib.Path("posts")
+          articles = []
+
+          def parse_value(value):
+              value = value.strip()
+              if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+                  return value[1:-1]
+              return value
+
+          if posts.exists():
+              for path in posts.rglob("*.md"):
+                  text = path.read_text(encoding="utf-8-sig")
+                  meta = {}
+                  body = text
+
+                  if text.startswith("---"):
+                      parts = re.split(r"^---\s*$", text, maxsplit=2, flags=re.MULTILINE)
+                      if len(parts) >= 3:
+                          for line in parts[1].splitlines():
+                              if ":" in line:
+                                  key, value = line.split(":", 1)
+                                  meta[key.strip()] = parse_value(value)
+                          body = parts[2].strip()
+
+                  articles.append({
+                      "slug": path.stem,
+                      "title": meta.get("title", path.stem),
+                      "date": str(meta.get("date", "")),
+                      "category": meta.get("category", "其他"),
+                      "body": body
+                  })
+
+          articles.sort(key=lambda a: a["date"], reverse=True)
+
+          pathlib.Path("articles.json").write_text(
+              json.dumps(articles, ensure_ascii=False, indent=2),
+              encoding="utf-8"
+          )
+
+          print(f"Generated {len(articles)} articles")
+          PY
+
+      - name: Commit article index
+        run: |
+          if git diff --quiet -- articles.json && git ls-files --error-unmatch articles.json >/dev/null 2>&1; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add articles.json
+          git commit -m "Update article index"
+          git push
