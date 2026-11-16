@@ -45,6 +45,15 @@ collections:
           - {label: "联系说明", name: "contact_description", widget: "text"}
           - {label: "公开联系邮箱", name: "contact_email", widget: "string"}
           - {label: "页脚说明", name: "footer_tagline", widget: "string"}
+          - label: "社交媒体账号"
+            name: "social_links"
+            widget: "list"
+            summary: "{{fields.platform}} · {{fields.label}}"
+            fields:
+              - {label: "平台", name: "platform", widget: "select", options: ["Facebook", "X", "TikTok", "YouTube", "其他"]}
+              - {label: "账号名称", name: "label", widget: "string"}
+              - {label: "主页链接", name: "url", widget: "string", pattern: ["^https://.+", "请输入 https:// 开头的网址"]}
+          - {label: "显示社交媒体", name: "show_social", widget: "boolean", default: true}
           - {label: "显示最新文章", name: "show_latest", widget: "boolean", default: true}
           - {label: "显示关于我", name: "show_about", widget: "boolean", default: true}
           - {label: "显示分类侧栏", name: "show_categories", widget: "boolean", default: true}
