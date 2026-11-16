@@ -1,0 +1,25 @@
+
+backend:
+  name: github
+  repo: lyy12788/lyy12788.github.io
+  branch: main
+
+locale: zh_Hans
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "posts"
+    label: "文章管理"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - {label: "文章标题", name: "title", widget: "string"}
+      - {label: "发布日期", name: "date", widget: "datetime"}
+      - {label: "文章分类", name: "category", widget: "select", options: ["政治观点", "个人经历", "国际局势", "社会评论", "公开声明", "其他"]}
+      - {label: "封面图片", name: "image", widget: "image", required: false}
+      - {label: "文章正文", name: "body", widget: "markdown"}
