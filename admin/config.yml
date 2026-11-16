@@ -1,4 +1,3 @@
-
 backend:
   name: github
   repo: lyy12788/lyy12788.github.io
@@ -7,11 +6,50 @@ backend:
   auth_endpoint: auth
 
 locale: zh_Hans
-
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
 collections:
+  - name: "appearance"
+    label: "网站外观与首页设置"
+    files:
+      - name: "site"
+        label: "首页文字、配色、背景及板块"
+        file: "site-settings.json"
+        format: "json"
+        fields:
+          - {label: "网站名称", name: "site_name", widget: "string"}
+          - {label: "网站副标题", name: "brand_subtitle", widget: "string"}
+          - {label: "浏览器标题", name: "page_title", widget: "string"}
+          - {label: "搜索引擎简介", name: "meta_description", widget: "text"}
+          - {label: "页面背景（#六位颜色值）", name: "background", widget: "string", default: "#081321", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "卡片背景（#六位颜色值）", name: "panel", widget: "string", default: "#101f30", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "次级卡片（#六位颜色值）", name: "panel_secondary", widget: "string", default: "#15263a", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "边框（#六位颜色值）", name: "border", widget: "string", default: "#2a3b4e", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "正文文字（#六位颜色值）", name: "text", widget: "string", default: "#edf3f9", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "辅助文字（#六位颜色值）", name: "muted", widget: "string", default: "#a6b6c8", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "主强调色/按钮（#六位颜色值）", name: "accent", widget: "string", default: "#f5c84b", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "浅金强调色（#六位颜色值）", name: "accent_light", widget: "string", default: "#ffe18a", pattern: ["^#[0-9A-Fa-f]{6}$", "颜色格式例如 #F5C84B"]}
+          - {label: "首页大背景图片（可上传）", name: "hero_image", widget: "image", required: false}
+          - {label: "首页英文眉题", name: "hero_eyebrow", widget: "string"}
+          - {label: "首页主标题第一行", name: "hero_title", widget: "string"}
+          - {label: "首页主标题第二行", name: "hero_highlight", widget: "string"}
+          - {label: "首页介绍文字", name: "hero_description", widget: "text"}
+          - {label: "主按钮文字", name: "primary_cta", widget: "string"}
+          - {label: "次按钮文字", name: "secondary_cta", widget: "string"}
+          - {label: "首页图片下方说明", name: "hero_caption", widget: "string"}
+          - {label: "文章板块标题", name: "latest_heading", widget: "string"}
+          - {label: "关于我标题", name: "about_heading", widget: "string"}
+          - {label: "关于我介绍", name: "about_description", widget: "text"}
+          - {label: "联系方式标题", name: "contact_heading", widget: "string"}
+          - {label: "联系说明", name: "contact_description", widget: "text"}
+          - {label: "公开联系邮箱", name: "contact_email", widget: "string"}
+          - {label: "页脚说明", name: "footer_tagline", widget: "string"}
+          - {label: "显示最新文章", name: "show_latest", widget: "boolean", default: true}
+          - {label: "显示关于我", name: "show_about", widget: "boolean", default: true}
+          - {label: "显示分类侧栏", name: "show_categories", widget: "boolean", default: true}
+          - {label: "显示联系侧栏", name: "show_contact", widget: "boolean", default: true}
+
   - name: "posts"
     label: "文章管理"
     folder: "posts"
