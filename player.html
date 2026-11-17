@@ -45,7 +45,7 @@ window.addEventListener('popstate',()=>navigate(initial(),false));
 window.addEventListener('message',async e=>{
  if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data||e.data.type!=='lyy-audio-play')return;
  try{
- const u=new URL(e.data.src);if(!/^https?:$/.test(u.protocol)||!(u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='lyy12788.ink'||u.hostname.endsWith('.lyy12788.ink'))){status.textContent='仅允许本站媒体域名';return}
+ const u=new URL(e.data.src);if(!/^https?:$/.test(u.protocol)||!(u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='lyy12788.ink'||u.hostname.endsWith('.lyy12788.ink')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co')){status.textContent='仅允许本站媒体域名';return}
  if(current!==u.href){drive.src='about:blank';dock.hidden=true;audio.src=u.href;current=u.href;title.textContent=String(e.data.title||decodeURIComponent(u.pathname.split('/').pop())||'音频').slice(0,160);await audio.play()}else if(audio.paused){await audio.play()}else{audio.pause()}
  }catch(err){status.textContent='播放失败，请检查音频链接'}
 });
