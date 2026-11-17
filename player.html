@@ -39,13 +39,13 @@ function wire(){
  },true);
 }
 frame.addEventListener('load',wire);
+window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||e.data?.type!=='lyy-page-url')return;const u=safe(e.data.url);if(!u)return;const dest=u.pathname+u.search+u.hash;history.replaceState({page:dest},'', '/player.html?page='+encodeURIComponent(dest))});
 window.addEventListener('popstate',()=>navigate(initial(),false));
 window.addEventListener('message',async e=>{
  if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data||e.data.type!=='lyy-audio-play')return;
  try{
- const u=new URL(e.data.src);if(!/^https?:$/.test(u.protocol)||!u.hostname.endsWith('lyy12788.com')&&!u.hostname.endsWith('lyy12788.ink')){status.textContent='仅允许本站媒体域名';return}
- if(current!==u.href){audio.src=u.href;current=u.href;title.textContent=String(e.data.title||decodeURIComponent(u.pathname.split('/').pop())||'音频').slice(0,160)}
- if(audio.paused)await audio.play();else audio.pause();
+ const u=new URL(e.data.src);if(!/^https?:$/.test(u.protocol)||!(u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='lyy12788.ink'||u.hostname.endsWith('.lyy12788.ink'))){status.textContent='仅允许本站媒体域名';return}
+ if(current!==u.href){audio.src=u.href;current=u.href;title.textContent=String(e.data.title||decodeURIComponent(u.pathname.split('/').pop())||'音频').slice(0,160);await audio.play()}else if(audio.paused){await audio.play()}else{audio.pause()}
  }catch(err){status.textContent='播放失败，请检查音频链接'}
 });
 audio.addEventListener('play',()=>{toggle.textContent='Ⅱ';status.textContent='正在播放'});
