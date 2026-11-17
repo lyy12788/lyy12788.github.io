@@ -115,10 +115,10 @@ async function listPosts(){const cat=$('category-filter').value;let q=db.from('f
 async function loadPost(id){const {data:p,error}=await db.from('forum_posts').select('id,author_id,title,body,category,status,created_at').eq('id',id).maybeSingle();if(error||!p){say('文章不存在、未公开或无法访问');show('home');return}opened=p;$('post-meta').textContent=p.category+' · '+date(p.created_at)+' · '+p.status;$('detail-title').textContent=p.title;renderArticle(p.body);const actions=$('post-actions');actions.replaceChildren();if(user&&(user.id===p.author_id||admin)){const del=el('button','删除文章');del.onclick=async()=>{if(!confirm('确定删除这篇文章及全部评论？'))return;const {error}=await db.from('forum_posts').delete().eq('id',p.id);if(error)say(error.message);else location.hash='mine'};actions.append(del)}renderReportPost(p);show('detail');await Promise.all([listComments(id),refreshLikes(id)])}
 async function refreshLikes(id){
  const count=$('like-count'),btn=$('like-btn');
- const {data,error}=await db.from('forum_likes').select('user_id').eq('post_id',id);
- if(error){count.textContent='点赞暂不可用';btn.disabled=true;return}
- const liked=!!user&&data.some(x=>x.user_id===user.id);
- count.textContent=data.length+' 人点赞';
+ const {data,error}=await db.rpc('forum_like_summary',{p_post_id:id});
+ if(error||!data?.length){count.textContent='点赞暂不可用';btn.disabled=true;return}
+ const liked=!!user&&data[0].liked_by_me===true;
+ count.textContent=Number(data[0].like_count||0)+' 人点赞';
  btn.textContent=liked?'♥ 已点赞 · 点击取消':'♡ 点赞';
  btn.disabled=!user?.email_confirmed_at||opened?.status!=='published';
  btn.title=!user?'登录后可以点赞':'';
