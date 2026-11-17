@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>会员论坛 · 独立观点</title>
-<style>:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#14171d;color:#eee}*{box-sizing:border-box}body{margin:0}header,main{max-width:980px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;gap:16px;align-items:center}a{color:#e8c45b}h1{font-size:30px}button,.btn{background:#b8912c;color:#101015;border:0;padding:11px 16px;border-radius:9px;cursor:pointer;font-weight:650}button:disabled{opacity:.5}input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;background:#222833;color:#fff;border:1px solid #515867;border-radius:8px}textarea{min-height:170px;resize:vertical}.card{background:#20252e;border:1px solid #3b414c;padding:20px;border-radius:14px;margin:14px 0}.muted{color:#b8c0cb}.hide{display:none!important}.post{display:block;padding:14px 0;border-bottom:1px solid #454b55;text-decoration:none}.post strong{color:#f3e1ad;display:block;font-size:18px}.post small{color:#bdc3ce}.comment{padding:12px;border-bottom:1px solid #454b55;white-space:pre-wrap}nav{display:flex;gap:14px;flex-wrap:wrap}.status{min-height:22px;color:#f2d585}.tools{display:flex;gap:10px;flex-wrap:wrap}.body{white-space:normal;line-height:1.8;overflow-wrap:anywhere}.body img{display:block;max-width:100%;height:auto;border-radius:10px;margin:12px 0}.video-preview{position:relative;display:block;max-width:640px;aspect-ratio:16/9;margin:16px 0;border-radius:12px;overflow:hidden;background:#121821;color:white!important;text-decoration:none!important;border:1px solid #4d5765}.video-preview img{width:100%;height:100%;object-fit:cover;margin:0}.video-preview .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:25px;background:#b8912c;color:#101015;border-radius:999px;padding:10px 20px}.video-preview .video-caption{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,#000c);font-weight:650}.body a{overflow-wrap:anywhere}.body p{white-space:pre-wrap}.editor-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}.editor-tools button{background:#303744;color:#fff;border:1px solid #626b79}.editor-tools input[type=file]{display:none}label{display:block}small{font-size:13px}</style>
+<style>:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#14171d;color:#eee}*{box-sizing:border-box}body{margin:0}header,main{max-width:980px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;gap:16px;align-items:center}a{color:#e8c45b}h1{font-size:30px}button,.btn{background:#b8912c;color:#101015;border:0;padding:11px 16px;border-radius:9px;cursor:pointer;font-weight:650}button:disabled{opacity:.5}input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;background:#222833;color:#fff;border:1px solid #515867;border-radius:8px}textarea{min-height:170px;resize:vertical}.card{background:#20252e;border:1px solid #3b414c;padding:20px;border-radius:14px;margin:14px 0}.muted{color:#b8c0cb}.hide{display:none!important}.post{display:block;padding:14px 0;border-bottom:1px solid #454b55;text-decoration:none}.post strong{color:#f3e1ad;display:block;font-size:18px}.post small{color:#bdc3ce}.comment{padding:12px;border-bottom:1px solid #454b55;white-space:pre-wrap}nav{display:flex;gap:14px;flex-wrap:wrap}.status{min-height:22px;color:#f2d585}.tools{display:flex;gap:10px;flex-wrap:wrap}.body{white-space:normal;line-height:1.8;overflow-wrap:anywhere}.body img{display:block;max-width:100%;height:auto;border-radius:10px;margin:12px 0}.embedded-video{max-width:680px;margin:18px 0;padding:12px;border:1px solid #4d5765;border-radius:12px;background:#181e27}.embedded-video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:8px}.embedded-video .source-link{display:block;margin-top:10px;overflow-wrap:anywhere;font-size:13px}.embedded-video .embed-fallback{font-size:13px;color:#b8c0cb;margin-top:8px}.embedded-video .video-launch{width:100%;min-height:160px;cursor:pointer}.embedded-video .tweet-frame{min-height:220px}.embedded-video .tweet-frame iframe{aspect-ratio:auto}.embedded-video .video-cover{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;margin:0 0 8px}.embedded-video .source-link:focus-visible,.embedded-video button:focus-visible{outline:2px solid #e8c45b}.video-preview{position:relative;display:block;max-width:640px;aspect-ratio:16/9;margin:16px 0;border-radius:12px;overflow:hidden;background:#121821;color:white!important;text-decoration:none!important;border:1px solid #4d5765}.video-preview img{width:100%;height:100%;object-fit:cover;margin:0}.video-preview .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:25px;background:#b8912c;color:#101015;border-radius:999px;padding:10px 20px}.video-preview .video-caption{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,#000c);font-weight:650}.body a{overflow-wrap:anywhere}.body p{white-space:pre-wrap}.editor-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}.editor-tools button{background:#303744;color:#fff;border:1px solid #626b79}.editor-tools input[type=file]{display:none}label{display:block}small{font-size:13px}</style>
 </head><body><header><a href="/">← 网站首页</a><nav><a href="/forum.html">论坛首页</a><a href="#mine" id="mine-link">我的文章</a><a href="#review" id="review-link" class="hide">审核管理</a></nav><button id="login-btn">注册 / 登录</button></header>
 <main><h1>独立观点 · 会员论坛</h1><p class="muted">会员发表观点，公开交流讨论。新会员前三篇文章审核通过后，后续文章自动公开。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
@@ -28,31 +28,44 @@ function renderArticle(body){
  for(const img of target.querySelectorAll('img')){try{const u=new URL(img.src);if(u.protocol!=='https:'||u.hostname!=='mkchupvmervxkskvjyhz.supabase.co'||!u.pathname.includes('/storage/v1/object/public/forum-images/'))img.remove()}catch{img.remove()}}
  for(const a of Array.from(target.querySelectorAll('a'))){
   let u;try{u=new URL(a.href)}catch{continue}
-  const host=u.hostname.toLowerCase().replace(/^www\./,'');
-  let thumbnail='',platform='';
-  if(host==='youtu.be'||host==='youtube.com'||host==='m.youtube.com'){
+  if(!['http:','https:'].includes(u.protocol))continue;
+  const host=u.hostname.toLowerCase().replace(/^www\\./,'');
+  let platform='',embed='',thumb='',tweetId='';
+  if(['youtube.com','m.youtube.com','youtu.be','youtube-nocookie.com'].includes(host)){
    let id=host==='youtu.be'?u.pathname.split('/')[1]:u.searchParams.get('v');
-   if(!id&&/^\/(shorts|live|embed)\//.test(u.pathname))id=u.pathname.split('/')[2];
-   if(id&&/^[A-Za-z0-9_-]{11}$/.test(id)){thumbnail='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';platform='YouTube'}
-  }else if(host==='bilibili.com'||host==='m.bilibili.com'||host==='b23.tv'){
-   platform='哔哩哔哩';
+   if(!id&&/^\\/(shorts|live|embed)\\//.test(u.pathname))id=u.pathname.split('/')[2];
+   if(id&&/^[A-Za-z0-9_-]{11}$/.test(id)){platform='YouTube';embed='https://www.youtube-nocookie.com/embed/'+id;thumb='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'}
   }else if(host==='vimeo.com'||host==='player.vimeo.com'){
-   platform='Vimeo';
-  }else if(host==='douyin.com'||host==='iesdouyin.com'||host==='v.douyin.com'){
-   platform='抖音';
-  }else if(host==='tiktok.com'||host==='vm.tiktok.com'){
-   platform='TikTok';
-  }else if(host==='facebook.com'||host==='fb.watch'){
-   platform='Facebook';
-  }else if(host==='x.com'||host==='twitter.com'||host==='mobile.twitter.com'){
-   if(/^\/[A-Za-z0-9_]+\/status\/\d+/.test(u.pathname))platform='X（Twitter）';
+   const id=u.pathname.match(/\\/(?:video\\/)?(\\d+)/)?.[1];if(id){platform='Vimeo';embed='https://player.vimeo.com/video/'+id}
+  }else if(host==='bilibili.com'||host==='m.bilibili.com'){
+   const bv=u.pathname.match(/\\/(BV[A-Za-z0-9]{10})/i)?.[1];if(bv){platform='哔哩哔哩';embed='https://player.bilibili.com/player.html?bvid='+bv+'&page=1'}
+  }else if(host==='tiktok.com'||host==='m.tiktok.com'){
+   const id=u.pathname.match(/\\/video\\/(\\d+)/)?.[1];if(id){platform='TikTok';embed='https://www.tiktok.com/embed/v2/'+id}
+  }else if(host==='facebook.com'||host==='m.facebook.com'||host==='fb.watch'){
+   platform='Facebook';embed='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(u.href)+'&show_text=false';
+  }else if(['x.com','twitter.com','mobile.twitter.com'].includes(host)){
+   const m=u.pathname.match(/^\\/[A-Za-z0-9_]+\\/status\\/(\\d+)/);if(m){platform='X（Twitter）';tweetId=m[1]}
+  }else if(['douyin.com','iesdouyin.com','v.douyin.com','b23.tv','vm.tiktok.com'].includes(host)){
+   platform=host.includes('douyin')?'抖音':host.includes('b23')?'哔哩哔哩':'TikTok';
   }
   if(!platform)continue;
-  const card=document.createElement('a');card.href=u.href;card.target='_blank';card.rel='noopener noreferrer nofollow';card.className='video-preview';card.setAttribute('aria-label','前往'+platform+'观看视频');
-  if(thumbnail){const img=document.createElement('img');img.src=thumbnail;img.alt=platform+'视频缩略图';img.loading='lazy';card.append(img)}
-  const play=document.createElement('span');play.className='play';play.textContent='▶';
-  const caption=document.createElement('span');caption.className='video-caption';caption.textContent=platform+' · 点击前往原网站播放';
-  card.append(play,caption);a.replaceWith(card);
+  const wrap=document.createElement('div');wrap.className='embedded-video';
+  const button=document.createElement('button');button.type='button';button.className='video-launch';button.textContent='▶ 在本站播放 '+platform+' 视频';
+  if(thumb){const image=document.createElement('img');image.src=thumb;image.alt=platform+' 视频封面';image.loading='lazy';image.className='video-cover';button.prepend(image)}
+  const source=document.createElement('a');source.href=u.href;source.target='_blank';source.rel='noopener noreferrer nofollow';source.className='source-link';source.textContent='原视频地址：'+u.href;
+  const fallback=document.createElement('div');fallback.className='embed-fallback';fallback.textContent='如果站内播放器不可用，请使用上方原视频地址观看。';
+  button.onclick=()=>{
+   if(embed){
+    const iframe=document.createElement('iframe');iframe.src=embed;iframe.title=platform+' 视频播放器';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';iframe.allowFullscreen=true;iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.loading='lazy';button.replaceWith(iframe);
+   }else if(tweetId){
+    button.disabled=true;button.textContent='正在加载 X 官方嵌入内容……';
+    const area=document.createElement('div');area.className='tweet-frame';button.replaceWith(area);
+    const load=()=>window.twttr?.widgets?.createTweet(tweetId,area,{theme:'dark',align:'center',dnt:true}).then(node=>{if(!node)area.textContent='X 不允许显示此帖子，请使用原视频地址。'}).catch(()=>{area.textContent='X 嵌入失败，请使用原视频地址。'});
+    if(window.twttr?.widgets?.createTweet){load()}
+    else{const script=document.createElement('script');script.src='https://platform.twitter.com/widgets.js';script.async=true;script.onload=load;script.onerror=()=>{area.textContent='X 嵌入服务不可用，请使用原视频地址。'};document.head.append(script)}
+   }else{button.textContent='此分享链接暂无法直接嵌入，请点击下方原视频地址观看。'}
+  };
+  wrap.append(button,source,fallback);a.replaceWith(wrap);
  }
 }
 function insertAtCursor(value){
