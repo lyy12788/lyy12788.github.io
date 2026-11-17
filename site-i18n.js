@@ -8,7 +8,7 @@ Object.assign(data,{"查看和管理全部注册会员":["查看和管理全部�
 const labels={'zh-CN':'简体中文','zh-TW':'繁體中文',en:'English',ko:'한국어',ja:'日本語'};
 const storage='lyy-site-language';const current=()=>{try{const v=localStorage.getItem(storage);return langs.includes(v)?v:'zh-CN'}catch{return 'zh-CN'}};
 const original=new WeakMap();const attrOriginal=new WeakMap();
-const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,option,[contenteditable],[data-user-content],[data-no-translate],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,#post-detail,#comments,#comment-list');
+const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,option,[contenteditable],[data-user-content],[data-no-translate],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,#post-detail,#comments,#comment-list,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]');
 const normalize=t=>String(t||'').replace(/\s+/g,' ').trim();
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
 function apply(lang){if(!document.body)return;document.documentElement.lang=lang;const idx=langs.indexOf(lang)-1;
