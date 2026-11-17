@@ -173,6 +173,19 @@ body{background:var(--bg)}
  #social-view .social-info small{font-size:12px;line-height:1.4;margin-top:3px}
  #social-view .social-link>span:last-child{position:static;font-size:18px;flex:none}
 }
+
+/* Mobile social links: restore one full-width row per profile, retain platform icon */
+@media(max-width:600px){
+ #social-view .social-grid{grid-template-columns:1fr;gap:11px}
+ #social-view .social-link{aspect-ratio:auto;min-height:80px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;text-align:left;padding:13px 16px;gap:12px;border-radius:13px}
+ #social-view .social-left{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:13px;width:auto;flex:1;min-width:0}
+ #social-view .social-avatar{width:46px;height:46px;flex:0 0 46px;border-radius:11px;font-size:27px}
+ #social-view .social-avatar img{border-radius:11px}
+ #social-view .social-info{width:auto;text-align:left}
+ #social-view .social-info strong{font-size:16px;line-height:1.4}
+ #social-view .social-info small{font-size:13px;line-height:1.4;margin-top:3px}
+ #social-view .social-link>span:last-child{position:static;flex:0 0 auto;font-size:18px}
+}
 </style>
 </head>
 <body>
