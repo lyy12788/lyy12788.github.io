@@ -44,6 +44,8 @@ function renderArticle(body){
    platform='TikTok';
   }else if(host==='facebook.com'||host==='fb.watch'){
    platform='Facebook';
+  }else if(host==='x.com'||host==='twitter.com'||host==='mobile.twitter.com'){
+   if(/^\/[A-Za-z0-9_]+\/status\/\d+/.test(u.pathname))platform='X（Twitter）';
   }
   if(!platform)continue;
   const card=document.createElement('a');card.href=u.href;card.target='_blank';card.rel='noopener noreferrer nofollow';card.className='video-preview';card.setAttribute('aria-label','前往'+platform+'观看视频');
@@ -61,7 +63,7 @@ function insertAtCursor(value){
 $('insert-link').onclick=()=>{const url=prompt('请输入链接地址（https:// 开头）');if(url===null)return;try{const u=new URL(url.trim());if(!['https:','http:'].includes(u.protocol))throw Error('protocol');const label=prompt('链接显示文字','查看链接');if(label===null)return;insertAtCursor('['+(label.trim()||'查看链接').replace(/[\\\[\]]/g,'')+']('+u.href.replace(/[()]/g,encodeURIComponent)+')')}catch{$('upload-status').textContent='链接必须是有效的 http:// 或 https:// 地址'}};
 $('insert-image').onclick=()=>{if(!user?.email_confirmed_at){$('upload-status').textContent='请先登录并验证邮箱后上传图片';return}$('image-file').click()};
 $('insert-video').onclick=()=>{
- const url=prompt('粘贴原视频网站的分享链接（YouTube、哔哩哔哩、抖音、TikTok 等）');
+ const url=prompt('粘贴原视频网站的分享链接（YouTube、X（Twitter）、哔哩哔哩、抖音、TikTok 等）');
  if(url===null)return;
  try{
   const u=new URL(url.trim());if(!['https:','http:'].includes(u.protocol))throw Error('invalid');
