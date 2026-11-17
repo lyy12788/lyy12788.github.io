@@ -58,6 +58,22 @@ body{background:var(--bg)}
  .dual-panel .eyebrow{font-size:10px}
  .section-heading h2{font-size:23px}
 }
+/* Editorial text list: compact article entries without cards */
+#latest .article-grid{display:block}
+#latest .article-card{width:100%;min-height:0;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:15px 2px 17px;display:flex;align-items:flex-start;gap:3px;box-shadow:none;transform:none}
+#latest .article-card:hover{background:rgba(255,255,255,.025);border-color:var(--gold);transform:none}
+#latest .article-card .category{font-size:11px;line-height:1.5}
+#latest .article-card h3{font-size:19px;line-height:1.45;margin:2px 0 4px;font-weight:700}
+#latest .article-card .meta{margin-top:0;font-size:12px}
+#latest .article-card .readmore{display:none}
+#latest .feature{display:block;min-height:0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;margin-bottom:0}
+#latest .feature-content{padding:12px 2px 16px}
+#latest .feature h3{font-size:21px;line-height:1.45;margin:5px 0}
+#latest .feature p{margin:4px 0}
+#latest .feature-art{display:none}
+#latest .feature button{font-size:13px}
+#latest .browse-tools input{background:transparent}
+@media(max-width:760px){#latest .article-card{padding:13px 1px 14px}#latest .article-card h3{font-size:17px}#latest .feature h3{font-size:19px}#latest .feature-content{padding:8px 1px 13px}}
 </style>
 </head>
 <body>
