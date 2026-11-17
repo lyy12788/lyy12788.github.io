@@ -6,11 +6,21 @@ Object.assign(data,{"欢迎提出网站功能、页面布局、手机体验或�
 const labels={'zh-CN':'简体中文','zh-TW':'繁體中文',en:'English',ko:'한국어',ja:'日本語'};
 const storage='lyy-site-language';const current=()=>{try{const v=localStorage.getItem(storage);return langs.includes(v)?v:'zh-CN'}catch{return 'zh-CN'}};
 const original=new WeakMap();const attrOriginal=new WeakMap();
-const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],#drive-list,#drive-player,#post-list,#post-detail,#comments,#comment-list,.sermon-row,.sermon-metrics,[data-user-content],[data-no-translate],.post-body,.comment-body,.user-content');
-function apply(lang){document.documentElement.lang=lang;const idx=langs.indexOf(lang)-1;
+const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,option,[contenteditable],[data-user-content],[data-no-translate],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,#post-detail,#comments,#comment-list');
+const normalize=t=>String(t||'').replace(/\\s+/g,' ').trim();
+const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
+function apply(lang){if(!document.body)return;document.documentElement.lang=lang;const idx=langs.indexOf(lang)-1;
 const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
-while(n=walker.nextNode()){if(!n.parentElement||excluded(n.parentElement))continue;const source=original.has(n)?original.get(n):n.nodeValue;const trimmed=source.trim();if(!data[trimmed])continue;if(!original.has(n))original.set(n,source);const value=idx<0?trimmed:data[trimmed][idx];n.nodeValue=source.replace(trimmed,value)}
-document.querySelectorAll('[aria-label],[title],[placeholder]').forEach(e=>{if(excluded(e))return;for(const a of ['aria-label','title','placeholder']){if(!e.hasAttribute(a))continue;let obj=attrOriginal.get(e);if(!obj){obj={};attrOriginal.set(e,obj)}if(!(a in obj))obj[a]=e.getAttribute(a);const src=obj[a];if(data[src])e.setAttribute(a,idx<0?src:data[src][idx])}});
+while((n=walker.nextNode())){if(!n.parentElement||excluded(n.parentElement))continue;
+const actual=n.nodeValue;let source=original.get(n);
+if(source===undefined){source=actual;original.set(n,source)}
+else{const prior=translations.get(normalize(source));const recognized=normalize(actual)===normalize(source)||(prior&&prior.some(t=>normalize(t)===normalize(actual)));
+if(!recognized){source=actual;original.set(n,source)}}
+const key=normalize(source),values=translations.get(key);if(!values)continue;
+const value=idx<0?key:values[idx];const next=source.replace(/^(\\s*)[\\s\\S]*?(\\s*)$/,(all,lead,tail)=>lead+value+tail);
+if(n.nodeValue!==next)n.nodeValue=next;
+}
+document.querySelectorAll('[aria-label],[title],[placeholder],[value]').forEach(e=>{if(excluded(e))return;for(const a of ['aria-label','title','placeholder','value']){if(!e.hasAttribute(a))continue;if(a==='value'&&!['button','submit','reset'].includes(e.type))continue;let obj=attrOriginal.get(e);if(!obj){obj={};attrOriginal.set(e,obj)}if(!(a in obj))obj[a]=e.getAttribute(a);const src=obj[a],values=translations.get(normalize(src));if(values)e.setAttribute(a,idx<0?src:values[idx])}});
 const sel=document.getElementById('lyy-language');if(sel)sel.value=lang;
 }
 function set(lang){if(!langs.includes(lang))return;try{localStorage.setItem(storage,lang)}catch{}apply(lang);if(window.parent!==window)window.parent.postMessage({type:'lyy-language',lang},location.origin);else{const f=document.getElementById('page');try{f?.contentWindow?.postMessage({type:'lyy-language',lang},location.origin)}catch{}}}
