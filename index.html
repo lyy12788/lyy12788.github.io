@@ -116,6 +116,22 @@ body{background:var(--bg)}
  .dual-panel p{font-size:10.5px}
  .dual-link{font-size:10px}
 }
+
+/* Tighter spacing between articles in the author's column */
+#latest .article-card{padding-top:9px;padding-bottom:10px;gap:1px}
+#latest .article-card h3{margin:1px 0 2px;line-height:1.35}
+#latest .article-card .meta{line-height:1.45}
+#latest .feature-content{padding-top:6px;padding-bottom:9px}
+#latest .feature h3{margin:3px 0;line-height:1.35}
+#latest .feature p{margin:2px 0}
+@media(max-width:760px){
+ #latest .article-card{padding:8px 1px 9px}
+ #latest .article-card h3{font-size:17px;line-height:1.35;margin:1px 0 2px}
+ #latest .article-card .meta{font-size:11px;line-height:1.4}
+ #latest .feature-content{padding:5px 1px 8px}
+ #latest .feature h3{font-size:18px;margin:2px 0}
+ #latest .feature p{margin:2px 0}
+}
 </style>
 </head>
 <body>
