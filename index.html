@@ -132,6 +132,14 @@ body{background:var(--bg)}
  #latest .feature h3{font-size:18px;margin:2px 0}
  #latest .feature p{margin:2px 0}
 }
+
+/* Recognizable social profile thumbnails, optional verified profile image */
+.social-left{display:flex;align-items:center;gap:13px;min-width:0}
+.social-info{min-width:0;overflow-wrap:anywhere}
+.social-avatar{width:46px;height:46px;flex:0 0 46px;border-radius:12px;background:#283c51;border:1px solid rgba(255,255,255,.16);display:grid;place-items:center;font-size:25px;font-weight:800;color:#fff;position:relative;overflow:hidden}
+.social-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#283c51}
+.social-facebook{background:#1877f2}.social-x,.social-twitter{background:#101010}.social-tiktok{background:#111}.social-youtube{background:#e62117}.social-instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}.social-telegram{background:#229ed9}
+@media(max-width:520px){.social-link{padding:12px 13px}.social-avatar{width:42px;height:42px;flex-basis:42px}.social-left{gap:11px}}
 </style>
 </head>
 <body>
@@ -182,7 +190,7 @@ body{background:var(--bg)}
     if(typeof data.meta_description==='string')document.querySelector('meta[name="description"]')?.setAttribute('content',data.meta_description);
     if(typeof data.background==='string'&&/^#[0-9a-fA-F]{6}$/.test(data.background))document.querySelector('#site-theme-color')?.setAttribute('content',data.background);
     const socialRoot=document.getElementById('social-links');
-    if(socialRoot){socialRoot.replaceChildren();for(const item of (Array.isArray(data.social_links)?data.social_links:[])){if(!item||typeof item.url!=='string')continue;try{const u=new URL(item.url);if(u.protocol!=='https:')continue;const a=document.createElement('a');a.className='social-link';a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';const info=document.createElement('span');const name=document.createElement('strong');name.textContent=String(item.platform||'社交平台');const label=document.createElement('small');label.textContent=String(item.label||'查看主页');info.append(name,label);const arrow=document.createElement('span');arrow.textContent='↗';a.append(info,arrow);socialRoot.append(a);}catch{}}document.getElementById('social-entry').hidden=!socialRoot.children.length;}
+    if(socialRoot){socialRoot.replaceChildren();for(const item of (Array.isArray(data.social_links)?data.social_links:[])){if(!item||typeof item.url!=='string')continue;try{const u=new URL(item.url);if(u.protocol!=='https:')continue;const a=document.createElement('a');a.className='social-link';a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';const left=document.createElement('span');left.className='social-left';const platform=String(item.platform||'社交平台');const lower=platform.toLowerCase();const icon=document.createElement('span');icon.className='social-avatar';icon.setAttribute('aria-hidden','true');const platformIcons={facebook:'f',x:'𝕏',twitter:'𝕏',tiktok:'♪',youtube:'▶',instagram:'◎',telegram:'✈',微信:'微',微博:'博'};const match=Object.keys(platformIcons).find(k=>lower.includes(k));icon.textContent=match?platformIcons[match]:'↗';if(match)icon.classList.add('social-'+match.replace(/[^a-z]/g,''));if(typeof item.avatar_url==='string'||typeof item.image_url==='string'){try{const avatarUrl=new URL(item.avatar_url||item.image_url);if(avatarUrl.protocol==='https:'){const img=document.createElement('img');img.src=avatarUrl.href;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.onerror=()=>img.remove();icon.append(img)}}catch{}}const info=document.createElement('span');info.className='social-info';const name=document.createElement('strong');name.textContent=platform;const label=document.createElement('small');label.textContent=String(item.label||'查看主页');info.append(name,label);left.append(icon,info);const arrow=document.createElement('span');arrow.textContent='↗';a.append(left,arrow);socialRoot.append(a);}catch{}}document.getElementById('social-entry').hidden=!socialRoot.children.length;}
     if(data.show_social===false)document.getElementById('social-entry')?.setAttribute('hidden','');
     if(data.show_about===false)document.querySelector('#about')?.setAttribute('hidden','');
     if(data.show_categories===false)document.querySelector('#categories')?.setAttribute('hidden','');
