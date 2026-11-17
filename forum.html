@@ -39,6 +39,31 @@
  #post-list .forum-list-date{font-size:11px}
  #post-list .forum-list-metrics{gap:15px;font-size:12px;justify-content:flex-start}
 }
+</style><style id="forum-four-zone-v2">
+/* Four independent zones: title/date, author/stats. Both screen sizes. */
+#post-list{padding:3px 17px}
+#post-list .forum-list-card{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"title date" "author metrics";column-gap:14px;row-gap:5px;align-items:center;min-height:0;padding:10px 3px;border-bottom:1px solid #3b4653}
+#post-list .forum-list-title{grid-area:title;min-width:0;margin:0;font-size:18px;line-height:1.23;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#post-list .forum-list-date{grid-area:date;justify-self:end;font-size:12px;line-height:1.3;color:#aeb9c7;white-space:nowrap;font-variant-numeric:tabular-nums}
+#post-list .forum-list-author{grid-area:author;min-width:0;overflow:hidden;text-overflow:ellipsis;display:inline-flex;align-items:center;gap:7px;font-size:13px;line-height:1.3}
+#post-list .forum-list-author img{width:22px;height:22px;flex:none}
+#post-list .forum-list-metrics{grid-area:metrics;justify-self:end;display:flex;gap:12px;font-size:12px;line-height:1.3;color:#b7c4d1}
+#post-list .forum-list-stat{white-space:nowrap}
+@media(max-width:650px){
+ #post-list{padding:2px 9px}
+ #post-list .forum-list-card{column-gap:8px;row-gap:5px;padding:9px 2px}
+ #post-list .forum-list-title{font-size:15px;line-height:1.25}
+ #post-list .forum-list-date{font-size:10px}
+ #post-list .forum-list-author{font-size:12px;gap:5px}
+ #post-list .forum-list-author img{width:20px;height:20px}
+ #post-list .forum-list-metrics{font-size:10px;gap:7px}
+ #post-list .forum-list-eye:before,#post-list .forum-list-comment:before,#post-list .forum-list-like:before{margin-right:3px}
+}
+@media(max-width:390px){
+ #post-list .forum-list-card{grid-template-columns:minmax(0,1fr) auto}
+ #post-list .forum-list-date{font-size:9px}
+ #post-list .forum-list-metrics{gap:5px;font-size:9px}
+}
 </style></head><body><header><a href="/">← 网站首页</a><nav><a href="/forum.html">论坛首页</a><a href="#mine" id="mine-link">我的文章</a><a href="#account" id="account-link">我的账户</a><a href="#review" id="review-link" class="hide">审核管理</a><a href="#moderation" id="moderation-link" class="hide">举报与禁言</a><a href="#appeal" id="appeal-link">账号申诉</a></nav><button id="login-btn">注册 / 登录</button></header>
 <main><h1><a href="/forum.html" class="forum-heading-link">公共论坛 · 自由交流</a></h1><p class="muted">会员发表观点，公开交流讨论。新会员前三篇文章审核通过后，后续文章自动公开。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
@@ -206,17 +231,14 @@ async function appendPreview(root,post,clickable=false){
 const forumListStats=new Map();
 const link=(post)=>{
  const card=document.createElement('article');card.className='forum-list-card';
- const body=document.createElement('div');body.className='forum-list-main';
- const heading=document.createElement('a');heading.className='forum-list-title';heading.href='#post='+encodeURIComponent(post.id);heading.textContent=post.title;heading.title=post.title;body.append(heading);
- const info=document.createElement('div');info.className='forum-list-info';
- const when=document.createElement('span');when.className='forum-list-date';when.textContent=post.category+' · '+date(post.created_at);
+ const heading=document.createElement('a');heading.className='forum-list-title';heading.href='#post='+encodeURIComponent(post.id);heading.textContent=post.title;heading.title=post.title;
+ const when=document.createElement('time');when.className='forum-list-date';when.dateTime=post.created_at;when.textContent=date(post.created_at);when.title=post.category+' · '+date(post.created_at);
  const author=document.createElement('span');author.className='forum-list-author';author.textContent='会员';
- info.append(author,when);body.append(info);
- if(post.author_id)publicProfile(post.author_id).then(p=>{if(!p)return;author.replaceChildren();if(p.avatar_url){const img=document.createElement('img');img.src=p.avatar_url;img.alt='';img.loading='lazy';author.append(img)}const name=document.createElement('span');name.textContent=p.display_name||'会员';author.append(name)});
+ if(post.author_id)publicProfile(post.author_id).then(p=>{if(!p||!card.isConnected)return;author.replaceChildren();if(p.avatar_url){const img=document.createElement('img');img.src=p.avatar_url;img.alt='';img.loading='lazy';author.append(img)}const name=document.createElement('span');name.textContent=p.display_name||'会员';author.append(name)});
  const metrics=document.createElement('div');metrics.className='forum-list-metrics';
  const counts=forumListStats.get(post.id)||{view_count:0,comment_count:0,like_count:0};
  for(const [icon,label,value] of [['eye','浏览',counts.view_count],['comment','评论',counts.comment_count],['like','点赞',counts.like_count]]){const item=document.createElement('span');item.className='forum-list-stat forum-list-'+icon;item.textContent=label+' '+value;metrics.append(item)}
- card.append(body,metrics);return card;
+ card.append(heading,when,author,metrics);return card;
 };
 async function refreshUser(){if(!db){say('论坛服务未能加载，请稍后重试。');return}const {data}=await db.auth.getUser();user=data?.user||null;admin=false;if(user){const {data:r}=await db.rpc('is_site_admin');admin=r===true}$('login-btn').textContent=user?'我的账户':'注册 / 登录';$('review-link').classList.toggle('hide',!admin);$('moderation-link').classList.toggle('hide',!admin);$('comment-form').classList.toggle('hide',!user?.email_confirmed_at);if(user){const {data:p}=await db.from('forum_profiles').select('display_name').eq('user_id',user.id).maybeSingle();if(p)$('nickname').value=p.display_name}}
 async function listPosts(){const cat=$('category-filter').value;let q=db.from('forum_posts').select('id,author_id,title,body,category,created_at,status').eq('status','published').order('created_at',{ascending:false}).limit(50);if(cat)q=q.eq('category',cat);const {data,error}=await q;const root=$('post-list');root.replaceChildren();if(error){root.textContent='论坛尚未启用或读取失败：'+error.message;return}if(!data?.length){root.textContent='暂无公开文章';return}const {data:stats, error:statsError}=await db.rpc('forum_post_list_stats');forumListStats.clear();if(!statsError)for(const item of stats||[])forumListStats.set(item.post_id,item);data.forEach(p=>root.append(link(p)))}
