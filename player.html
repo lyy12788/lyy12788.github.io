@@ -1,1 +1,39 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>福音园地 · 真实之声</title><meta http-equiv="refresh" content="0;url=/gospel.html"></head><body><p>旧持续播放模式已停用。<a href="/gospel.html">前往福音园地使用新版播放器</a></p><script>const allowed=new Set(['/','/index.html','/gospel.html','/forum.html','/aid.html','/suggestions.html','/rules.html','/privacy.html','/content-complaints.html']);try{const p=new URLSearchParams(location.search).get('page');const u=new URL(p||'/gospel.html',location.origin);location.replace(u.origin===location.origin&&allowed.has(u.pathname)?u.pathname+u.search+u.hash:'/gospel.html')}catch{location.replace('/gospel.html')}</script></body></html>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>真实之声 · 全站播放器</title>
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:#081321;color:#edf3f9;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif}
+#page{display:block;width:100%;height:100dvh;border:0;background:#081321}
+body.has-audio #page{height:calc(100dvh - 68px)}
+#dock{display:none;position:fixed;bottom:0;left:0;right:0;min-height:68px;align-items:center;gap:10px;padding:8px 14px;background:#101f30;border-top:1px solid #786535;box-shadow:0 -4px 22px #0008;z-index:20}
+body.has-audio #dock{display:flex}
+button{border:1px solid #826d36;background:#24364b;color:#f4d17c;border-radius:9px;padding:7px 11px;cursor:pointer}
+#toggle{font-size:25px;min-width:48px}#title{font-size:13px;font-weight:700;color:#e7ce90;max-width:8em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#seek{flex:1;min-width:24px}#volume{width:82px;min-width:40px}input[type=range]{accent-color:#c8a85a}#time{font-size:11px;white-space:nowrap}#close{font-size:20px;color:white;border-color:#997c72;background:#342d35}
+#drive-box{display:none;position:fixed;right:8px;bottom:76px;width:min(420px,calc(100vw - 16px));padding:8px;background:#101f30;border:1px solid #786535;border-radius:10px;z-index:21}#drive-box iframe{width:100%;height:200px;border:0}
+@media(max-width:600px){#dock{gap:5px;padding:7px 8px}#title{max-width:5em}#volume{width:46px}#time{font-size:10px}#toggle{min-width:40px;padding:5px}}
+</style></head><body>
+<iframe id="page" title="网站内容" allow="autoplay"></iframe>
+<div id="dock" role="region" aria-label="全站音频播放器"><button id="toggle" aria-label="播放或暂停">▶</button><span id="title">讲道录音</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放进度"><span id="time">0:00 / 0:00</span><label for="volume">🔊</label><input id="volume" type="range" min="0" max="1" step=".05" value="1" aria-label="音量"><button id="close" title="关闭播放器" aria-label="关闭播放器">✕</button></div>
+<div id="drive-box"><button id="drive-close" style="float:right">关闭</button><div id="drive-title">Google Drive 备用录音</div><iframe id="drive" title="Google Drive 音频" allow="autoplay"></iframe></div>
+<script>
+(()=>{'use strict';const frame=document.getElementById('page'),dock=document.getElementById('dock'),audio=new Audio(),toggle=document.getElementById('toggle'),seek=document.getElementById('seek'),time=document.getElementById('time'),volume=document.getElementById('volume'),title=document.getElementById('title'),driveBox=document.getElementById('drive-box'),drive=document.getElementById('drive');audio.preload='metadata';let current='',driveActive=false;
+const allowed=/^\/(?:|index\.html|forum\.html|gospel\.html|aid\.html|suggestions\.html|rules\.html|privacy\.html|content-complaints\.html|post1\.html|audio-upload\.html)$/;
+const safe=raw=>{try{const u=new URL(raw,location.origin);return u.origin===location.origin&&allowed.test(u.pathname)?u:null}catch{return null}};
+const fmt=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00';
+const requested=()=>safe(new URLSearchParams(location.search).get('page')||'/gospel.html')||new URL('/gospel.html',location.origin);
+function navigate(u,push=true){if(!u)return;const dest=u.pathname+u.search+u.hash;frame.src=dest;if(push)history.pushState({},'', '/player.html?page='+encodeURIComponent(dest))}
+function wire(){let doc;try{doc=frame.contentDocument;if(!doc)return}catch{return}const u=safe(frame.contentWindow.location.href);if(u){history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));document.title=(doc.title||'真实之声')+' · 音频播放'}
+doc.addEventListener('click',e=>{const a=e.target.closest?.('a[href]');if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;const u=safe(a.href);if(!u)return;const now=frame.contentWindow.location;if(u.pathname===now.pathname&&u.search===now.search)return;e.preventDefault();navigate(u)},true);
+}
+frame.addEventListener('load',wire);window.addEventListener('popstate',()=>navigate(requested(),false));
+window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
+if(e.data.type==='lyy-audio-play'){try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='点击 ▶ 开始播放'})}catch{return}}
+if(e.data.type==='lyy-drive-play'){const id=String(e.data.id||'');if(!/^[A-Za-z0-9_-]{15,100}$/.test(id))return;audio.pause();current='';audio.removeAttribute('src');audio.load();driveActive=true;drive.src='https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview';driveBox.style.display='block';document.getElementById('drive-title').textContent=String(e.data.title||'讲道录音');title.textContent=String(e.data.title||'讲道录音');document.body.classList.add('has-audio');toggle.textContent='■';seek.disabled=true;volume.disabled=true;time.textContent='Google Drive 备用播放'}}
+);
+function stopDrive(){if(!driveActive)return;driveActive=false;drive.src='about:blank';driveBox.style.display='none';seek.disabled=false;volume.disabled=false;toggle.textContent='▶'}
+function close(){stopDrive();audio.pause();audio.removeAttribute('src');audio.load();current='';document.body.classList.remove('has-audio');seek.value=0;time.textContent='0:00 / 0:00'}
+document.getElementById('drive-close').onclick=stopDrive;document.getElementById('close').onclick=close;
+toggle.onclick=()=>{if(driveActive){stopDrive();document.body.classList.remove('has-audio');return}if(!current)return;audio.paused?audio.play().catch(()=>time.textContent='播放失败'):audio.pause()};
+audio.onplay=()=>toggle.textContent='Ⅱ';audio.onpause=()=>{if(!driveActive)toggle.textContent='▶'};audio.onended=()=>toggle.textContent='▶';audio.onerror=()=>time.textContent='音频加载失败';
+const update=()=>{seek.value=Number.isFinite(audio.duration)&&audio.duration>0?Math.round(audio.currentTime/audio.duration*1000):0;time.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)};audio.ontimeupdate=update;audio.onloadedmetadata=update;seek.oninput=()=>{if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=audio.duration*Number(seek.value)/1000};volume.oninput=()=>audio.volume=Number(volume.value);
+navigate(requested(),false);
+})();
+</script></body></html>
