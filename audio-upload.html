@@ -18,4 +18,4 @@ const r=await db.from('gospel_audio').insert({title,description:$('description')
 message('上传完成。文件路径：'+signed.key);$('file').value='';$('title').value='';$('description').value='';
 }catch(e){message('未完成：'+e.message)}finally{b.disabled=false}};
 refresh().catch(e=>message('初始化失败：'+e.message));})();
-</script><script src="/persistent-player-entry.js" defer></script></body></html>
+</script><script src="/persistent-player-entry.js" defer></script><script src="/site-i18n.js?v=1" defer></script></body></html>
