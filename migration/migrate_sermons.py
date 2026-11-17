@@ -1,46 +1,90 @@
 #!/usr/bin/env python3
-"""Copy 51 Google Drive sermon audio files to Cloudflare R2 using local rclone credentials.
-Usage: python3 migration/migrate_sermons.py DRIVE_REMOTE R2_REMOTE [--dry-run]
-DRIVE_REMOTE must have root_folder_id=1Ywedwtt6yVRyDAnFA4jUbRIFkOXfBJ0J.
-R2_REMOTE must be configured as an S3-compatible Cloudflare R2 remote.
-Never commit rclone.conf, access keys, or downloaded audio files.
+"""Migrate 51 Google Drive M4A files to Cloudflare R2 and verify every size.
+Run: python3 migration/migrate_sermons.py sermon-drive sermon-r2
+Only copies; does not delete Drive files or alter website statistics.
 """
-import argparse, json, pathlib, subprocess, sys
-ROOT=pathlib.Path(__file__).resolve().parent
-MANIFEST=ROOT/'gospel-audio-r2-manifest.json'
+import argparse
+import json
+import pathlib
+import subprocess
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parent
+MANIFEST = ROOT / "gospel-audio-r2-manifest.json"
+DRIVE_FOLDER_ID = "1Ywedwtt6yVRyDAnFA4jUbRIFkOXfBJ0J"
+
 def run(*args):
-    return subprocess.run(['rclone',*args],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    return subprocess.run(["rclone", *args], text=True, capture_output=True)
+
+def file_info(remote_path, *options):
+    p = run("lsjson", remote_path, "--files-only", *options)
+    if p.returncode:
+        raise RuntimeError(p.stderr.strip()[-800:])
+    return json.loads(p.stdout or "[]")
+
 def main():
-    ap=argparse.ArgumentParser()
-    ap.add_argument('drive_remote',help='rclone Google Drive remote rooted at the sermon folder')
-    ap.add_argument('r2_remote',help='rclone Cloudflare R2 S3 remote')
-    ap.add_argument('--dry-run',action='store_true')
-    args=ap.parse_args()
-    data=json.loads(MANIFEST.read_text(encoding='utf-8'))
-    items=data['items']
-    if len(items)!=51:sys.exit('Expected exactly 51 entries')
-    errors=[]
-    for i,item in enumerate(items,1):
-        source_name=item['title']+'.m4a'
-        source=f"{args.drive_remote.rstrip(':')}:{source_name}"
-        dest=f"{args.r2_remote.rstrip(':')}:lyy12788media/{item['target_key']}"
-        print(f'[{i}/{len(items)}] {source_name}',flush=True)
-        check=run('lsjson',source,'--files-only')
-        if check.returncode or not json.loads(check.stdout or '[]'):
-            print('  SOURCE NOT FOUND; skipping',flush=True);errors.append(source_name);continue
-        if args.dry_run:print('  DRY RUN:',dest);continue
-        result=run('copyto',source,dest,'--retries','3','--low-level-retries','5','--progress')
-        if result.returncode:
-            print('  COPY FAILED:',result.stderr[-500:],flush=True);errors.append(source_name);continue
-        verify=run('lsjson',dest,'--files-only')
+    ap = argparse.ArgumentParser()
+    ap.add_argument("drive_remote")
+    ap.add_argument("r2_remote")
+    ap.add_argument("--dry-run", action="store_true")
+    args = ap.parse_args()
+    drive = args.drive_remote.rstrip(":") + ":"
+    r2 = args.r2_remote.rstrip(":") + ":"
+    items = json.loads(MANIFEST.read_text(encoding="utf-8"))["items"]
+    if len(items) != 51:
+        sys.exit("ERROR: manifest must contain exactly 51 items")
+    root_opt = ("--drive-root-folder-id", DRIVE_FOLDER_ID)
+    print("Checking source folder and matching Google Drive IDs...", flush=True)
+    try:
+        sources = file_info(drive, *root_opt)
+    except Exception as e:
+        sys.exit(f"Cannot list Google Drive folder: {e}")
+    by_id = {f.get("ID"): f for f in sources}
+    errors = []
+    matched = []
+    for item in items:
+        source = by_id.get(item["drive_id"])
+        if not source or int(source.get("Size", -1)) != int(item["source_size_bytes"]):
+            errors.append(f"Source ID/size mismatch: {item['index']} {item['title']}")
+        else:
+            matched.append((item, source))
+    if errors:
+        print("\n".join(errors))
+        sys.exit("Aborted: source verification failed; nothing uploaded.")
+    print("All 51 source IDs and sizes verified.", flush=True)
+    for i, (item, source) in enumerate(matched, 1):
+        src = drive + source["Name"]
+        dst = r2 + "lyy12788media/" + item["target_key"]
+        expected = int(item["source_size_bytes"])
+        print(f"[{i}/51] {source['Name']} -> {item['target_key']}", flush=True)
+        if args.dry_run:
+            continue
         try:
-            files=json.loads(verify.stdout)
-            ok=verify.returncode==0 and len(files)==1 and int(files[0]['Size'])==int(item['source_size_bytes'])
-        except Exception:ok=False
-        if not ok:
-            print('  SIZE VERIFICATION FAILED',flush=True);errors.append(source_name)
-        else:print('  VERIFIED:',dest,flush=True)
-    print('Completed. Errors:',len(errors),flush=True)
-    for name in errors:print(' -',name)
-    if errors:sys.exit(1)
-if __name__=='__main__':main()
+            existing = file_info(dst)
+            if len(existing) == 1 and int(existing[0]["Size"]) == expected:
+                print(f"  ALREADY VERIFIED: {expected} bytes", flush=True)
+                continue
+        except Exception:
+            pass
+        p = run("copyto", src, dst, *root_opt, "--s3-no-check-bucket",
+                "--retries", "3", "--low-level-retries", "5")
+        if p.returncode:
+            errors.append(f"Upload failed: {item['index']} {p.stderr[-350:]}")
+            print("  UPLOAD FAILED", flush=True)
+            continue
+        try:
+            actual = file_info(dst)
+            if len(actual) != 1 or int(actual[0]["Size"]) != expected:
+                raise ValueError("R2 size mismatch")
+            print(f"  VERIFIED: {expected} bytes", flush=True)
+        except Exception as e:
+            errors.append(f"Verification failed: {item['index']} {e}")
+            print("  VERIFICATION FAILED", flush=True)
+    print(f"Finished: {51-len(errors)}/51 verified; {len(errors)} errors", flush=True)
+    for err in errors:
+        print("ERROR:", err, flush=True)
+    if errors:
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
