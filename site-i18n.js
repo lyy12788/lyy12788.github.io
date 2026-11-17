@@ -36,6 +36,11 @@ const values=translations.get(normalize(source));if(!values)return;
 const target=idx<0?source:values[idx];
 if(visible!==normalize(target))el.textContent=target;
 });
+// Translate generated interface counters without altering post titles or user content.
+if(idx>=0){const units={en:{'播放':'plays','点赞':'likes','评论':'comments','条最新举报':'recent reports','积分':'points'},ko:{'播放':'재생','点赞':'좋아요','评论':'댓글','条最新举报':'최근 신고','积分':'포인트'},ja:{'播放':'再生','点赞':'いいね','评论':'コメント','条最新举报':'最近の通報','积分':'ポイント'},'zh-TW':{'播放':'播放','点赞':'按讚','评论':'評論','条最新举报':'筆最新檢舉','积分':'積分'}}[lang]||{};
+const counters=document.querySelectorAll('.sermon-metrics,.sermon-row [class*="metric"],#admin-report-status,#member-score,#member-level-next');
+counters.forEach(root=>{const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;while((node=w.nextNode())){const raw=node.nodeValue;if(!/[\u4e00-\u9fff]/.test(raw))continue;if(root.classList.contains('sermon-metrics')||root.closest('.sermon-row'))node.nodeValue=raw.replace(/(播放|点赞|评论)/g,k=>units[k]||k);else if(root.id==='admin-report-status')node.nodeValue=raw.replace(/条最新举报/g,units['条最新举报']||'条最新举报');else if(root.id==='member-score')node.nodeValue=raw.replace(/积分/g,units['积分']||'积分')}})
+}
 const sel=document.getElementById('lyy-language');if(sel)sel.value=lang;
 }
 function set(lang){if(!langs.includes(lang))return;try{localStorage.setItem(storage,lang)}catch{}apply(lang);if(window.parent!==window)window.parent.postMessage({type:'lyy-language',lang},location.origin);else{const f=document.getElementById('page');try{f?.contentWindow?.postMessage({type:'lyy-language',lang},location.origin)}catch{}}}
