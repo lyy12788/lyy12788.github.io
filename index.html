@@ -160,6 +160,19 @@ body{background:var(--bg)}
  #social-view .social-info strong{font-size:14px}
  #social-view .social-info small{font-size:11px}
 }
+
+/* Mobile social links: restore single-column rows with recognizable platform icons */
+@media(max-width:600px){
+ #social-view .social-grid{grid-template-columns:1fr;gap:11px}
+ #social-view .social-link{aspect-ratio:auto;min-height:82px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;text-align:left;padding:13px 15px;border-radius:13px}
+ #social-view .social-left{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;width:auto;min-width:0;gap:13px}
+ #social-view .social-avatar{width:46px;height:46px;flex:0 0 46px;border-radius:11px;font-size:26px}
+ #social-view .social-avatar img{border-radius:11px}
+ #social-view .social-info{width:auto;min-width:0}
+ #social-view .social-info strong{font-size:16px;line-height:1.4}
+ #social-view .social-info small{font-size:12px;line-height:1.4;margin-top:3px}
+ #social-view .social-link>span:last-child{position:static;font-size:18px;flex:none}
+}
 </style>
 </head>
 <body>
