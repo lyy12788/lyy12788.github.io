@@ -100,8 +100,18 @@ $('image-file').onchange=async()=>{
  if(!allowed[file.type]||file.size>5*1024*1024||file.size===0){$('upload-status').textContent='请选择不超过5MB的 JPG、PNG、WebP 或 GIF 图片';return}
  const btn=$('insert-image');btn.disabled=true;$('upload-status').textContent='图片正在上传，请稍候……';
  try{
+  // Strip EXIF/GPS metadata by re-encoding before upload.
+  if(file.type==='image/gif')throw new Error('为保护隐私，暂不支持 GIF 上传；请转换为 JPG、PNG 或 WebP');
+  const bitmap=await createImageBitmap(file);
+  if(bitmap.width*bitmap.height>24000000){bitmap.close();throw new Error('图片像素过大，请先缩小图片')}
+  const canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;
+  const ctx=canvas.getContext('2d');if(!ctx){bitmap.close();throw new Error('无法安全处理图片')}
+  ctx.drawImage(bitmap,0,0);bitmap.close();
+  const clean=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('图片处理失败')),file.type,file.type==='image/jpeg'?0.9:undefined));
+  canvas.width=canvas.height=0;
+  if(clean.size>5*1024*1024)throw new Error('清除隐私信息后超过5MB，请缩小图片');
   const path=user.id+'/'+crypto.randomUUID()+'.'+allowed[file.type];
-  const {error}=await db.storage.from('forum-images').upload(path,file,{contentType:file.type,upsert:false});
+  const {error}=await db.storage.from('forum-images').upload(path,clean,{contentType:file.type,upsert:false});
   if(error)throw error;
   const {data}=db.storage.from('forum-images').getPublicUrl(path);
   insertAtCursor('\n!['+($('image-sensitive').checked?'敏感图片':'文章图片')+']('+data.publicUrl+')\n');
