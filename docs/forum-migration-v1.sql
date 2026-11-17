@@ -95,7 +95,7 @@ create trigger forum_posts_guard before insert or update on public.forum_posts
 for each row execute function public.forum_post_before_write();
 create policy "forum profiles public" on public.forum_profiles for select to anon,authenticated using (true);
 create policy "forum profiles self create" on public.forum_profiles for insert to authenticated with check (user_id=auth.uid() and public.forum_is_active_member(auth.uid()) and suspended=false);
-create policy "forum profiles self edit" on public.forum_profiles for update to authenticated using (user_id=auth.uid() and public.forum_is_active_member(auth.uid())) with check (user_id=auth.uid());
+create policy "forum profiles self edit" on public.forum_profiles for update to authenticated using ((user_id=auth.uid() and public.forum_is_active_member(auth.uid())) or public.is_site_admin()) with check ((user_id=auth.uid()) or public.is_site_admin());
 -- Guard suspension against self-update, including crafted API requests.
 create or replace function public.forum_profile_guard()
 returns trigger language plpgsql security definer set search_path='' as $$
