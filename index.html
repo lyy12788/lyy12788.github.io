@@ -85,6 +85,37 @@ body{background:var(--bg)}
 .hero-feedback-link strong{font-size:15px}
 .hero-feedback-link small{font-size:11px;color:#d4d9df}
 @media(max-width:760px){.hero-feedback-row{margin-top:9px}.hero-feedback-link{padding:8px 11px;gap:7px}.hero-feedback-link strong{font-size:14px}.hero-feedback-link small{font-size:10px}}
+
+/* Mobile homepage density: shorter hero and two compact side-by-side entrances */
+@media(max-width:760px){
+ .community-hero .hero-inner{padding:18px 0 20px}
+ .community-hero h1{font-size:clamp(26px,7.2vw,34px);line-height:1.18;margin:7px 0 9px}
+ .community-hero p{font-size:13px;line-height:1.5}
+ .community-hero .eyebrow{font-size:10px;letter-spacing:.1em}
+ .community-hero .hero-cta{margin-top:13px;gap:8px}
+ .community-hero .btn{padding:8px 11px;font-size:12px}
+ .community-hero .hero-caption{margin-top:9px;font-size:10px}
+ .hero-feedback-row{margin-top:6px}
+ .hero-feedback-link{padding:6px 9px}
+ .hero-feedback-link>span:first-child{font-size:17px}
+ .hero-feedback-link strong{font-size:12px}
+ .hero-feedback-link small{font-size:9px}
+ .main{padding-top:17px}
+ .dual-entry{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .dual-panel{min-width:0;padding:12px 11px;border-radius:12px}
+ .dual-panel .eyebrow{font-size:9px;letter-spacing:.07em}
+ .dual-symbol{font-size:19px;margin-top:3px}
+ .dual-panel h2{font-size:18px;line-height:1.25;margin:4px 0 6px}
+ .dual-panel p{font-size:11px;line-height:1.45;margin:0 0 10px;overflow-wrap:anywhere}
+ .dual-link{font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+ .section{margin-bottom:22px}
+}
+@media(max-width:360px){
+ .dual-panel{padding:10px 9px}
+ .dual-panel h2{font-size:17px}
+ .dual-panel p{font-size:10.5px}
+ .dual-link{font-size:10px}
+}
 </style>
 </head>
 <body>
