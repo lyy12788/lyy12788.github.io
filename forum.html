@@ -8,6 +8,12 @@
 .forum-preview-info strong{font-size:15px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .forum-preview-info small{color:#b8c0cb;overflow-wrap:anywhere}
 @media(max-width:480px){.forum-preview-card img{width:88px;height:72px}}
+</style><style>
+.forum-audio-card{margin:18px 0;padding:18px;border:2px solid #e9bf3e;border-radius:16px;background:#292a29;display:flex;flex-direction:column;gap:12px}
+.forum-audio-heading{font-size:19px;font-weight:750;color:#ffe18a}
+.forum-audio-play{display:block;width:100%;min-height:62px;border:0;border-radius:12px;background:#ffca28;color:#171717;font-size:20px;font-weight:800;box-shadow:0 4px 15px #0006;cursor:pointer}
+.forum-audio-play:focus-visible{outline:3px solid white;outline-offset:3px}
+.forum-audio-source{font-size:14px;text-decoration:underline;color:#ffe18a;overflow-wrap:anywhere}
 </style></head><body><header><a href="/">← 网站首页</a><nav><a href="/forum.html">论坛首页</a><a href="#mine" id="mine-link">我的文章</a><a href="#account" id="account-link">我的账户</a><a href="#review" id="review-link" class="hide">审核管理</a><a href="#moderation" id="moderation-link" class="hide">举报与禁言</a><a href="#appeal" id="appeal-link">账号申诉</a></nav><button id="login-btn">注册 / 登录</button></header>
 <main><h1><a href="/forum.html" class="forum-heading-link">公共论坛 · 自由交流</a></h1><p class="muted">会员发表观点，公开交流讨论。新会员前三篇文章审核通过后，后续文章自动公开。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
@@ -47,6 +53,17 @@ function renderArticle(body){
  for(const a of Array.from(target.querySelectorAll('a'))){
   let u;try{u=new URL(a.href)}catch{continue}
   if(!['http:','https:'].includes(u.protocol))continue;
+  const isAudio=/\.(mp3|m4a|aac|ogg|oga|wav|flac|opus)(?:$|[?#])/i.test(u.href);
+  if(isAudio){
+   const wrap=document.createElement('div');wrap.className='forum-audio-card';
+   const heading=document.createElement('div');heading.className='forum-audio-heading';heading.textContent='🎧 音频播放';
+   const btn=document.createElement('button');btn.type='button';btn.className='forum-audio-play';btn.textContent='▶ 点击播放音频';btn.setAttribute('aria-label','播放音频');
+   const audio=document.createElement('audio');audio.controls=true;audio.preload='none';audio.src=u.href;audio.style.display='none';audio.style.width='100%';
+   btn.onclick=async()=>{audio.style.display='block';try{if(audio.paused){await audio.play();btn.textContent='⏸ 暂停播放'}else{audio.pause();btn.textContent='▶ 继续播放'}}catch{btn.textContent='无法直接播放，请点击下方原音频链接'}};
+   audio.onplay=()=>btn.textContent='⏸ 暂停播放';audio.onpause=()=>btn.textContent='▶ 继续播放';
+   const source=document.createElement('a');source.href=u.href;source.target='_blank';source.rel='noopener noreferrer nofollow';source.textContent='打开原音频链接';source.className='forum-audio-source';
+   wrap.append(heading,btn,audio,source);a.replaceWith(wrap);continue;
+  }
   const host=u.hostname.toLowerCase().replace(/^www\./,'');
   let platform='',embed='',thumb='',tweetId='';
   if(['youtube.com','m.youtube.com','youtu.be','youtube-nocookie.com'].includes(host)){
