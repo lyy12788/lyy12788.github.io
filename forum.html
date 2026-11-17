@@ -29,22 +29,22 @@ function renderArticle(body){
  for(const a of Array.from(target.querySelectorAll('a'))){
   let u;try{u=new URL(a.href)}catch{continue}
   if(!['http:','https:'].includes(u.protocol))continue;
-  const host=u.hostname.toLowerCase().replace(/^www\\./,'');
+  const host=u.hostname.toLowerCase().replace(/^www\./,'');
   let platform='',embed='',thumb='',tweetId='';
   if(['youtube.com','m.youtube.com','youtu.be','youtube-nocookie.com'].includes(host)){
    let id=host==='youtu.be'?u.pathname.split('/')[1]:u.searchParams.get('v');
-   if(!id&&/^\\/(shorts|live|embed)\\//.test(u.pathname))id=u.pathname.split('/')[2];
+   if(!id&&/^\/(shorts|live|embed)\//.test(u.pathname))id=u.pathname.split('/')[2];
    if(id&&/^[A-Za-z0-9_-]{11}$/.test(id)){platform='YouTube';embed='https://www.youtube-nocookie.com/embed/'+id;thumb='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'}
   }else if(host==='vimeo.com'||host==='player.vimeo.com'){
-   const id=u.pathname.match(/\\/(?:video\\/)?(\\d+)/)?.[1];if(id){platform='Vimeo';embed='https://player.vimeo.com/video/'+id}
+   const id=u.pathname.match(/\/(?:video\/)?(\d+)/)?.[1];if(id){platform='Vimeo';embed='https://player.vimeo.com/video/'+id}
   }else if(host==='bilibili.com'||host==='m.bilibili.com'){
-   const bv=u.pathname.match(/\\/(BV[A-Za-z0-9]{10})/i)?.[1];if(bv){platform='哔哩哔哩';embed='https://player.bilibili.com/player.html?bvid='+bv+'&page=1'}
+   const bv=u.pathname.match(/\/(BV[A-Za-z0-9]{10})/i)?.[1];if(bv){platform='哔哩哔哩';embed='https://player.bilibili.com/player.html?bvid='+bv+'&page=1'}
   }else if(host==='tiktok.com'||host==='m.tiktok.com'){
-   const id=u.pathname.match(/\\/video\\/(\\d+)/)?.[1];if(id){platform='TikTok';embed='https://www.tiktok.com/embed/v2/'+id}
+   const id=u.pathname.match(/\/video\/(\d+)/)?.[1];if(id){platform='TikTok';embed='https://www.tiktok.com/embed/v2/'+id}
   }else if(host==='facebook.com'||host==='m.facebook.com'||host==='fb.watch'){
    platform='Facebook';embed='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(u.href)+'&show_text=false';
   }else if(['x.com','twitter.com','mobile.twitter.com'].includes(host)){
-   const m=u.pathname.match(/^\\/[A-Za-z0-9_]+\\/status\\/(\\d+)/);if(m){platform='X（Twitter）';tweetId=m[1]}
+   const m=u.pathname.match(/^\/[A-Za-z0-9_]+\/status\/(\d+)/);if(m){platform='X（Twitter）';tweetId=m[1]}
   }else if(['douyin.com','iesdouyin.com','v.douyin.com','b23.tv','vm.tiktok.com'].includes(host)){
    platform=host.includes('douyin')?'抖音':host.includes('b23')?'哔哩哔哩':'TikTok';
   }
