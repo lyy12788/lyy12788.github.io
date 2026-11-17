@@ -23,7 +23,7 @@ function navigate(u,push=true){if(!u)return;const dest=u.pathname+u.search+u.has
 function wire(){let doc;try{doc=frame.contentDocument;if(!doc)return}catch{return}const u=safe(frame.contentWindow.location.href);if(u){history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));document.title=(doc.title||'真实之声')+' · 音频播放'}
 doc.addEventListener('click',e=>{const a=e.target.closest?.('a[href]');if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;const u=safe(a.href);if(!u)return;const now=frame.contentWindow.location;if(u.pathname===now.pathname&&u.search===now.search)return;e.preventDefault();navigate(u)},true);
 }
-frame.addEventListener('load',wire);window.addEventListener('popstate',()=>navigate(requested(),false));
+frame.addEventListener('load',()=>{wire();try{const lang=localStorage.getItem('lyy-site-language')||'zh-CN';frame.contentWindow.postMessage({type:'lyy-language',lang},location.origin)}catch{}});window.addEventListener('popstate',()=>navigate(requested(),false));
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-site-navigate'){const u=safe(e.data.url);if(u)navigate(u,e.data.push!==false);return}
 if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
 if(e.data.type==='lyy-audio-play'){try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='点击 ▶ 开始播放'})}catch{return}}
@@ -37,4 +37,4 @@ audio.onplay=()=>toggle.textContent='Ⅱ';audio.onpause=()=>{if(!driveActive)tog
 const update=()=>{seek.value=Number.isFinite(audio.duration)&&audio.duration>0?Math.round(audio.currentTime/audio.duration*1000):0;time.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)};audio.ontimeupdate=update;audio.onloadedmetadata=update;seek.oninput=()=>{if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=audio.duration*Number(seek.value)/1000};volume.oninput=()=>audio.volume=Number(volume.value);
 navigate(requested(),false);
 })();
-</script><script src="/site-i18n.js?v=6" defer></script></body></html>
+</script><script src="/site-i18n.js?v=7" defer></script></body></html>
