@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>会员论坛 · 独立观点</title>
-<style>:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#14171d;color:#eee}*{box-sizing:border-box}body{margin:0}header,main{max-width:980px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;gap:16px;align-items:center}a{color:#e8c45b}h1{font-size:30px}button,.btn{background:#b8912c;color:#101015;border:0;padding:11px 16px;border-radius:9px;cursor:pointer;font-weight:650}button:disabled{opacity:.5}input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;background:#222833;color:#fff;border:1px solid #515867;border-radius:8px}textarea{min-height:170px;resize:vertical}.card{background:#20252e;border:1px solid #3b414c;padding:20px;border-radius:14px;margin:14px 0}.muted{color:#b8c0cb}.hide{display:none!important}.post{display:block;padding:14px 0;border-bottom:1px solid #454b55;text-decoration:none}.post strong{color:#f3e1ad;display:block;font-size:18px}.post small{color:#bdc3ce}.comment{padding:12px;border-bottom:1px solid #454b55;white-space:pre-wrap}nav{display:flex;gap:14px;flex-wrap:wrap}.status{min-height:22px;color:#f2d585}.tools{display:flex;gap:10px;flex-wrap:wrap}.body{white-space:normal;line-height:1.8;overflow-wrap:anywhere}.body img,.body video{display:block;max-width:100%;height:auto;border-radius:10px;margin:12px 0}.body a{overflow-wrap:anywhere}.body p{white-space:pre-wrap}.editor-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}.editor-tools button{background:#303744;color:#fff;border:1px solid #626b79}.editor-tools input[type=file]{display:none}label{display:block}small{font-size:13px}</style>
+<style>:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#14171d;color:#eee}*{box-sizing:border-box}body{margin:0}header,main{max-width:980px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;gap:16px;align-items:center}a{color:#e8c45b}h1{font-size:30px}button,.btn{background:#b8912c;color:#101015;border:0;padding:11px 16px;border-radius:9px;cursor:pointer;font-weight:650}button:disabled{opacity:.5}input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;background:#222833;color:#fff;border:1px solid #515867;border-radius:8px}textarea{min-height:170px;resize:vertical}.card{background:#20252e;border:1px solid #3b414c;padding:20px;border-radius:14px;margin:14px 0}.muted{color:#b8c0cb}.hide{display:none!important}.post{display:block;padding:14px 0;border-bottom:1px solid #454b55;text-decoration:none}.post strong{color:#f3e1ad;display:block;font-size:18px}.post small{color:#bdc3ce}.comment{padding:12px;border-bottom:1px solid #454b55;white-space:pre-wrap}nav{display:flex;gap:14px;flex-wrap:wrap}.status{min-height:22px;color:#f2d585}.tools{display:flex;gap:10px;flex-wrap:wrap}.body{white-space:normal;line-height:1.8;overflow-wrap:anywhere}.body img{display:block;max-width:100%;height:auto;border-radius:10px;margin:12px 0}.video-preview{position:relative;display:block;max-width:640px;aspect-ratio:16/9;margin:16px 0;border-radius:12px;overflow:hidden;background:#121821;color:white!important;text-decoration:none!important;border:1px solid #4d5765}.video-preview img{width:100%;height:100%;object-fit:cover;margin:0}.video-preview .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:25px;background:#b8912c;color:#101015;border-radius:999px;padding:10px 20px}.video-preview .video-caption{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,#000c);font-weight:650}.body a{overflow-wrap:anywhere}.body p{white-space:pre-wrap}.editor-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}.editor-tools button{background:#303744;color:#fff;border:1px solid #626b79}.editor-tools input[type=file]{display:none}label{display:block}small{font-size:13px}</style>
 </head><body><header><a href="/">← 网站首页</a><nav><a href="/forum.html">论坛首页</a><a href="#mine" id="mine-link">我的文章</a><a href="#review" id="review-link" class="hide">审核管理</a></nav><button id="login-btn">注册 / 登录</button></header>
 <main><h1>独立观点 · 会员论坛</h1><p class="muted">会员发表观点，公开交流讨论。新会员前三篇文章审核通过后，后续文章自动公开。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
 <section id="auth" class="card hide"><h2>会员登录 / 注册</h2><input id="email" type="email" autocomplete="email" placeholder="邮箱"><input id="password" type="password" autocomplete="current-password" placeholder="密码（至少6位）"><div class="tools"><button id="sign-in">登录</button><button id="sign-up">注册并发送验证邮件</button><button id="sign-out">退出登录</button></div><p class="muted">注册后请在邮箱中完成验证，再发表文章。你的邮箱不会显示在论坛。</p></section>
-<section id="compose" class="card hide"><h2>发表文章</h2><label>公开昵称<input id="nickname" maxlength="30" placeholder="2—30个字符"></label><label>分类<select id="post-category"><option>自由讨论</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option></select></label><label>标题<input id="post-title" maxlength="120" placeholder="5—120字"></label><label for="post-body">正文（支持链接与图片）</label><div class="editor-tools"><button type="button" id="insert-link">插入链接</button><button type="button" id="insert-image">添加图片</button><button type="button" id="insert-video">添加视频</button><input type="file" id="video-file" accept="video/mp4,video/webm,video/quicktime"><input type="file" id="image-file" accept="image/jpeg,image/png,image/webp,image/gif"><span class="muted">图片最大5MB；视频最大40MB（MP4、MOV、WebM）</span></div><textarea id="post-body" maxlength="20000" placeholder="20—20000字；请勿公开他人隐私"></textarea><p id="upload-status" class="status" role="status" aria-live="polite"></p><button id="publish">提交文章</button><p id="publish-status" class="status" role="status" aria-live="polite"></p><p class="muted">前三篇审核通过后，后续投稿自动公开。文章修改可能重新进入审核。</p></section>
+<section id="compose" class="card hide"><h2>发表文章</h2><label>公开昵称<input id="nickname" maxlength="30" placeholder="2—30个字符"></label><label>分类<select id="post-category"><option>自由讨论</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option></select></label><label>标题<input id="post-title" maxlength="120" placeholder="5—120字"></label><label for="post-body">正文（支持链接与图片）</label><div class="editor-tools"><button type="button" id="insert-link">插入链接</button><button type="button" id="insert-image">添加图片</button><button type="button" id="insert-video">插入站外视频</button><input type="file" id="image-file" accept="image/jpeg,image/png,image/webp,image/gif"><span class="muted">图片最大5MB；视频仅支持站外链接，不上传视频文件</span></div><textarea id="post-body" maxlength="20000" placeholder="20—20000字；请勿公开他人隐私"></textarea><p id="upload-status" class="status" role="status" aria-live="polite"></p><button id="publish">提交文章</button><p id="publish-status" class="status" role="status" aria-live="polite"></p><p class="muted">前三篇审核通过后，后续投稿自动公开。文章修改可能重新进入审核。</p></section>
 <section id="detail" class="card hide"><a href="/forum.html">← 返回文章列表</a><p class="muted" id="post-meta"></p><h2 id="detail-title"></h2><div class="body" id="detail-body"></div><div class="tools" id="post-actions"></div><h3>评论</h3><div id="comments"></div><div id="comment-form" class="hide"><textarea id="comment-body" maxlength="2000" placeholder="发表评论（最多2000字）"></textarea><button id="send-comment">发表评论</button></div></section>
 <section id="mine" class="card hide"><h2>我的文章</h2><div id="my-posts"></div></section>
 <section id="review" class="card hide"><h2>待审核文章</h2><div id="pending-posts"></div></section>
@@ -27,12 +27,30 @@ function renderArticle(body){
  for(const a of target.querySelectorAll('a')){try{const u=new URL(a.href);if(!['http:','https:'].includes(u.protocol))a.removeAttribute('href');else{a.target='_blank';a.rel='noopener noreferrer nofollow'}}catch{a.removeAttribute('href')}}
  for(const img of target.querySelectorAll('img')){try{const u=new URL(img.src);if(u.protocol!=='https:'||u.hostname!=='mkchupvmervxkskvjyhz.supabase.co'||!u.pathname.includes('/storage/v1/object/public/forum-images/'))img.remove()}catch{img.remove()}}
  for(const a of Array.from(target.querySelectorAll('a'))){
-  try{
-   const u=new URL(a.href);
-   if(u.protocol==='https:'&&u.hostname==='mkchupvmervxkskvjyhz.supabase.co'&&u.pathname.startsWith('/storage/v1/object/public/forum-videos/')){
-    const v=document.createElement('video');v.controls=true;v.preload='metadata';v.playsInline=true;v.src=u.href;v.setAttribute('aria-label','文章视频');a.replaceWith(v);
-   }
-  }catch{}
+  let u;try{u=new URL(a.href)}catch{continue}
+  const host=u.hostname.toLowerCase().replace(/^www\./,'');
+  let thumbnail='',platform='';
+  if(host==='youtu.be'||host==='youtube.com'||host==='m.youtube.com'){
+   let id=host==='youtu.be'?u.pathname.split('/')[1]:u.searchParams.get('v');
+   if(!id&&/^\/(shorts|live|embed)\//.test(u.pathname))id=u.pathname.split('/')[2];
+   if(id&&/^[A-Za-z0-9_-]{11}$/.test(id)){thumbnail='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';platform='YouTube'}
+  }else if(host==='bilibili.com'||host==='m.bilibili.com'||host==='b23.tv'){
+   platform='哔哩哔哩';
+  }else if(host==='vimeo.com'||host==='player.vimeo.com'){
+   platform='Vimeo';
+  }else if(host==='douyin.com'||host==='iesdouyin.com'||host==='v.douyin.com'){
+   platform='抖音';
+  }else if(host==='tiktok.com'||host==='vm.tiktok.com'){
+   platform='TikTok';
+  }else if(host==='facebook.com'||host==='fb.watch'){
+   platform='Facebook';
+  }
+  if(!platform)continue;
+  const card=document.createElement('a');card.href=u.href;card.target='_blank';card.rel='noopener noreferrer nofollow';card.className='video-preview';card.setAttribute('aria-label','前往'+platform+'观看视频');
+  if(thumbnail){const img=document.createElement('img');img.src=thumbnail;img.alt=platform+'视频缩略图';img.loading='lazy';card.append(img)}
+  const play=document.createElement('span');play.className='play';play.textContent='▶';
+  const caption=document.createElement('span');caption.className='video-caption';caption.textContent=platform+' · 点击前往原网站播放';
+  card.append(play,caption);a.replaceWith(card);
  }
 }
 function insertAtCursor(value){
@@ -42,21 +60,14 @@ function insertAtCursor(value){
 }
 $('insert-link').onclick=()=>{const url=prompt('请输入链接地址（https:// 开头）');if(url===null)return;try{const u=new URL(url.trim());if(!['https:','http:'].includes(u.protocol))throw Error('protocol');const label=prompt('链接显示文字','查看链接');if(label===null)return;insertAtCursor('['+(label.trim()||'查看链接').replace(/[\\\[\]]/g,'')+']('+u.href.replace(/[()]/g,encodeURIComponent)+')')}catch{$('upload-status').textContent='链接必须是有效的 http:// 或 https:// 地址'}};
 $('insert-image').onclick=()=>{if(!user?.email_confirmed_at){$('upload-status').textContent='请先登录并验证邮箱后上传图片';return}$('image-file').click()};
-$('insert-video').onclick=()=>{if(!user?.email_confirmed_at){$('upload-status').textContent='请先登录并验证邮箱后上传视频';return}$('video-file').click()};
-$('video-file').onchange=async()=>{
- const file=$('video-file').files?.[0];if(!file)return;
- const allowed={'video/mp4':'mp4','video/webm':'webm','video/quicktime':'mov'};
- if(!allowed[file.type]||file.size>40*1024*1024||file.size===0){$('upload-status').textContent='请选择不超过40MB的 MP4、MOV 或 WebM 视频';return}
- const btn=$('insert-video');btn.disabled=true;$('upload-status').textContent='视频正在上传，请保持页面打开……';
+$('insert-video').onclick=()=>{
+ const url=prompt('粘贴原视频网站的分享链接（YouTube、哔哩哔哩、抖音、TikTok 等）');
+ if(url===null)return;
  try{
-  const path=user.id+'/'+crypto.randomUUID()+'.'+allowed[file.type];
-  const {error}=await db.storage.from('forum-videos').upload(path,file,{contentType:file.type,upsert:false});
-  if(error)throw error;
-  const {data}=db.storage.from('forum-videos').getPublicUrl(path);
-  insertAtCursor('\n[视频]('+data.publicUrl+')\n');
-  $('upload-status').textContent='视频上传成功，已插入正文。提交文章后即可播放。';
- }catch(e){$('upload-status').textContent='视频上传失败：'+(e?.message||'未知错误')+'；请尝试更小的 MP4 视频'}
- finally{btn.disabled=false;$('video-file').value=''}
+  const u=new URL(url.trim());if(!['https:','http:'].includes(u.protocol))throw Error('invalid');
+  insertAtCursor('\n[观看视频]('+u.href.replace(/[()]/g,encodeURIComponent)+')\n');
+  $('upload-status').textContent='视频链接已插入正文；发表后将显示可点击的视频卡片。YouTube 支持真实缩略图，其他平台视链接支持情况显示播放入口。';
+ }catch{$('upload-status').textContent='请输入有效的 http:// 或 https:// 视频链接'}
 };
 $('image-file').onchange=async()=>{
  const file=$('image-file').files?.[0];if(!file)return;
