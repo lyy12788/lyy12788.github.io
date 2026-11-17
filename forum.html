@@ -232,7 +232,7 @@ $('deletion-confirm').onclick=async()=>{
  const btn=$('deletion-confirm');btn.disabled=true;$('deletion-feedback').textContent='正在验证邮箱并处理注销……';
  try{
  const {data:session}=await db.auth.getSession();if(!session?.session?.access_token)throw Error('登录已过期，请重新登录');
- const response=await fetch('https://mkchupvmervxkskvjyhz.supabase.co/functions/v1/forum-confirm-account-deletion',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+session.session.access_token},body:JSON.stringify({code})});
+ const response=await fetch('https://mkchupvmervxkskvjyhz.supabase.co/functions/v1/forum-confirm-account-deletion',{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z','Authorization':'Bearer '+session.session.access_token},body:JSON.stringify({code})});
  const result=await response.json();if(!response.ok||!result.ok)throw Error(result.error||'注销失败');
  $('deletion-dialog').close();await db.auth.signOut();alert('注销申请已确认。论坛操作权限立即停止，7天内可重新登录并撤销。截止：'+new Date(result.deadline).toLocaleString('zh-CN'));location.hash='#home';await refreshUser();await route();
  }catch(e){$('deletion-feedback').textContent='注销失败：'+e.message}
