@@ -23,6 +23,18 @@ const value=idx<0?key:values[idx];const next=source.replace(/^(\s*)[\s\S]*?(\s*)
 if(n.nodeValue!==next)n.nodeValue=next;
 }
 document.querySelectorAll('[aria-label],[title],[placeholder],[value]').forEach(e=>{if(excluded(e))return;for(const a of ['aria-label','title','placeholder','value']){if(!e.hasAttribute(a))continue;if(a==='value'&&!['button','submit','reset'].includes(e.type))continue;let obj=attrOriginal.get(e);if(!obj){obj={};attrOriginal.set(e,obj)}if(!(a in obj))obj[a]=e.getAttribute(a);const src=obj[a],values=translations.get(normalize(src));if(values)e.setAttribute(a,idx<0?src:values[idx])}});
+// Fallback: translate leaf UI elements directly, including card descriptions.
+document.querySelectorAll('h1,h2,h3,h4,p,small,strong,span,a,button,label,li,summary,div').forEach(el=>{
+if(excluded(el)||el.children.length||el.matches('[id*="name"],[class*="name"],[data-nickname],[data-username]'))return;
+if(el.closest('#community-feed-list,#latest-posts,#post-list,#member-list,#member-point-history'))return;
+let source=el.dataset.lyyI18nOriginal;
+const visible=normalize(el.textContent);
+if(!source){source=visible;if(translations.has(source))el.dataset.lyyI18nOriginal=source}
+if(!source)return;
+const values=translations.get(normalize(source));if(!values)return;
+const target=idx<0?source:values[idx];
+if(visible!==normalize(target))el.textContent=target;
+});
 const sel=document.getElementById('lyy-language');if(sel)sel.value=lang;
 }
 function set(lang){if(!langs.includes(lang))return;try{localStorage.setItem(storage,lang)}catch{}apply(lang);if(window.parent!==window)window.parent.postMessage({type:'lyy-language',lang},location.origin);else{const f=document.getElementById('page');try{f?.contentWindow?.postMessage({type:'lyy-language',lang},location.origin)}catch{}}}
