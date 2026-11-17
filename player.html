@@ -47,7 +47,7 @@ window.addEventListener('message',async e=>{
  if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data||e.data.type!=='lyy-audio-play')return;
  try{
  const u=new URL(e.data.src);if(!/^https?:$/.test(u.protocol)||!(u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='lyy12788.ink'||u.hostname.endsWith('.lyy12788.ink')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co')){status.textContent='仅允许本站媒体域名';return}
- if(current!==u.href){stopDrive();audio.src=u.href;current=u.href;title.textContent=String(e.data.title||decodeURIComponent(u.pathname.split('/').pop())||'音频').slice(0,160);await audio.play()}else if(audio.paused){await audio.play()}else{audio.pause()}
+ if(current!==u.href){stopDrive();audio.src=u.href;current=u.href;title.textContent=String(e.data.title||decodeURIComponent(u.pathname.split('/').pop())||'音频').slice(0,160);await audio.play()}else if(audio.paused){await audio.play()}
  }catch(err){status.textContent='播放失败，请检查音频链接'}
 });
 const dock=document.getElementById('drive-dock'),drive=document.getElementById('drive-audio');
@@ -58,7 +58,7 @@ audio.addEventListener('play',()=>{toggle.textContent='Ⅱ';status.textContent='
 audio.addEventListener('pause',()=>{if(!driveActive){toggle.textContent='▶';status.textContent='已暂停'}});
 audio.addEventListener('ended',()=>{toggle.textContent='▶';status.textContent='播放结束'});
 audio.addEventListener('error',()=>status.textContent='音频加载失败');
-audio.addEventListener('timeupdate',()=>{if(audio.duration&&Number.isFinite(audio.duration))seek.value=Math.round(audio.currentTime/audio.duration*1000);clock.textContent=fmt(audio.currentTime)});
+audio.addEventListener('loadedmetadata',()=>{clock.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)});audio.addEventListener('timeupdate',()=>{if(audio.duration&&Number.isFinite(audio.duration))seek.value=Math.round(audio.currentTime/audio.duration*1000);clock.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)});
 toggle.onclick=async()=>{if(driveActive){stopDrive();return}if(!audio.src){status.textContent='请先在网站内容中选择一段音频';return}try{audio.paused?await audio.play():audio.pause()}catch{status.textContent='播放失败'}};
 seek.oninput=()=>{if(driveActive)return;if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=audio.duration*Number(seek.value)/1000};
 volume.oninput=()=>{if(!driveActive)audio.volume=Number(volume.value)};
