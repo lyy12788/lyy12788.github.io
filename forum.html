@@ -110,7 +110,7 @@ $('image-file').onchange=async()=>{
   const clean=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('图片处理失败')),file.type,file.type==='image/jpeg'?0.9:undefined));
   canvas.width=canvas.height=0;
   if(clean.size>5*1024*1024)throw new Error('清除隐私信息后超过5MB，请缩小图片');
-  const path='uploads/'+crypto.randomUUID()+'.'+allowed[file.type];
+  const path=user.id+'/'+crypto.randomUUID()+'.'+allowed[file.type];
   const {error}=await db.storage.from('forum-images').upload(path,clean,{contentType:file.type,upsert:false});
   if(error)throw error;
   const {data}=db.storage.from('forum-images').getPublicUrl(path);
