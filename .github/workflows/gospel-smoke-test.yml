@@ -1,0 +1,52 @@
+name: Gospel isolated browser smoke test
+on:
+  workflow_dispatch:
+  push:
+    branches: [test-cn-local-assets-2026-11-17]
+    paths: [.github/workflows/gospel-smoke-test.yml, gospel.html, vendor/supabase-js-2.57.4.js]
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test-cn-local-assets-2026-11-17
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Start isolated local preview
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/gospel-http.log 2>&1 &
+          echo $! > /tmp/gospel-http.pid
+      - name: Verify page, script, and public audio list
+        run: |
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(e.message));
+            const res=await page.goto('http://127.0.0.1:8765/gospel.html',{waitUntil:'domcontentloaded',timeout:30000});
+            console.log('PAGE_HTTP_STATUS',res.status());
+            const js=await page.request.get('http://127.0.0.1:8765/vendor/supabase-js-2.57.4.js');
+            console.log('LOCAL_SUPABASE_JS_STATUS',js.status());
+            await page.waitForTimeout(7000);
+            console.log('SUPABASE_GLOBAL',await page.evaluate(()=>typeof window.supabase));
+            console.log('PAGE_ERRORS',JSON.stringify(errors));
+            console.log('BODY_TEXT_SAMPLE',JSON.stringify((await page.locator('body').innerText()).slice(0,1800)));
+            await page.screenshot({path:'gospel-preview.png',fullPage:true});
+            await browser.close();
+            if(res.status()!==200 || js.status()!==200 || errors.length)process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exitCode=1});
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gospel-preview-screenshot
+          path: gospel-preview.png
