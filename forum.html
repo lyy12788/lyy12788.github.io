@@ -5,7 +5,7 @@
 <main><h1>独立观点 · 会员论坛</h1><p class="muted">会员发表观点，公开交流讨论。新会员前三篇文章审核通过后，后续文章自动公开。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
 <section id="auth" class="card hide"><h2>会员登录 / 注册</h2><input id="email" type="email" autocomplete="email" placeholder="邮箱"><input id="password" type="password" autocomplete="current-password" placeholder="密码（至少6位）"><div class="tools"><button id="sign-in">登录</button><button id="sign-up">注册并发送验证邮件</button><button id="sign-out">退出登录</button></div><p class="muted">注册后请在邮箱中完成验证，再发表文章。你的邮箱不会显示在论坛。</p></section>
-<section id="compose" class="card hide"><h2>发表文章</h2><label>公开昵称<input id="nickname" maxlength="30" placeholder="2—30个字符"></label><label>分类<select id="post-category"><option>自由讨论</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option></select></label><label>标题<input id="post-title" maxlength="120" placeholder="5—120字"></label><label>正文<textarea id="post-body" maxlength="20000" placeholder="20—20000字；请勿公开他人隐私"></textarea></label><button id="publish">提交文章</button><p class="muted">前三篇审核通过后，后续投稿自动公开。文章修改可能重新进入审核。</p></section>
+<section id="compose" class="card hide"><h2>发表文章</h2><label>公开昵称<input id="nickname" maxlength="30" placeholder="2—30个字符"></label><label>分类<select id="post-category"><option>自由讨论</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option></select></label><label>标题<input id="post-title" maxlength="120" placeholder="5—120字"></label><label>正文<textarea id="post-body" maxlength="20000" placeholder="20—20000字；请勿公开他人隐私"></textarea></label><button id="publish">提交文章</button><p id="publish-status" class="status" role="status" aria-live="polite"></p><p class="muted">前三篇审核通过后，后续投稿自动公开。文章修改可能重新进入审核。</p></section>
 <section id="detail" class="card hide"><a href="/forum.html">← 返回文章列表</a><p class="muted" id="post-meta"></p><h2 id="detail-title"></h2><div class="body" id="detail-body"></div><div class="tools" id="post-actions"></div><h3>评论</h3><div id="comments"></div><div id="comment-form" class="hide"><textarea id="comment-body" maxlength="2000" placeholder="发表评论（最多2000字）"></textarea><button id="send-comment">发表评论</button></div></section>
 <section id="mine" class="card hide"><h2>我的文章</h2><div id="my-posts"></div></section>
 <section id="review" class="card hide"><h2>待审核文章</h2><div id="pending-posts"></div></section>
@@ -31,7 +31,29 @@ $('login-btn').onclick=()=>show('auth');$('new-btn').onclick=()=>{if(!user){show
 $('sign-in').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});say(error?error.message:'登录成功');if(!error){await refreshUser();route()}};
 $('sign-up').onclick=async()=>{const {error}=await db.auth.signUp({email:$('email').value.trim(),password:$('password').value,options:{emailRedirectTo:'https://lyy12788.com/forum.html'}});say(error?error.message:'请查收邮箱中的验证邮件')};
 $('sign-out').onclick=async()=>{await db.auth.signOut();await refreshUser();show('home')};
-$('publish').onclick=async()=>{if(!user?.email_confirmed_at){say('请先验证邮箱');return}const name=$('nickname').value.trim(),title=$('post-title').value.trim(),body=$('post-body').value.trim();if(name.length<2||name.length>30||title.length<5||title.length>120||body.length<20||body.length>20000){say('请检查昵称、标题及正文长度');return}const btn=$('publish');btn.disabled=true;try{const {error:e1}=await db.from('forum_profiles').upsert({user_id:user.id,display_name:name},{onConflict:'user_id'});if(e1)throw e1;const {error:e2}=await db.from('forum_posts').insert({author_id:user.id,category:$('post-category').value,title,body});if(e2)throw e2;say('投稿已提交，请到我的文章查看审核状态');$('post-title').value='';$('post-body').value='';location.hash='mine'}catch(e){say('投稿失败：'+e.message)}finally{btn.disabled=false}};
+$('publish').onclick=async()=>{
+ const feedback=t=>{$('publish-status').textContent=t;say(t)};
+ const name=$('nickname').value.trim(),title=$('post-title').value.trim(),body=$('post-body').value.trim();
+ if(!db)return feedback('论坛服务未连接，请刷新页面重试。');
+ if(!user)return feedback('请先注册或登录账户。');
+ if(!user.email_confirmed_at)return feedback('邮箱尚未验证。请打开注册邮件完成验证，再重新登录。');
+ if(name.length<2||name.length>30)return feedback('请填写2—30个字符的公开昵称。');
+ if(title.length<5||title.length>120)return feedback('文章标题需要5—120个字符。');
+ if(body.length<20||body.length>20000)return feedback('文章正文需要20—20000个字符。');
+ const btn=$('publish');btn.disabled=true;btn.textContent='正在提交……';feedback('正在保存会员资料并提交文章，请稍候。');
+ try{
+  const {data:existing,error:readError}=await db.from('forum_profiles').select('user_id,display_name').eq('user_id',user.id).maybeSingle();
+  if(readError)throw readError;
+  const profileResult=existing?await db.from('forum_profiles').update({display_name:name}).eq('user_id',user.id):await db.from('forum_profiles').insert({user_id:user.id,display_name:name});
+  if(profileResult.error)throw profileResult.error;
+  const {error}=await db.from('forum_posts').insert({author_id:user.id,category:$('post-category').value,title,body});
+  if(error)throw error;
+  feedback('文章提交成功！请到「我的文章」查看审核状态。');
+  $('post-title').value='';$('post-body').value='';
+  await mine();
+ }catch(e){feedback('提交失败：'+(e?.message||'未知错误')+'。请保留填写内容并将此提示发给我。')}
+ finally{btn.disabled=false;btn.textContent='提交文章'}
+};
 $('send-comment').onclick=async()=>{if(!user?.email_confirmed_at||!opened)return say('请先登录并验证邮箱');const body=$('comment-body').value.trim();if(!body||body.length>2000)return say('评论长度应为1—2000字');const {error}=await db.from('forum_comments').insert({post_id:opened.id,author_id:user.id,body});if(error)say(error.message);else{$('comment-body').value='';listComments(opened.id)}};
 $('category-filter').onchange=listPosts;
 window.addEventListener('hashchange',route);
