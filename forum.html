@@ -14,6 +14,31 @@
 .forum-audio-play{display:block;width:100%;min-height:62px;border:0;border-radius:12px;background:#ffca28;color:#171717;font-size:20px;font-weight:800;box-shadow:0 4px 15px #0006;cursor:pointer}
 .forum-audio-play:focus-visible{outline:3px solid white;outline-offset:3px}
 .forum-audio-source{font-size:14px;text-decoration:underline;color:#ffe18a;overflow-wrap:anywhere}
+</style><style id="forum-compact-list-v1">
+/* Compact discussion list for desktop and mobile */
+#post-list{padding:7px 18px}
+#post-list .forum-list-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:76px;padding:11px 5px;border-bottom:1px solid #3b4653}
+#post-list .forum-list-card:last-child{border-bottom:0}
+#post-list .forum-list-main{min-width:0;display:flex;flex-direction:column;gap:7px}
+#post-list .forum-list-title{display:block;color:#f1dfb1;font-size:18px;font-weight:700;line-height:1.32;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#post-list .forum-list-title:hover{color:#ffe9a2;text-decoration:underline}
+#post-list .forum-list-info{display:flex;align-items:center;gap:12px;min-width:0;flex-wrap:wrap}
+#post-list .forum-list-author{display:inline-flex;align-items:center;gap:6px;color:#e3c16e;font-size:13px;font-weight:600;white-space:nowrap}
+#post-list .forum-list-author img{width:24px;height:24px;border-radius:50%;object-fit:cover}
+#post-list .forum-list-date{font-size:12px;color:#aeb9c7}
+#post-list .forum-list-metrics{display:flex;align-items:center;gap:15px;white-space:nowrap;color:#c2ccd8;font-size:13px}
+#post-list .forum-list-stat{font-variant-numeric:tabular-nums}
+#post-list .forum-list-eye:before{content:'◉';margin-right:5px;color:#91a9bd}
+#post-list .forum-list-comment:before{content:'◌';margin-right:5px;color:#9cb2c5}
+#post-list .forum-list-like:before{content:'♥';margin-right:5px;color:#d5ad65}
+@media(max-width:650px){
+ #post-list{padding:4px 11px}
+ #post-list .forum-list-card{grid-template-columns:minmax(0,1fr);gap:7px;padding:11px 3px;min-height:0}
+ #post-list .forum-list-title{font-size:16px}
+ #post-list .forum-list-info{gap:8px}
+ #post-list .forum-list-date{font-size:11px}
+ #post-list .forum-list-metrics{gap:15px;font-size:12px;justify-content:flex-start}
+}
 </style></head><body><header><a href="/">← 网站首页</a><nav><a href="/forum.html">论坛首页</a><a href="#mine" id="mine-link">我的文章</a><a href="#account" id="account-link">我的账户</a><a href="#review" id="review-link" class="hide">审核管理</a><a href="#moderation" id="moderation-link" class="hide">举报与禁言</a><a href="#appeal" id="appeal-link">账号申诉</a></nav><button id="login-btn">注册 / 登录</button></header>
 <main><h1><a href="/forum.html" class="forum-heading-link">公共论坛 · 自由交流</a></h1><p class="muted">会员发表观点，公开交流讨论。新会员前三篇文章审核通过后，后续文章自动公开。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
@@ -178,10 +203,24 @@ async function appendPreview(root,post,clickable=false){
  const data=await getPreview(url);if(!root.isConnected)return;
  root.append(previewCard(data,clickable))
 }
-const link=(post)=>{const a=el('a','');a.href='#post='+encodeURIComponent(post.id);a.className='post';a.append(el('strong',post.title));const meta=el('small',post.category+' · '+date(post.created_at)+(post.status==='published'?'':' · '+post.status));a.append(meta);appendPreview(a,post,false);if(post.author_id)publicProfile(post.author_id).then(p=>{if(p){const line=document.createElement('div');line.style.marginTop='6px';line.append(publicAuthor(p));a.append(line)}});return a};
+const forumListStats=new Map();
+const link=(post)=>{
+ const card=document.createElement('article');card.className='forum-list-card';
+ const body=document.createElement('div');body.className='forum-list-main';
+ const heading=document.createElement('a');heading.className='forum-list-title';heading.href='#post='+encodeURIComponent(post.id);heading.textContent=post.title;heading.title=post.title;body.append(heading);
+ const info=document.createElement('div');info.className='forum-list-info';
+ const when=document.createElement('span');when.className='forum-list-date';when.textContent=post.category+' · '+date(post.created_at);
+ const author=document.createElement('span');author.className='forum-list-author';author.textContent='会员';
+ info.append(author,when);body.append(info);
+ if(post.author_id)publicProfile(post.author_id).then(p=>{if(!p)return;author.replaceChildren();if(p.avatar_url){const img=document.createElement('img');img.src=p.avatar_url;img.alt='';img.loading='lazy';author.append(img)}const name=document.createElement('span');name.textContent=p.display_name||'会员';author.append(name)});
+ const metrics=document.createElement('div');metrics.className='forum-list-metrics';
+ const counts=forumListStats.get(post.id)||{view_count:0,comment_count:0,like_count:0};
+ for(const [icon,label,value] of [['eye','浏览',counts.view_count],['comment','评论',counts.comment_count],['like','点赞',counts.like_count]]){const item=document.createElement('span');item.className='forum-list-stat forum-list-'+icon;item.textContent=label+' '+value;metrics.append(item)}
+ card.append(body,metrics);return card;
+};
 async function refreshUser(){if(!db){say('论坛服务未能加载，请稍后重试。');return}const {data}=await db.auth.getUser();user=data?.user||null;admin=false;if(user){const {data:r}=await db.rpc('is_site_admin');admin=r===true}$('login-btn').textContent=user?'我的账户':'注册 / 登录';$('review-link').classList.toggle('hide',!admin);$('moderation-link').classList.toggle('hide',!admin);$('comment-form').classList.toggle('hide',!user?.email_confirmed_at);if(user){const {data:p}=await db.from('forum_profiles').select('display_name').eq('user_id',user.id).maybeSingle();if(p)$('nickname').value=p.display_name}}
-async function listPosts(){const cat=$('category-filter').value;let q=db.from('forum_posts').select('id,author_id,title,body,category,created_at,status').eq('status','published').order('created_at',{ascending:false}).limit(50);if(cat)q=q.eq('category',cat);const {data,error}=await q;const root=$('post-list');root.replaceChildren();if(error){root.textContent='论坛尚未启用或读取失败：'+error.message;return}if(!data?.length){root.textContent='暂无公开文章';return}data.forEach(p=>root.append(link(p)))}
-async function loadPost(id){const {data:p,error}=await db.from('forum_posts').select('id,author_id,title,body,category,status,created_at').eq('id',id).maybeSingle();if(error||!p){say('文章不存在、未公开或无法访问');show('home');return}opened=p;$('post-meta').textContent=p.category+' · '+date(p.created_at)+' · '+p.status;$('detail-title').textContent=p.title;renderArticle(p.body);appendPreview($('detail-body'),p,true);if(p.author_id){const author=await publicProfile(p.author_id);if(author){$('post-meta').append(' · ');$('post-meta').append(publicAuthor(author))}}const actions=$('post-actions');actions.replaceChildren();if(user&&(await db.rpc('forum_can_manage_post',{p_post_id:p.id})).data===true){const del=el('button','删除文章');del.onclick=async()=>{if(!confirm('确定删除这篇文章及全部评论？'))return;const {error}=await db.from('forum_posts').delete().eq('id',p.id);if(error)say(error.message);else location.hash='mine'};actions.append(del)}renderReportPost(p);show('detail');await Promise.all([listComments(id),refreshLikes(id)])}
+async function listPosts(){const cat=$('category-filter').value;let q=db.from('forum_posts').select('id,author_id,title,body,category,created_at,status').eq('status','published').order('created_at',{ascending:false}).limit(50);if(cat)q=q.eq('category',cat);const {data,error}=await q;const root=$('post-list');root.replaceChildren();if(error){root.textContent='论坛尚未启用或读取失败：'+error.message;return}if(!data?.length){root.textContent='暂无公开文章';return}const {data:stats, error:statsError}=await db.rpc('forum_post_list_stats');forumListStats.clear();if(!statsError)for(const item of stats||[])forumListStats.set(item.post_id,item);data.forEach(p=>root.append(link(p)))}
+async function loadPost(id){const {data:p,error}=await db.from('forum_posts').select('id,author_id,title,body,category,status,created_at').eq('id',id).maybeSingle();if(error||!p){say('文章不存在、未公开或无法访问');show('home');return}opened=p;try{const key='forum-view-'+p.id;const last=Number(sessionStorage.getItem(key)||0);if(Date.now()-last>1800000){sessionStorage.setItem(key,String(Date.now()));db.rpc('forum_record_post_view',{p_post_id:p.id}).then(()=>{}).catch(()=>{})}}catch{}$('post-meta').textContent=p.category+' · '+date(p.created_at)+' · '+p.status;$('detail-title').textContent=p.title;renderArticle(p.body);appendPreview($('detail-body'),p,true);if(p.author_id){const author=await publicProfile(p.author_id);if(author){$('post-meta').append(' · ');$('post-meta').append(publicAuthor(author))}}const actions=$('post-actions');actions.replaceChildren();if(user&&(await db.rpc('forum_can_manage_post',{p_post_id:p.id})).data===true){const del=el('button','删除文章');del.onclick=async()=>{if(!confirm('确定删除这篇文章及全部评论？'))return;const {error}=await db.from('forum_posts').delete().eq('id',p.id);if(error)say(error.message);else location.hash='mine'};actions.append(del)}renderReportPost(p);show('detail');await Promise.all([listComments(id),refreshLikes(id)])}
 async function refreshLikes(id){
  const count=$('like-count'),btn=$('like-btn');
  const {data,error}=await db.rpc('forum_like_summary',{p_post_id:id});
