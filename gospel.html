@@ -389,7 +389,7 @@ $('upload').onclick=async()=>{const f=$('file').files?.[0],title=$('title').valu
  }
 })();
 </script>
-<script src="/external-link-guard.js" defer></script><script src="/persistent-player-entry.js" defer></script><style id="lyy-sermon-bottom-style">
+<script src="/external-link-guard.js" defer></script><style id="lyy-sermon-bottom-style">
 #lyy-sermon-bottom{position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#101f30;border-top:1px solid #786535;box-shadow:0 -4px 22px #0008;color:#e8edf4;display:none;align-items:center;gap:10px;padding:8px 15px;min-height:62px;font:13px system-ui,sans-serif}
 body.lyy-sermon-playing{padding-bottom:76px}
 #lyy-sermon-bottom button{background:#24364b;color:#f4d17c;border:1px solid #826d36;border-radius:9px;cursor:pointer;padding:7px 12px}
@@ -397,10 +397,12 @@ body.lyy-sermon-playing{padding-bottom:76px}
 #lyy-sermon-bottom .lyy-title{max-width:8em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#e7ce90;font-weight:700}
 #lyy-sermon-bottom input[type=range]{accent-color:#c8a85a}
 #lyy-sermon-bottom .lyy-seek{flex:1;min-width:35px}
-#lyy-sermon-bottom .lyy-volume{width:75px}
-@media(max-width:600px){#lyy-sermon-bottom{gap:6px;padding:7px 9px}#lyy-sermon-bottom .lyy-volume{display:none}#lyy-sermon-bottom .lyy-title{max-width:6em}}
+#lyy-sermon-bottom .lyy-volume{width:88px;min-width:50px;cursor:pointer}
+#lyy-sermon-bottom .lyy-close{font-size:19px;font-weight:700;min-width:40px;min-height:38px;background:#342d35;border-color:#997c72;color:#fff}
+#lyy-sermon-bottom .lyy-close:hover,#lyy-sermon-bottom .lyy-close:focus-visible{background:#5b343b;outline:2px solid #c8a85a}
+@media(max-width:600px){#lyy-sermon-bottom{gap:6px;padding:7px 9px}#lyy-sermon-bottom .lyy-volume{display:block;width:54px;min-width:42px}#lyy-sermon-bottom .lyy-title{max-width:6em}}
 </style>
-<div id="lyy-sermon-bottom" role="region" aria-label="讲道录音播放器"><button class="lyy-toggle" aria-label="播放或暂停">▶</button><span class="lyy-title">讲道录音</span><input class="lyy-seek" type="range" min="0" max="1000" value="0" aria-label="播放进度"><span class="lyy-time">0:00 / 0:00</span><input class="lyy-volume" type="range" min="0" max="1" step=".05" value="1" aria-label="音量"><button class="lyy-close" aria-label="关闭播放器">×</button></div>
+<div id="lyy-sermon-bottom" role="region" aria-label="讲道录音播放器"><button class="lyy-toggle" aria-label="播放或暂停">▶</button><span class="lyy-title">讲道录音</span><input class="lyy-seek" type="range" min="0" max="1000" value="0" aria-label="播放进度"><span class="lyy-time">0:00 / 0:00</span><label for="lyy-sermon-volume" title="调节音量" aria-label="音量">🔊</label><input id="lyy-sermon-volume" class="lyy-volume" type="range" min="0" max="1" step=".05" value="1" aria-label="音量"><button class="lyy-close" title="关闭播放器" aria-label="关闭播放器">✕</button></div>
 <script>
 (()=>{if(window.parent!==window)return;const bar=document.getElementById('lyy-sermon-bottom'),audio=new Audio();audio.preload='metadata';const toggle=bar.querySelector('.lyy-toggle'),seek=bar.querySelector('.lyy-seek'),time=bar.querySelector('.lyy-time'),volume=bar.querySelector('.lyy-volume');const fmt=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00';
 window.lyyPlaySermonLocal=async(src,title)=>{try{if(audio.src!==src){audio.src=src;bar.querySelector('.lyy-title').textContent=title;bar.querySelector('.lyy-title').title=title}bar.style.display='flex';document.body.classList.add('lyy-sermon-playing');if(audio.paused)await audio.play();else audio.pause()}catch(e){time.textContent='播放失败，请检查媒体链接'}};
