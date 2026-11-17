@@ -1,7 +1,9 @@
-/* Automatic persistent playback shell; no floating mode button. */
-(()=>{'use strict';if(window.parent!==window||location.pathname==='/player.html')return;
+/* Keep the site inside one persistent audio shell, without a mode button. */
+(()=>{'use strict';
 const allowed=/^\/(?:|index\.html|forum\.html|gospel\.html|aid\.html|suggestions\.html|rules\.html|privacy\.html|content-complaints\.html|post1\.html|audio-upload\.html)$/;
-if(!allowed.test(location.pathname))return;
-const page=location.pathname+location.search+location.hash;
-location.replace('/player.html?page='+encodeURIComponent(page));
+const route=location.pathname+location.search+location.hash;
+if(!allowed.test(location.pathname)||location.pathname==='/player.html')return;
+if(window.parent===window){location.replace('/player.html?page='+encodeURIComponent(route));return;}
+const send=(url,push=true)=>window.parent.postMessage({type:'lyy-site-navigate',url,push},location.origin);
+document.addEventListener('click',e=>{const a=e.target.closest?.('a[href]');if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;let u;try{u=new URL(a.href,location.href)}catch{return}if(u.origin!==location.origin||!allowed.test(u.pathname))return;if(u.pathname===location.pathname&&u.search===location.search)return;e.preventDefault();e.stopImmediatePropagation();send(u.pathname+u.search+u.hash)},true);
 })();
