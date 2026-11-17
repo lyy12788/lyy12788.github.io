@@ -297,9 +297,9 @@ $('avatar-file').onchange=()=>{const f=$('avatar-file').files?.[0];if(!f)return;
 $('avatar-remove').onclick=e=>{e.preventDefault();pendingAvatarAction='remove';$('avatar-file').value='';$('avatar-preview').style.display='none';$('avatar-pending').textContent='已选择删除头像；点击「保存个人资料」后生效'};
 async function prepareAvatarBlob(file){
  if(file.size>40*1024*1024)throw Error('照片超过40MB，请先缩小');
- let bmp;try{bmp=await createImageBitmap(file)}catch{throw Error('此设备无法解码照片，请转换为JPG后重试')}
- if(bmp.width*bmp.height>50000000){bmp.close();throw Error('图片像素过大，请缩小后重试')}
- const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const ctx=canvas.getContext('2d');const side=Math.min(bmp.width,bmp.height);ctx.drawImage(bmp,(bmp.width-side)/2,(bmp.height-side)/2,side,side,0,0,256,256);bmp.close();
+ let bmp;try{bmp=await createImageBitmap(file)}catch{bmp=await new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(Error('手机无法解码此照片，请在相册中转换为JPEG再试'))};img.src=url})}
+ if(bmp.width*bmp.height>50000000){bmp.close?.();throw Error('图片像素过大，请缩小后重试')}
+ const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const ctx=canvas.getContext('2d');const side=Math.min(bmp.width,bmp.height);ctx.drawImage(bmp,(bmp.width-side)/2,(bmp.height-side)/2,side,side,0,0,256,256);bmp.close?.();
  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',0.82));if(!blob)throw Error('头像压缩失败');return blob
 }
 $('account-save').onclick=async()=>{
@@ -314,12 +314,12 @@ $('account-save').onclick=async()=>{
  if(pendingAvatarAction==='upload'){const file=$('avatar-file').files?.[0];if(!file)throw Error('请重新选择头像');avatarBlob=await prepareAvatarBlob(file)}
  const {data:existing,error:lookupError}=await db.from('forum_profiles').select('user_id,avatar_path').eq('user_id',user.id).maybeSingle();
  if(lookupError)throw lookupError;
- const path='avatars/'+user.id+'.webp';
- if(pendingAvatarAction==='upload'){const {error}=await db.storage.from('forum-avatars').upload(path,avatarBlob,{contentType:'image/webp',upsert:true});if(error)throw Error('头像上传失败：'+error.message);fields.avatar_path=path}
+ const path='avatars/'+user.id+'/'+crypto.randomUUID()+'.webp';
+ if(pendingAvatarAction==='upload'){if(avatarBlob.size>256*1024)throw Error('压缩后头像仍超过256KB，请换一张照片');const {error}=await db.storage.from('forum-avatars').upload(path,avatarBlob,{contentType:'image/webp',upsert:false});if(error)throw Error('头像上传失败：'+error.message);fields.avatar_path=path}
  if(pendingAvatarAction==='remove')fields.avatar_path=null;
  const result=existing?await db.from('forum_profiles').update(fields).eq('user_id',user.id):await db.from('forum_profiles').insert({user_id:user.id,...fields});
  if(result.error)throw result.error;
- if(pendingAvatarAction==='remove'&&existing?.avatar_path){const {error}=await db.storage.from('forum-avatars').remove([existing.avatar_path]);if(error)status.textContent='资料已保存，但旧头像文件清理失败：'+error.message}
+ if((pendingAvatarAction==='remove'||pendingAvatarAction==='upload')&&existing?.avatar_path){const {error}=await db.storage.from('forum-avatars').remove([existing.avatar_path]);if(error)status.textContent='资料已保存，但旧头像文件清理失败：'+error.message}
  $('nickname').value=name;pendingAvatarAction='keep';$('avatar-file').value='';$('avatar-pending').textContent='头像修改需点击「保存个人资料」才会生效。';
  await Promise.all([loadAccountDetails(),refreshAvatar()]);
  publicProfileCache.delete(user.id);
