@@ -140,6 +140,26 @@ body{background:var(--bg)}
 .social-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#283c51}
 .social-facebook{background:#1877f2}.social-x,.social-twitter{background:#101010}.social-tiktok{background:#111}.social-youtube{background:#e62117}.social-instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}.social-telegram{background:#229ed9}
 @media(max-width:520px){.social-link{padding:12px 13px}.social-avatar{width:42px;height:42px;flex-basis:42px}.social-left{gap:11px}}
+
+/* Social profiles: compact square tile grid on mobile and desktop */
+#social-view .social-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+#social-view .social-link{aspect-ratio:1/1;min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;text-align:center;padding:16px 10px;gap:8px;border-radius:15px}
+#social-view .social-left{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0;width:100%}
+#social-view .social-avatar{width:64px;height:64px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.12);font-size:34px;overflow:hidden}
+#social-view .social-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+#social-view .social-info{display:block;min-width:0;width:100%;overflow-wrap:anywhere}
+#social-view .social-info strong{font-size:16px;line-height:1.35}
+#social-view .social-info small{font-size:12px;line-height:1.3;margin-top:4px;overflow-wrap:anywhere}
+#social-view .social-link>span:last-child{position:absolute;right:10px;top:8px;font-size:15px}
+@media(max-width:850px){#social-view .social-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){
+ #social-view .social-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ #social-view .social-link{padding:12px 8px;gap:5px;border-radius:13px}
+ #social-view .social-left{gap:7px}
+ #social-view .social-avatar{width:52px;height:52px;font-size:29px}
+ #social-view .social-info strong{font-size:14px}
+ #social-view .social-info small{font-size:11px}
+}
 </style>
 </head>
 <body>
