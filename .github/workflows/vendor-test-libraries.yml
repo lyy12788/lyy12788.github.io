@@ -1,0 +1,39 @@
+name: Vendor browser libraries (test branch only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [test-cn-local-assets-2026-11-17]
+    paths: [.github/workflows/vendor-test-libraries.yml]
+permissions:
+  contents: write
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test-cn-local-assets-2026-11-17
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download exact versions
+        run: |
+          npm pack marked@15.0.12
+          npm pack dompurify@3.2.6
+          npm pack @supabase/supabase-js@2.57.4
+          mkdir -p vendor
+          tar -xzf marked-15.0.12.tgz package/lib/marked.umd.js
+          cp package/lib/marked.umd.js vendor/marked-15.0.12.js
+          rm -rf package
+          tar -xzf dompurify-3.2.6.tgz package/dist/purify.min.js
+          cp package/dist/purify.min.js vendor/dompurify-3.2.6.min.js
+          rm -rf package
+          tar -xzf supabase-supabase-js-2.57.4.tgz package/dist/umd/supabase.js
+          cp package/dist/umd/supabase.js vendor/supabase-js-2.57.4.js
+      - name: Commit vendored libraries on test branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vendor/
+          git diff --cached --quiet || (git commit -m "Vendor browser dependencies for China compatibility test" && git push)
