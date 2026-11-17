@@ -84,7 +84,7 @@ function renderArticle(body){
    const heading=document.createElement('div');heading.className='forum-audio-heading';heading.textContent='🎧 音频播放';
    const btn=document.createElement('button');btn.type='button';btn.className='forum-audio-play';btn.textContent='▶ 点击播放音频';btn.setAttribute('aria-label','播放音频');
    const audio=document.createElement('audio');audio.controls=true;audio.preload='none';audio.src=u.href;audio.style.display='none';audio.style.width='100%';
-   btn.onclick=async()=>{audio.style.display='block';try{if(audio.paused){await audio.play();btn.textContent='⏸ 暂停播放'}else{audio.pause();btn.textContent='▶ 继续播放'}}catch{btn.textContent='无法直接播放，请点击下方原音频链接'}};
+   btn.onclick=async()=>{if(window.parent!==window){try{window.parent.postMessage({type:'lyy-audio-play',src:u.href,title:document.getElementById('detail-title')?.textContent||'音频播放'},location.origin);btn.textContent='🎧 已发送至底部播放器';return}catch{}}audio.style.display='block';try{if(audio.paused){await audio.play();btn.textContent='⏸ 暂停播放'}else{audio.pause();btn.textContent='▶ 继续播放'}}catch{btn.textContent='无法直接播放，请点击下方原音频链接'}};
    audio.onplay=()=>btn.textContent='⏸ 暂停播放';audio.onpause=()=>btn.textContent='▶ 继续播放';
    const source=document.createElement('a');source.href=u.href;source.target='_blank';source.rel='noopener noreferrer nofollow';source.textContent='打开原音频链接';source.className='forum-audio-source';
    wrap.append(heading,btn,audio,source);a.replaceWith(wrap);continue;
@@ -470,4 +470,4 @@ window.addEventListener('hashchange',route);
  }
 })();
 </script>
-<script src="/external-link-guard.js" defer></script></body></html>
+<script src="/external-link-guard.js" defer></script><script src="/persistent-player-entry.js" defer></script></body></html>
