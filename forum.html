@@ -17,7 +17,7 @@
 const $=id=>document.getElementById(id),db=window.supabase?.createClient('https://mkchupvmervxkskvjyhz.supabase.co','sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z');
 let user=null,admin=false,opened=null;
 const say=t=>$('status').textContent=t;
-const show=id=>{for(const x of ['home','auth','compose','detail','mine','review','appeal','moderation'])$(x).classList.toggle('hide',x!==id);window.scrollTo(0,0)};
+const show=id=>{for(const x of ['home','auth','account','compose','detail','mine','review','appeal','moderation'])$(x).classList.toggle('hide',x!==id);window.scrollTo(0,0)};
 const el=(tag,txt)=>{const n=document.createElement(tag);n.textContent=txt;return n};
 const date=v=>new Date(v).toLocaleString('zh-CN');
 function renderArticle(body){
