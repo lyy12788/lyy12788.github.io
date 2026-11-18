@@ -483,4 +483,5 @@ async function downloadAudio(url,name,control){if(control.dataset.busy)return;co
 document.addEventListener('click',function(e){const a=e.target.closest('a.sermon-mobile-download,a.download');if(!a||!a.dataset.audioDownload)return;e.preventDefault();downloadAudio(a.dataset.audioDownload,a.dataset.audioName||'录音',a)},true);
 })();
 </script>
+<script defer src="/swipe-navigation.js?v=1"></script>
 </body></html>
