@@ -408,6 +408,7 @@ async function loadAccountDetails(){
  $('account-phone').value=p?.contact_phone||'';
  $('account-note').value=p?.contact_note||'';
  $('account-save-status').textContent='';
+ accountSavedSnapshot=accountSnapshot();updateAccountSaveState();
 }
 const accountFieldIds=['account-nickname','account-show-id','account-website','account-social','account-phone','account-note'];
 let accountSavedSnapshot=null;
