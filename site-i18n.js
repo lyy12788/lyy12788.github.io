@@ -14,47 +14,91 @@ const original=new WeakMap();const attrOriginal=new WeakMap();
 const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,#post-detail,#comments,#comment-list,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]');
 const normalize=t=>String(t||'').replace(/\s+/g,' ').trim();
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
-function apply(lang){if(!document.body)return;document.documentElement.lang=lang;const idx=langs.indexOf(lang)-1;
-const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
-while((n=walker.nextNode())){if(!n.parentElement||excluded(n.parentElement))continue;
-const actual=n.nodeValue;let source=original.get(n);
-if(source===undefined){source=actual;original.set(n,source)}
-else{const prior=translations.get(normalize(source));const recognized=normalize(actual)===normalize(source)||(prior&&prior.some(t=>normalize(t)===normalize(actual)));
-if(!recognized){source=actual;original.set(n,source)}}
-const key=normalize(source),values=translations.get(key);if(!values)continue;
-const value=idx<0?key:values[idx];const next=source.replace(/^(\s*)[\s\S]*?(\s*)$/,(all,lead,tail)=>lead+value+tail);
-if(n.nodeValue!==next)n.nodeValue=next;
+function apply(lang){
+if(!document.body||!langs.includes(lang))return;
+document.documentElement.lang=lang;
+const idx=langs.indexOf(lang)-1;
+const fragments={
+'收藏':['收藏','Bookmark','즐겨찾기','ブックマーク'],
+'资料库':['資料庫','Resources','자료실','資料室'],
+'福音园地':['福音園地','Gospel','복음 마당','福音広場'],
+'公共论坛':['公共論壇','Public forum','공개 포럼','公開フォーラム'],
+'关于平台':['關於平台','About','소개','サイトについて'],
+'网站首页':['網站首頁','Website home','사이트 홈','サイトホーム'],
+'真实之声首页':['真實之聲首頁','Voice of Truth home','진실의 목소리 홈','真実の声 ホーム'],
+'浏览':['瀏覽','views','조회','閲覧'],
+'点赞':['按讚','likes','좋아요','いいね'],
+'评论':['評論','comments','댓글','コメント'],
+'播放':['播放','plays','재생','再生'],
+'当前账户：':['目前帳戶：','Current account:','현재 계정:','現在のアカウント：']
+};
+const fragmentKeys=Object.keys(fragments).sort((a,b)=>b.length-a.length);
+function translateSource(source,partial){
+const key=normalize(source);
+const values=translations.get(key);
+if(values)return source.replace(key,idx<0?key:values[idx]);
+if(!partial||idx<0)return source;
+let output=source;
+for(const key of fragmentKeys)output=output.split(key).join(fragments[key][idx]);
+return output;
 }
-document.querySelectorAll('[aria-label],[title],[placeholder],[value]').forEach(e=>{if(excluded(e))return;for(const a of ['aria-label','title','placeholder','value']){if(!e.hasAttribute(a))continue;if(a==='value'&&!['button','submit','reset'].includes(e.type))continue;let obj=attrOriginal.get(e);if(!obj){obj={};attrOriginal.set(e,obj)}if(!(a in obj))obj[a]=e.getAttribute(a);const src=obj[a],values=translations.get(normalize(src));if(values)e.setAttribute(a,idx<0?src:values[idx])}});
-// Fallback: translate leaf UI elements directly, including card descriptions.
-document.querySelectorAll('h1,h2,h3,h4,p,small,strong,span,a,button,label,li,summary,div').forEach(el=>{
-if(excluded(el)||el.children.length||el.matches('[id*="name"],[class*="name"],[data-nickname],[data-username]'))return;
-if(el.closest('#community-feed-list,#latest-posts,#post-list,#member-list,#member-point-history'))return;
-let source=el.dataset.lyyI18nOriginal;
-const visible=normalize(el.textContent);
-if(!source){source=visible;if(translations.has(source))el.dataset.lyyI18nOriginal=source}
-if(!source)return;
-const values=translations.get(normalize(source));if(!values)return;
-const target=idx<0?source:values[idx];
-if(visible!==normalize(target))el.textContent=target;
+function uiFragment(el){
+return !!el.closest('button,a,nav,[class*="bookmark"],[id*="bookmark"],[class*="metric"],[class*="stat"],[class*="count"],[id*="account"],[id*="member"],[id*="article-count"]');
+}
+const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+let n;
+while((n=walker.nextNode())){
+const el=n.parentElement;if(!el||excluded(el))continue;
+const visible=n.nodeValue;
+let src=original.get(n);
+if(src===undefined){src=visible;original.set(n,src)}
+else {
+const prev=translateSource(src,uiFragment(el));
+if(visible!==src&&visible!==prev){
+const known=translations.get(normalize(src));
+const matchesKnown=known&&known.some(v=>normalize(v)===normalize(visible));
+if(!matchesKnown){src=visible;original.set(n,src)}
+}
+}
+const translated=translateSource(src,uiFragment(el));
+if(visible!==translated)n.nodeValue=translated;
+}
+document.querySelectorAll('[aria-label],[title],[placeholder],input[type="button"],input[type="submit"],input[type="reset"]').forEach(el=>{
+if(excluded(el))return;
+let state=attrOriginal.get(el);if(!state){state={};attrOriginal.set(el,state)}
+for(const name of ['aria-label','title','placeholder','value']){
+if(!el.hasAttribute(name))continue;
+if(name==='value'&&!['button','submit','reset'].includes(el.type))continue;
+const current=el.getAttribute(name);
+if(!(name in state))state[name]=current;
+const expected=translateSource(state[name],false);
+if(current!==state[name]&&current!==expected&&!(translations.get(normalize(state[name]))||[]).includes(current))state[name]=current;
+const next=translateSource(state[name],false);
+if(current!==next)el.setAttribute(name,next);
+}
 });
-// Translate fixed UI phrases inside mixed icon/text buttons and dynamically rendered labels.
-const uiParts={en:{'收藏':'Bookmark','当前账户：':'Current account:','邮箱验证':'Email verification','已验证':'Verified','积分记录':'Points history','请稍后重试。':'Please try again later.'},ko:{'收藏':'즐겨찾기','当前账户：':'현재 계정:','邮箱验证':'이메일 인증','已验证':'인증됨','积分记录':'포인트 내역','请稍后重试。':'잠시 후 다시 시도하세요.'},ja:{'收藏':'ブックマーク','当前账户：':'現在のアカウント：','邮箱验证':'メール認証','已验证':'認証済み','积分记录':'ポイント履歴','请稍后重试。':'しばらくしてから再試行してください。'},'zh-TW':{'收藏':'收藏','当前账户：':'目前帳戶：','邮箱验证':'電子郵件驗證','已验证':'已驗證','积分记录':'積分記錄','请稍后重试。':'請稍後重試。'}}[lang];
-if(uiParts){document.querySelectorAll('button,a,[id^="account-"],[id^="member-"],[class*="bookmark"]').forEach(el=>{if(excluded(el)||el.matches('input,textarea,select')||el.closest('[data-user-content]'))return;const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){if(n.parentElement?.closest('[data-nickname],[data-username]'))continue;let raw=n.nodeValue;for(const [key,value] of Object.entries(uiParts)){if(raw.includes(key))raw=raw.replaceAll(key,value)}if(n.nodeValue!==raw)n.nodeValue=raw}})}
-// Translate generated interface counters without altering post titles or user content.
-if(idx>=0){const units={en:{'播放':'plays','点赞':'likes','评论':'comments','条最新举报':'recent reports','积分':'points'},ko:{'播放':'재생','点赞':'좋아요','评论':'댓글','条最新举报':'최근 신고','积分':'포인트'},ja:{'播放':'再生','点赞':'いいね','评论':'コメント','条最新举报':'最近の通報','积分':'ポイント'},'zh-TW':{'播放':'播放','点赞':'按讚','评论':'評論','条最新举报':'筆最新檢舉','积分':'積分'}}[lang]||{};
-const counters=document.querySelectorAll('.sermon-metrics,.sermon-row [class*="metric"],#admin-report-status,#member-score,#member-level-next');
-counters.forEach(root=>{const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;while((node=w.nextNode())){const raw=node.nodeValue;if(!/[\u4e00-\u9fff]/.test(raw))continue;if(root.classList.contains('sermon-metrics')||root.closest('.sermon-row'))node.nodeValue=raw.replace(/(播放|点赞|评论)/g,k=>units[k]||k);else if(root.id==='admin-report-status')node.nodeValue=raw.replace(/条最新举报/g,units['条最新举报']||'条最新举报');else if(root.id==='member-score')node.nodeValue=raw.replace(/积分/g,units['积分']||'积分')}})
+document.querySelectorAll('select:not(#lyy-language) option').forEach(el=>{
+if(excluded(el))return;
+const src=el.dataset.lyyOptionSource||normalize(el.textContent);
+if(!el.dataset.lyyOptionSource)el.dataset.lyyOptionSource=src;
+const target=translateSource(src,false);
+if(el.textContent!==target)el.textContent=target;
+});
+document.querySelectorAll('#post-list').forEach(root=>{
+const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
+while((node=walk.nextNode())){
+const el=node.parentElement;
+if(!el||el.closest('h1,h2,h3,a,[class*="title"],[class*="nickname"],[class*="author"],[data-user-content]'))continue;
+const raw=node.nodeValue;
+let src=original.get(node);
+if(src===undefined){src=raw;original.set(node,src)}
+if(!/^(\\s*[◉◌●○♥❤]?\\s*(浏览|评论|点赞)\\s*\\d+\\s*|\\s*(自由讨论|宗教信仰)\\s*[·•]?\\s*)$/.test(src))continue;
+let next=src;
+if(idx>=0){for(const key of ['浏览','评论','点赞','自由讨论','宗教信仰']){const vals=translations.get(key);if(vals)next=next.split(key).join(vals[idx])}}
+if(node.nodeValue!==next)node.nodeValue=next;
 }
-// Handle short Chinese fragments within UI controls, preserving user-authored content.
-const words={en:{'收藏':'Bookmark','资料库':'Resources','福音园地':'Gospel','公共论坛':'Public forum','关于平台':'About','网站首页':'Website home','真实之声首页':'Voice of Truth home','浏览':'views','点赞':'likes','评论':'comments'},ko:{'收藏':'즐겨찾기','资料库':'자료실','福音园地':'복음','公共论坛':'공개 포럼','关于平台':'소개','网站首页':'사이트 홈','真实之声首页':'진실의 목소리 홈','浏览':'조회','点赞':'좋아요','评论':'댓글'},ja:{'收藏':'ブックマーク','资料库':'資料室','福音园地':'福音','公共论坛':'公開フォーラム','关于平台':'サイトについて','网站首页':'サイトホーム','真实之声首页':'真実の声 ホーム','浏览':'閲覧','点赞':'いいね','评论':'コメント'},'zh-TW':{'收藏':'收藏','资料库':'資料室','福音园地':'福音園地','公共论坛':'公共論壇','关于平台':'關於平台','网站首页':'網站首頁','真实之声首页':'真實之聲首頁','浏览':'瀏覽','点赞':'按讚','评论':'評論'}}[lang]||{};
-document.querySelectorAll('a,button,[id^="bookmark"],[class*="bookmark"],#article-count').forEach(el=>{if(excluded(el))return;const walk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let t;while((t=walk.nextNode())){const initial=original.get(t)??t.nodeValue;if(!original.has(t))original.set(t,initial);if(!/[\u4e00-\u9fff]/.test(initial))continue;let translated=initial;for(const [k,v] of Object.entries(words))translated=translated.replaceAll(k,v);if(lang==='zh-CN')translated=initial;if(t.nodeValue!==translated)t.nodeValue=translated;}});
-document.querySelectorAll('select:not(#lyy-language) option').forEach(el=>{if(excluded(el))return;let source=el.dataset.lyyOptionSource;if(!source){source=normalize(el.textContent);el.dataset.lyyOptionSource=source}const values=translations.get(source);if(values){const value=idx<0?source:values[idx];if(el.textContent!==value)el.textContent=value;}});
-const count=document.getElementById('article-count');if(count){const raw=count.textContent;const m=raw.match(/^共\s*(\d+)\s*篇$/);if(m&&lang!=='zh-CN')count.textContent=lang==='en'?m[1]+' articles':lang==='ko'?'총 '+m[1]+'편':lang==='ja'?'合計 '+m[1]+'件':'共 '+m[1]+' 篇';}
-// Forum metadata is interface text, not a post title or nickname.
-const forumUnits={en:{'浏览':'views','评论':'comments','点赞':'likes','自由讨论':'Open discussion','宗教信仰':'Religion & faith'},ko:{'浏览':'조회','评论':'댓글','点赞':'좋아요','自由讨论':'자유 토론','宗教信仰':'종교·신앙'},ja:{'浏览':'閲覧','评论':'コメント','点赞':'いいね','自由讨论':'自由討論','宗教信仰':'宗教・信仰'},'zh-TW':{'浏览':'瀏覽','评论':'評論','点赞':'按讚','自由讨论':'自由討論','宗教信仰':'宗教信仰'}}[lang]||{};
-document.querySelectorAll('#post-list').forEach(root=>{const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;while((node=walk.nextNode())){if(node.parentElement?.closest('h1,h2,h3,a,[class*="title"],[class*="nickname"],[class*="author"],[data-user-content]'))continue;const raw=node.nodeValue;if(!/^(\\s*[◉◌●○♥❤]?\\s*(浏览|评论|点赞)\\s*\\d+\\s*|\\s*(自由讨论|宗教信仰)\\s*[·•]?\\s*)$/.test(raw))continue;let source=original.get(node)??raw;if(!original.has(node))original.set(node,source);let next=source;for(const [k,v] of Object.entries(forumUnits))next=next.replaceAll(k,v);if(lang==='zh-CN')next=source;if(node.nodeValue!==next)node.nodeValue=next;}});
-const sel=document.getElementById('lyy-language');if(sel)sel.value=lang;
+});
+const sel=document.getElementById('lyy-language');if(sel&&sel.value!==lang)sel.value=lang;
 }
 function set(lang){if(!langs.includes(lang))return;try{localStorage.setItem(storage,lang)}catch{}apply(lang);if(window.parent!==window)window.parent.postMessage({type:'lyy-language',lang},location.origin);else{const f=document.getElementById('page');try{f?.contentWindow?.postMessage({type:'lyy-language',lang},location.origin)}catch{}}}
 function init(){if(!document.body)return;const shell=location.pathname==='/player.html';if(!document.getElementById('lyy-language')&&window.parent===window){const wrap=document.createElement('div');wrap.id='lyy-language-wrap';wrap.setAttribute('data-no-translate','');wrap.innerHTML='<label for="lyy-language" style="font-size:12px">🌐</label><select id="lyy-language" aria-label="选择网站语言"></select>';Object.assign(wrap.style,{position:shell?'fixed':'relative',top:shell?'7px':'auto',right:shell?'8px':'auto',zIndex:'99999',display:'flex',alignItems:'center',gap:'4px',background:'#101f30',color:'#fff',border:'1px solid #786535',borderRadius:'8px',padding:'3px 5px',width:'max-content',margin:shell?'0':'8px'});const sel=wrap.querySelector('select');Object.assign(sel.style,{background:'#101f30',color:'#fff',border:'0',fontSize:'12px',maxWidth:'110px',padding:'3px',margin:'0',width:'auto'});for(const l of langs){const o=document.createElement('option');o.value=l;o.textContent=labels[l];sel.appendChild(o)}sel.addEventListener('change',()=>set(sel.value));if(shell)document.body.appendChild(wrap);else{const h=document.querySelector('header');if(h)h.appendChild(wrap);else document.body.prepend(wrap)}}
@@ -65,6 +109,6 @@ apply(current());
 window.addEventListener('message',e=>{if(e.origin===location.origin&&e.data?.type==='lyy-language'&&langs.includes(e.data.lang)){try{localStorage.setItem(storage,e.data.lang)}catch{}apply(e.data.lang)}});
 window.addEventListener('storage',e=>{if(e.key===storage)apply(current())});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-let pending=false;const observer=new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply(current())})});const startObserver=()=>{if(document.body)observer.observe(document.body,{childList:true,characterData:true,subtree:true})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver);else startObserver();
+let pending=false;const observer=new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply(current())})});const startObserver=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver);else startObserver();
 window.lyyLanguage={set,apply,current};
 })();
