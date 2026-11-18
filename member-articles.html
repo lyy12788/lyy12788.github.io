@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网友文章 · 真实之声</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#081321;color:#edf3f9;font:16px/1.7 system-ui,sans-serif}main{max-width:960px;margin:auto;padding:26px 18px 90px}h1,h2{color:#f5c84b}a{color:#f5c84b}p{color:#bac8d7}.card{background:#12263a;border:1px solid #344b60;border-radius:13px;padding:18px;margin:16px 0}input,textarea{display:block;width:100%;margin:8px 0 15px;padding:12px;border:1px solid #5b6b80;border-radius:8px;background:#09192b;color:white;font:inherit}textarea{min-height:230px;resize:vertical}button{border:0;border-radius:8px;padding:10px 17px;background:#e8bd40;color:#0a192a;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.5}small{color:#aebfd0}article h3{margin:0}article p{white-space:pre-wrap;overflow-wrap:anywhere}#editor[hidden]{display:none}</style></head><body><main><a href="/articles.html">← 返回文章专区</a><h1>网友文章</h1><p>这里展示会员正式投稿的文章，与公共论坛帖子分开管理。所有已验证邮箱的会员均可写作、保存私人草稿并申请发表；审核通过后才会公开。</p><section class="card"><h2>文章创作与投稿</h2><p id="eligibility">正在检查会员权限……</p><div id="editor" hidden><label>文章标题<input id="title" maxlength="30" placeholder="5—30个字符"></label><label>文章正文<textarea id="body" maxlength="50000" placeholder="100—50000个字符"></textarea></label><label style="display:flex;gap:8px;align-items:center"><input id="grant-review" type="checkbox" style="width:auto;margin:0">允许站长和管理员审核当前文章（仅此篇，审核完成后自动撤销）</label><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="save" type="button">保存私人草稿</button><button id="submit" type="button">申请审核发表</button><button id="clear" type="button">新建文章</button></div></div><p id="result" role="status"></p><a href="/forum.html">前往公共论坛发帖 →</a></section><section class="card" id="mine" hidden><h2>我的文章与草稿</h2><div id="mine-list"></div></section><section id="admin-review" hidden><h2>待审核文章</h2><div id="pending-list"></div></section><section><h2>已发表的网友文章</h2><div id="list">正在加载文章……</div></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网友文章 · 真实之声</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#081321;color:#edf3f9;font:16px/1.7 system-ui,sans-serif}main{max-width:960px;margin:auto;padding:26px 18px 90px}h1,h2{color:#f5c84b}a{color:#f5c84b}p{color:#bac8d7}.card{background:#12263a;border:1px solid #344b60;border-radius:13px;padding:18px;margin:16px 0}input,textarea{display:block;width:100%;margin:8px 0 15px;padding:12px;border:1px solid #5b6b80;border-radius:8px;background:#09192b;color:white;font:inherit}textarea{min-height:230px;resize:vertical}button{border:0;border-radius:8px;padding:10px 17px;background:#e8bd40;color:#0a192a;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.5}small{color:#aebfd0}article h3{margin:0}article p{white-space:pre-wrap;overflow-wrap:anywhere}#editor[hidden]{display:none}</style></head><body><main><a href="/articles.html">← 返回文章专区</a><h1>网友文章</h1><p>这里展示会员正式投稿的文章，与公共论坛帖子分开管理。所有已验证邮箱的会员均可写作、保存私人草稿并申请发表；审核通过后才会公开。</p><section class="card"><h2>文章创作与投稿</h2><p id="eligibility">正在检查会员权限……</p><div id="editor" hidden><label>文章标题<input id="title" maxlength="30" placeholder="5—30个字符"></label><label>文章正文<textarea id="body" maxlength="50000" placeholder="100—50000个字符"></textarea></label><label style="display:flex;gap:8px;align-items:center"><input id="grant-review" type="checkbox" style="width:auto;margin:0">允许站长和管理员审核当前文章（仅此篇，审核完成后自动撤销）</label><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="save" type="button">保存私人草稿</button><button id="submit" type="button">申请审核发表</button><button id="clear" type="button">新建文章</button></div></div><p id="result" role="status"></p><a href="/forum.html">前往公共论坛发帖 →</a></section><section class="card" id="mine" hidden><h2>我的文章与草稿</h2><div id="mine-list"></div></section><section class="card" id="delete-review" hidden><h2>文章删除申请</h2><div id="delete-request-list"></div></section><section id="admin-review" hidden><h2>待审核文章</h2><div id="pending-list"></div></section><section><h2>已发表的网友文章</h2><div id="list">正在加载文章……</div></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
 (async()=>{'use strict';
 const $=id=>document.getElementById(id),db=window.supabase?.createClient('https://mkchupvmervxkskvjyhz.supabase.co','sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z');
 if(!db){$('eligibility').textContent='服务暂不可用';return}
@@ -23,13 +23,19 @@ async function save(submit){
 $('save').onclick=()=>save(false);$('submit').onclick=()=>save(true);
 async function loadMine(){
  if(!user)return;$('mine').hidden=false;const root=$('mine-list');root.replaceChildren();
- const {data,error}=await db.from('member_articles').select('id,title,body,status,review_note,reviewer_access,updated_at').eq('author_id',user.id).order('updated_at',{ascending:false}).limit(100);
+ const {data,error}=await db.from('member_articles').select('id,title,body,status,review_note,reviewer_access,updated_at,published_at,created_at').eq('author_id',user.id).order('updated_at',{ascending:false}).limit(100);
  if(error){root.textContent='我的文章加载失败';return}
  if(!data?.length){root.textContent='还没有草稿或文章。';return}
  for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('h3',item.title||'未命名草稿'),safeText('small',({draft:'私人草稿',pending:'等待审核',published:'已公开发表',rejected:'审核未通过'})[item.status]||item.status));
  if(item.review_note)card.append(safeText('p','审核意见：'+item.review_note));
  if(item.status==='pending'){const withdraw=document.createElement('button');withdraw.textContent='撤回申请';withdraw.onclick=async()=>{const {error}=await db.from('member_articles').update({status:'draft',reviewer_access:false}).eq('id',item.id);if(error)alert(error.message);else await loadMine()};card.append(withdraw)}if(item.status==='draft'||item.status==='rejected'||item.status==='published'){
  const b=document.createElement('button');b.textContent=item.status==='published'?'修改并重新申请审核':'继续编辑';b.onclick=()=>{selected=item.id;$('title').value=item.title;$('body').value=item.body;$('grant-review').checked=Boolean(item.reviewer_access);window.scrollTo({top:0,behavior:'smooth'});msg(item.status==='published'?'修改已公开文章后将重新进入审核，修改前请确认。':'正在编辑文章。')};card.append(b)}
+ if(item.status==='draft'||item.status==='rejected'||(item.status==='published'&&Date.now()-new Date(item.published_at||item.created_at).getTime()<259200000)){
+ const del=document.createElement('button');del.textContent='删除文章';del.onclick=async()=>{if(!confirm('确定永久删除这篇文章？此操作不可撤销。'))return;const {error}=await db.from('member_articles').delete().eq('id',item.id);if(error)alert('删除失败：'+error.message);else{reset();await loadMine();await loadPublic()}};card.append(del);
+ }else if(item.status==='published'){
+ const req=document.createElement('button');req.textContent='申请删除文章';req.onclick=async()=>{const reason=prompt('请填写删除原因（5—1000字）：');if(reason===null)return;if(reason.trim().length<5||reason.trim().length>1000){alert('删除原因须为5—1000字。');return}
+ const {error}=await db.from('member_article_delete_requests').insert({article_id:item.id,author_id:user.id,reason:reason.trim()});alert(error?'申请失败：'+error.message:'删除申请已提交，等待管理员审核。');if(!error)await loadMine()};card.append(req);
+ }
  root.append(card)}
 }
 async function loadPending(){
@@ -43,14 +49,24 @@ async function loadPending(){
  const b=document.createElement('button');b.textContent=label;b.style.marginRight='8px';
  b.onclick=async()=>{if(status==='rejected'&&!note.value.trim()){alert('拒绝投稿时请填写原因。');return}b.disabled=true;
  const {error}=await db.from('member_articles').update({status,review_note:note.value.trim()||null}).eq('id',item.id);
- if(error){alert('操作失败：'+error.message);b.disabled=false}else{await loadPending();await loadPublic();await loadMine()}};
+ if(error){alert('操作失败：'+error.message);b.disabled=false}else{await loadPending();await loadPublic();await loadMine();await loadDeleteRequests()}};
  card.append(b)}root.append(card)}
+}
+async function loadDeleteRequests(){
+ if(!admin)return;$('delete-review').hidden=false;const root=$('delete-request-list');root.replaceChildren();
+ const {data,error}=await db.from('member_article_delete_requests').select('id,article_id,reason,created_at').eq('status','pending').order('created_at',{ascending:true}).limit(100);
+ if(error){root.textContent='删除申请读取失败';return}if(!data?.length){root.textContent='暂无待处理删除申请';return}
+ for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('p','删除原因：'+item.reason));
+ for(const [approve,label] of [[true,'同意删除'],[false,'不同意删除']]){const b=document.createElement('button');b.textContent=label;b.style.marginRight='8px';b.onclick=async()=>{
+ if(!confirm(approve?'确认删除此文章？':'确认拒绝删除申请？'))return;
+ const result=approve?await db.rpc('member_article_admin_remove',{p_article_id:item.article_id,p_reason:'根据作者删除申请'}):await db.from('member_article_delete_requests').update({status:'rejected'}).eq('id',item.id);
+ if(result.error)alert('操作失败：'+result.error.message);else{await loadDeleteRequests();await loadPublic();await loadMine()}};card.append(b)}root.append(card)}
 }
 async function loadPublic(){
  const root=$('list');root.replaceChildren();const {data,error}=await db.from('member_articles').select('id,title,body,created_at').eq('status','published').order('created_at',{ascending:false}).limit(50);
  if(error){root.textContent='文章读取失败，请稍后再试。';return}
  if(!data?.length){root.textContent='暂无已发表的网友文章。';return}
- for(const item of data){const card=document.createElement('article');card.className='card';card.append(safeText('h3',item.title),safeText('small',new Date(item.created_at).toLocaleDateString()),safeText('p',item.body));root.append(card)}
+ for(const item of data){const card=document.createElement('article');card.className='card';card.append(safeText('h3',item.title),safeText('small',new Date(item.created_at).toLocaleDateString()),safeText('p',item.body));if(admin){const del=document.createElement('button');del.textContent='管理员删除';del.onclick=async()=>{const reason=prompt('请输入管理员删除原因：');if(reason===null)return;if(!confirm('确认删除此公开文章？'))return;const {error}=await db.rpc('member_article_admin_remove',{p_article_id:item.id,p_reason:reason});if(error)alert('删除失败：'+error.message);else{await loadPublic();await loadMine();await loadDeleteRequests()}};card.append(del)}root.append(card)}
 }
 if(!user){$('eligibility').textContent='请先登录并完成邮箱验证，才能写作或保存私人草稿。'}
 else if(!user.email_confirmed_at){$('eligibility').textContent='请先完成邮箱验证。'}
@@ -58,7 +74,7 @@ else{
  const {data,error}=await db.rpc('forum_public_member_level',{p_user_id:user.id});
  admin=!error&&Boolean(data?.[0]?.is_admin);
  $('eligibility').textContent='您可以保存私人草稿，也可以申请由站长或管理员审核后公开发表。';
- $('editor').hidden=false;await loadMine();if(admin)await loadPending();
+ $('editor').hidden=false;await loadMine();if(admin){await loadPending();await loadDeleteRequests();}
 }
 await loadPublic();
 })();
