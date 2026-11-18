@@ -183,7 +183,7 @@ $('image-file').onchange=async()=>{
   if(error)throw error;
   const {data}=db.storage.from('forum-images').getPublicUrl(path);
   insertAtCursor('\n!['+($('image-sensitive').checked?'敏感图片':'文章图片')+']('+data.publicUrl+')\n');
-  $('upload-status').textContent='图片上传成功，已插入文章正文。提交文章后即可随文章展示。';
+  $('upload-status').textContent='图片已上传。注意：当前图片链接可被直接访问，即使帖子尚未审核；请勿上传身份证件、住址或其他隐私信息。';
  }catch(e){$('upload-status').textContent='图片上传失败：'+(e?.message||'未知错误')}
  finally{btn.disabled=false;$('image-file').value=''}
 };
