@@ -50,6 +50,7 @@ const fragments={
 '网站首页':['網站首頁','Website home','사이트 홈','サイトホーム'],
 '真实之声首页':['真實之聲首頁','Voice of Truth home','진실의 목소리 홈','真実の声 ホーム'],
 '浏览':['瀏覽','views','조회','閲覧'],
+'阅读':['閱讀','views','조회','閲覧'],
 '点赞':['按讚','likes','좋아요','いいね'],
 '评论':['評論','comments','댓글','コメント'],
 '播放':['播放','plays','재생','再生'],
@@ -137,5 +138,7 @@ window.addEventListener('message',e=>{if(e.origin===location.origin&&e.data?.typ
 window.addEventListener('storage',e=>{if(e.key===storage)apply(current())});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 let pending=false;const observer=new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply(current())})});const startObserver=()=>{if(document.body)observer.observe(document.body,{childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','title','aria-label'],subtree:true})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver);else startObserver();
-window.lyyLanguage={set,apply,current,translate:(value)=>{const v=translations.get(normalize(value));const index=langs.indexOf(current())-1;return v&&index>=0?v[index]:value}};
+function translateMessage(value){if(typeof value!=='string')return value;const index=langs.indexOf(current())-1;if(index<0)return value;const key=normalize(value),direct=translations.get(key);if(direct)return direct[index];for(const prefix of ['举报失败：','点赞操作失败：','文章举报读取失败：','提交失败：','操作失败：','保存失败：','上传失败：']){if(key.startsWith(prefix)){const item=translations.get(prefix);if(item)return item[index]+key.slice(prefix.length)}}return value;}
+window.lyyLanguage={set,apply,current,translate:translateMessage};
+for(const method of ['alert','confirm','prompt']){const native=window[method];if(typeof native!=='function')continue;window[method]=function(message,...rest){return native.call(window,translateMessage(message),...rest)};}
 })();
