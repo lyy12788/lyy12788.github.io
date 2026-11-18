@@ -24,8 +24,11 @@ Deno.serve(async req => {
   const sb=createClient(base,service,{auth:{persistSession:false}});
   const {data:{user},error:authError}=await sb.auth.getUser(bearer.replace(/^Bearer\s+/,""));
   if(authError||!user) return response({error:"登录已过期"},401);
-  const {data:admin,error:adminError}=await sb.from("site_admins").select("user_id").eq("user_id",user.id).maybeSingle();
-  if(adminError||!admin) return response({error:"仅站长可上传"},403);
+  // Use the same authenticated RPC as the website, rather than a separate table-read path.
+  const userClient=createClient(base,Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY")||"sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z",{global:{headers:{Authorization:bearer}},auth:{persistSession:false}});
+  const {data:admin,error:adminError}=await userClient.rpc("is_site_admin");
+  if(adminError){console.error("admin RPC failed",adminError.message);return response({error:"管理员身份验证暂时失败"},503);}
+  if(admin!==true) return response({error:"当前登录账户不是站长管理员，请确认登录账号"},403);
   const data=await req.json();
   const title=String(data.title||"").trim();
   const size=Number(data.size);
