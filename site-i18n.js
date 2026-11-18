@@ -111,5 +111,5 @@ window.addEventListener('message',e=>{if(e.origin===location.origin&&e.data?.typ
 window.addEventListener('storage',e=>{if(e.key===storage)apply(current())});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 let pending=false;const observer=new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply(current())})});const startObserver=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver);else startObserver();
-window.lyyLanguage={set,apply,current};
+window.lyyLanguage={set,apply,current,translate:(value)=>{const v=translations.get(normalize(value));const index=langs.indexOf(current())-1;return v&&index>=0?v[index]:value}};
 })();
