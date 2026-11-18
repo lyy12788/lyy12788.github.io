@@ -36,7 +36,7 @@ const fragmentKeys=Object.keys(fragments).sort((a,b)=>b.length-a.length);
 function translateSource(source,partial){
 const key=normalize(source);
 const values=translations.get(key);
-if(values)return source.replace(key,idx<0?key:values[idx]);
+if(values){const match=source.match(/^(\s*)([\s\S]*?)(\s*)$/);return match?match[1]+(idx<0?key:values[idx])+match[3]:(idx<0?key:values[idx]);}
 if(!partial||idx<0)return source;
 let output=source;
 for(const key of fragmentKeys)output=output.split(key).join(fragments[key][idx]);
