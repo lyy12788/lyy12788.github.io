@@ -284,7 +284,7 @@ async function listComments(id){
 }
 async function mine(){if(!user){show('auth');return}const {data,error}=await db.rpc('forum_my_posts');const root=$('my-posts');root.replaceChildren();if(error)root.textContent=error.message;else if(!data?.length)root.textContent='尚未投稿';else data.forEach(p=>root.append(link(p)));show('mine')}
 async function review(){if(!admin){show('home');return}const {data,error}=await db.from('forum_posts').select('id,title,body,created_at,status').eq('status','pending').order('created_at').limit(100);const root=$('pending-posts');root.replaceChildren();if(error){root.textContent=error.message;show('review');return}if(!data?.length)root.textContent='没有待审核文章';for(const p of data||[]){const d=el('div','');d.className='card';d.append(el('h3',p.title),el('p',p.body.slice(0,1200)));
-for(const match of p.body.matchAll(/\[private-forum-image:([0-9a-f-]{36}\/[0-9a-f-]{36}\.(?:jpg|jpeg|png|webp))\]/g){
+for(const match of p.body.matchAll(/\[private-forum-image:([0-9a-f-]{36}\/[0-9a-f-]{36}\.(?:jpg|jpeg|png|webp))\]/g)){
  const preview=el('button','预览待审核私有图片');preview.type='button';preview.onclick=async()=>{
  const {data:blob,error}=await db.storage.from('forum-images-review').download(match[1]);
  if(error||!blob){say('图片读取失败');return}const url=URL.createObjectURL(blob),w=window.open('','_blank');
