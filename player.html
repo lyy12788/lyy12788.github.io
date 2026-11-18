@@ -38,4 +38,5 @@ audio.onplay=()=>toggle.textContent='Ⅱ';audio.onpause=()=>{if(!driveActive)tog
 const update=()=>{seek.value=Number.isFinite(audio.duration)&&audio.duration>0?Math.round(audio.currentTime/audio.duration*1000):0;time.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)};audio.ontimeupdate=update;audio.onloadedmetadata=update;seek.oninput=()=>{if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=audio.duration*Number(seek.value)/1000};volume.onclick=()=>{audio.muted=!audio.muted;volume.textContent=audio.muted?'🔇':'🔊';volume.setAttribute('aria-pressed',String(audio.muted));volume.setAttribute('aria-label',audio.muted?'解除静音':'静音');volume.title=audio.muted?'解除静音':'静音'};
 navigate(requested(),false);
 })();
-</script><script src="/site-i18n.js?v=44" defer></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="/notification-bell.js?v=4" defer></script></body></html>
+</script><script src="/site-i18n.js?v=44" defer></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="/notification-bell.js?v=4" defer></script><script defer src="/swipe-navigation.js?v=1"></script>
+</body></html>
