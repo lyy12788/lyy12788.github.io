@@ -409,10 +409,15 @@ async function loadAccountDetails(){
  $('account-note').value=p?.contact_note||'';
  $('account-save-status').textContent='';
 }
+const accountFieldIds=['account-nickname','account-show-id','account-website','account-social','account-phone','account-note'];
+let accountSavedSnapshot=null;
+function accountSnapshot(){return JSON.stringify(accountFieldIds.map(id=>$(id).type==='checkbox'?$(id).checked:$(id).value.trim()))}
+function updateAccountSaveState(){const btn=$('account-save');if(!btn)return;btn.disabled=accountSavedSnapshot!==null&&accountSavedSnapshot===accountSnapshot()&&pendingAvatarAction==='keep'}
+for(const id of accountFieldIds){$(id).addEventListener('input',updateAccountSaveState);$(id).addEventListener('change',updateAccountSaveState)}
 let pendingAvatarAction='keep';
 $('avatar-choose').onclick=e=>{e.preventDefault();$('avatar-file').click()};
-$('avatar-file').onchange=()=>{const f=$('avatar-file').files?.[0];if(!f)return;pendingAvatarAction='upload';$('avatar-pending').textContent='已选择 '+f.name+'；点击「保存个人资料」后上传';const preview=$('avatar-preview');preview.src=URL.createObjectURL(f);preview.style.display='block'};
-$('avatar-remove').onclick=e=>{e.preventDefault();pendingAvatarAction='remove';$('avatar-file').value='';$('avatar-preview').style.display='none';$('avatar-pending').textContent='已选择删除头像；点击「保存个人资料」后生效'};
+$('avatar-file').onchange=()=>{const f=$('avatar-file').files?.[0];if(!f)return;pendingAvatarAction='upload';updateAccountSaveState();$('avatar-pending').textContent='已选择 '+f.name+'；点击「保存个人资料」后上传';const preview=$('avatar-preview');preview.src=URL.createObjectURL(f);preview.style.display='block'};
+$('avatar-remove').onclick=e=>{e.preventDefault();pendingAvatarAction='remove';updateAccountSaveState();$('avatar-file').value='';$('avatar-preview').style.display='none';$('avatar-pending').textContent='已选择删除头像；点击「保存个人资料」后生效'};
 async function prepareAvatarBlob(file){
  if(file.size>40*1024*1024)throw Error('照片超过40MB，请先缩小');
  let bmp;try{bmp=await createImageBitmap(file)}catch{bmp=await new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(Error('手机无法解码此照片，请在相册中转换为JPEG再试'))};img.src=url})}
@@ -423,7 +428,7 @@ async function prepareAvatarBlob(file){
 $('account-save').onclick=async()=>{
  if(!user)return say('请先登录');
  const name=$('account-nickname').value.trim(),website=$('account-website').value.trim();
- if(name.length<2||name.length>30)return $('account-save-status').textContent='昵称需要2—30个字符';
+ if(name.length<2||name.length>30||/[<>@\\r\\n]/.test(name))return $('account-save-status').textContent='昵称需要2—30个字符，且不能包含特殊符号';
  if(website){try{const u=new URL(website);if(!['http:','https:'].includes(u.protocol))throw Error()}catch{return $('account-save-status').textContent='个人网站必须是有效的 http 或 https 链接'}}
  const fields={display_name:name,show_public_id:$('account-show-id').checked,contact_website:website||null,contact_social:$('account-social').value.trim()||null,contact_phone:$('account-phone').value.trim()||null,contact_note:$('account-note').value.trim()||null};
  const btn=$('account-save'),status=$('account-save-status');btn.disabled=true;status.textContent='正在保存……';
@@ -446,7 +451,7 @@ $('account-save').onclick=async()=>{
  publicProfileCache.delete(user.id);
  status.textContent='个人资料已保存成功（包括头像设置）。';
  }catch(e){status.textContent='保存失败：'+e.message}
- finally{btn.disabled=false}
+ finally{updateAccountSaveState()}
 };
 async function refreshAvatar(){if(!user)return;const {data}=await db.from('forum_profiles').select('avatar_path').eq('user_id',user.id).maybeSingle();const img=$('avatar-preview');img.style.display=data?.avatar_path?'block':'none';if(data?.avatar_path)img.src=db.storage.from('forum-avatars').getPublicUrl(data.avatar_path).data.publicUrl+'?v='+Date.now()}
 $('password-open').onclick=()=>{if(!user)return say('请先登录');$('password-status').textContent='';$('password-form').reset();$('password-dialog').showModal()};
