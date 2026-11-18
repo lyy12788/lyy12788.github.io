@@ -179,11 +179,10 @@ $('image-file').onchange=async()=>{
   canvas.width=canvas.height=0;
   if(clean.size>5*1024*1024)throw new Error('清除隐私信息后超过5MB，请缩小图片');
   const path=user.id+'/'+crypto.randomUUID()+'.'+allowed[file.type];
-  const {error}=await db.storage.from('forum-images').upload(path,clean,{contentType:file.type,upsert:false});
+  const {error}=await db.storage.from('forum-images-review').upload(path,clean,{contentType:file.type,upsert:false});
   if(error)throw error;
-  const {data}=db.storage.from('forum-images').getPublicUrl(path);
-  insertAtCursor('\n!['+($('image-sensitive').checked?'敏感图片':'文章图片')+']('+data.publicUrl+')\n');
-  $('upload-status').textContent='图片已上传。注意：当前图片链接可被直接访问，即使帖子尚未审核；请勿上传身份证件、住址或其他隐私信息。';
+  insertAtCursor('\n[private-forum-image:'+path+']\n');
+  $('upload-status').textContent='图片已安全保存到私人审核区；审核通过后才会公开。请勿上传身份证件、住址等敏感信息。';
  }catch(e){$('upload-status').textContent='图片上传失败：'+(e?.message||'未知错误')}
  finally{btn.disabled=false;$('image-file').value=''}
 };
@@ -284,7 +283,7 @@ async function listComments(id){
  }
 }
 async function mine(){if(!user){show('auth');return}const {data,error}=await db.rpc('forum_my_posts');const root=$('my-posts');root.replaceChildren();if(error)root.textContent=error.message;else if(!data?.length)root.textContent='尚未投稿';else data.forEach(p=>root.append(link(p)));show('mine')}
-async function review(){if(!admin){show('home');return}const {data,error}=await db.from('forum_posts').select('id,title,body,created_at,status').eq('status','pending').order('created_at').limit(100);const root=$('pending-posts');root.replaceChildren();if(error){root.textContent=error.message;show('review');return}if(!data?.length)root.textContent='没有待审核文章';for(const p of data||[]){const d=el('div','');d.className='card';d.append(el('h3',p.title),el('p',p.body.slice(0,1200)));for(const [label,status] of [['审核通过','published'],['拒绝','rejected']]){const b=el('button',label);b.onclick=async()=>{if(!confirm(label+'？'))return;const {error}=await db.from('forum_posts').update({status,reviewed_at:new Date().toISOString(),reviewed_by:user.id}).eq('id',p.id);if(error)say(error.message);else review()};d.append(b)}root.append(d)}show('review')}
+async function review(){if(!admin){show('home');return}const {data,error}=await db.from('forum_posts').select('id,title,body,created_at,status').eq('status','pending').order('created_at').limit(100);const root=$('pending-posts');root.replaceChildren();if(error){root.textContent=error.message;show('review');return}if(!data?.length)root.textContent='没有待审核文章';for(const p of data||[]){const d=el('div','');d.className='card';d.append(el('h3',p.title),el('p',p.body.slice(0,1200)));for(const [label,status] of [['审核通过','published'],['拒绝','rejected']]){const b=el('button',label);b.onclick=async()=>{if(!confirm(label+'？'))return;const {error}=await db.functions.invoke('forum-publish-reviewed',{body:{post_id:p.id,approve:status==='published'}});if(error)say(error.message);else review()};d.append(b)}root.append(d)}show('review')}
 
 function renderReportPost(p){const root=$('report-post-actions');root.replaceChildren();if(!user?.email_confirmed_at)return;const b=el('button','举报文章');b.className='secondary';b.onclick=()=>submitReport({post_id:p.id});root.append(b)}
 async function submitReport(target){if(!user?.email_confirmed_at)return say('请先登录并验证邮箱');const reason=prompt('请说明举报原因（10—1000字）：如刷屏、骚扰、威胁、泄露隐私或侵犯版权。');if(reason===null)return;if(reason.trim().length<10||reason.trim().length>1000)return alert('请填写10—1000字的具体原因');const {error}=await db.from('forum_reports').insert({...target,reporter_id:user.id,reason:reason.trim()});alert(error?'举报失败：'+error.message:'举报已提交，由管理员人工处理。')}
