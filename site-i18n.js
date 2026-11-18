@@ -10,7 +10,7 @@ Object.assign(data,{"这个网站由杨利伟个人发起与维护，既用于�
 Object.assign(data,{"全部":["全部","All","전체","すべて"],"全部分类":["全部分類","All categories","전체 분류","すべてのカテゴリ"],"时事政治":["時事政治","Current affairs","시사 정치","時事・政治"],"国际局势":["國際局勢","International affairs","국제 정세","国際情勢"],"社会观察":["社會觀察","Social observations","사회 관찰","社会観察"],"宗教信仰":["宗教信仰","Religion & faith","종교·신앙","宗教・信仰"],"自由讨论":["自由討論","Open discussion","자유 토론","自由討論"],"共":["共","Total","총","合計"],"篇":["篇","articles","편","件"],"搜索文章标题、分类或内容…":["搜尋文章標題、分類或內容…","Search article titles, categories or content…","글 제목·분류·내용 검색…","記事タイトル・カテゴリ・内容を検索…"],"← 真实之声首页":["← 真實之聲首頁","← Voice of Truth home","← 진실의 목소리 홈","← 真実の声 ホーム"],"← 网站首页":["← 網站首頁","← Website home","← 사이트 홈","← サイトホーム"],"收藏":["收藏","Bookmark","즐겨찾기","ブックマーク"],"资料库":["資料庫","Resources","자료실","資料室"],"公共论坛":["公共論壇","Public forum","공개 포럼","公開フォーラム"],"福音园地":["福音園地","Gospel","복음","福音"],"关于平台":["關於平台","About","소개","サイトについて"],"浏览":["瀏覽","Views","조회","閲覧"],"点赞":["按讚","Likes","좋아요","いいね"],"评论":["評論","Comments","댓글","コメント"],"支持 Google 登录；Facebook 登录目前仅供已授权的测试账号使用。首次授权即完成注册，以后直接登录。":["支援 Google 登入；Facebook 登入目前僅供已授權測試帳戶使用。首次授權即完成註冊，之後可直接登入。","Google sign-in is supported. Facebook sign-in is currently limited to approved test accounts. First-time authorization creates an account; subsequent visits simply sign in.","Google 로그인을 지원합니다. Facebook 로그인은 승인된 테스트 계정만 이용할 수 있습니다. 최초 인증 시 가입이 완료됩니다.","Googleログインに対応しています。Facebookログインは承認済みテストアカウントのみ利用可能です。初回認証で登録が完了します。"],"当前没有有效登录会话。请先选择 Google、Facebook 或邮箱登录；登录成功后再点击「发表文章」。":["目前沒有有效登入工作階段。請先使用 Google、Facebook 或電子郵件登入，再點選「發表文章」。","You are not signed in. Sign in with Google, Facebook or email before selecting Create post.","로그인 상태가 아닙니다. Google, Facebook 또는 이메일로 로그인한 뒤 글쓰기를 선택하세요.","ログインしていません。Google、Facebook、メールのいずれかでログインしてから投稿してください。"],"也可以使用邮箱和密码注册或登录：":["也可以使用電子郵件及密碼註冊或登入：","You can also sign up or log in with email and password:","이메일과 비밀번호로 가입하거나 로그인할 수도 있습니다:","メールとパスワードでも登録・ログインできます："],"密码（至少8位，含大小写字母和数字）":["密碼（至少8位，包含大小寫字母與數字）","Password (8+ characters, upper/lowercase letters and numbers)","비밀번호 (8자 이상, 대소문자 및 숫자 포함)","パスワード（8文字以上、大小英字と数字）"],"注册后请在邮箱中完成验证，再发表文章。你的邮箱不会显示在论坛。":["註冊後請先完成電子郵件驗證再發文。電子郵件不會顯示在論壇。","Verify your email before posting. Your email address will not appear on the forum.","글을 작성하기 전에 이메일 인증을 완료하세요. 이메일 주소는 게시판에 표시되지 않습니다.","投稿前にメール認証を完了してください。メールアドレスは掲示板に表示されません。"],"规划支持访客和会员免费申请，提交后获得安全查询凭证。涉及个人信息的在线申请通道须在权限和隐私测试通过后开放。":["規劃支援訪客及會員免費申請，提交後取得安全查詢憑證。涉及個人資料的線上申請將在權限及隱私測試通過後開放。","Free applications for guests and members are planned, with a secure tracking reference. Online submissions involving personal information will open only after access-control and privacy testing.","방문자와 회원의 무료 신청 및 안전한 조회번호 제공을 계획 중입니다. 개인정보가 포함된 온라인 신청은 권한 및 개인정보 보호 검증 후 개방됩니다.","訪問者と会員の無料申請を予定しており、安全な照会番号を発行します。個人情報を扱うオンライン申請は権限・プライバシー検証後に開放します。"]});
 const labels={'zh-CN':'简体中文','zh-TW':'繁體中文',en:'English',ko:'한국어',ja:'日本語'};
 const storage='lyy-site-language';const current=()=>{try{const v=localStorage.getItem(storage);return langs.includes(v)?v:'zh-CN'}catch{return 'zh-CN'}};
-const original=new WeakMap();const attrOriginal=new WeakMap();
+const original=new WeakMap();const rendered=new WeakMap();const attrOriginal=new WeakMap();
 const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,#post-detail,#comments,#comment-list,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]');
 const normalize=t=>String(t||'').replace(/\s+/g,' ').trim();
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
@@ -54,14 +54,14 @@ let src=original.get(n);
 if(src===undefined){src=visible;original.set(n,src)}
 else {
 const prev=translateSource(src,uiFragment(el));
-if(visible!==src&&visible!==prev){
+if(visible!==src&&visible!==prev&&visible!==rendered.get(n)){
 const known=translations.get(normalize(src));
 const matchesKnown=known&&known.some(v=>normalize(v)===normalize(visible));
 if(!matchesKnown){src=visible;original.set(n,src)}
 }
 }
 const translated=translateSource(src,uiFragment(el));
-if(visible!==translated)n.nodeValue=translated;
+if(visible!==translated)n.nodeValue=translated;rendered.set(n,translated);
 }
 document.querySelectorAll('[aria-label],[title],[placeholder],input[type="button"],input[type="submit"],input[type="reset"]').forEach(el=>{
 if(excluded(el))return;
@@ -92,7 +92,7 @@ if(!el||el.closest('h1,h2,h3,a,[class*="title"],[class*="nickname"],[class*="aut
 const raw=node.nodeValue;
 let src=original.get(node);
 if(src===undefined){src=raw;original.set(node,src)}
-if(!/^(\\s*[◉◌●○♥❤]?\\s*(浏览|评论|点赞)\\s*\\d+\\s*|\\s*(自由讨论|宗教信仰)\\s*[·•]?\\s*)$/.test(src))continue;
+if(!/^(\s*[◉◌●○♥❤]?\s*(浏览|评论|点赞)\s*\d+\s*|\s*(自由讨论|宗教信仰)\s*[·•]?\s*)$/.test(src))continue;
 let next=src;
 if(idx>=0){for(const key of ['浏览','评论','点赞','自由讨论','宗教信仰']){const vals=translations.get(key);if(vals)next=next.split(key).join(vals[idx])}}
 if(node.nodeValue!==next)node.nodeValue=next;
