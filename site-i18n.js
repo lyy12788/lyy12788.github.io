@@ -49,7 +49,7 @@ const values=translations.get(key);
 if(values){const match=source.match(/^(\s*)([\s\S]*?)(\s*)$/);return match?match[1]+(idx<0?key:values[idx])+match[3]:(idx<0?key:values[idx]);}
 if(idx>=0){
 const count=key.match(/^共 (\\d+) 篇$/);if(count)return ['共 '+count[1]+' 篇','共 '+count[1]+' 篇',count[1]+' articles','총 '+count[1]+'편','計'+count[1]+'件'][idx+1];
-for(const prefix of ['提交失败：','操作失败：'])if(key.startsWith(prefix)){const translated=translations.get(prefix);if(translated)return translated[idx]+key.slice(prefix.length)}
+for(const prefix of ['提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 '])if(key.startsWith(prefix)){const translated=translations.get(prefix);if(translated)return translated[idx]+key.slice(prefix.length)}
 }
 if(!partial||idx<0)return source;
 let output=source;
