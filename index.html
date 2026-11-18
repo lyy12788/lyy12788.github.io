@@ -227,6 +227,16 @@ body{background:var(--bg)}
 .nav-member-level{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:0 5px;margin-left:4px;font-size:11px;font-weight:700;line-height:1.5;vertical-align:middle}
 
 .site-admin-mark{color:#00bfff;font-weight:900;text-shadow:0 0 9px #00bfff99;text-decoration:none!important}
+
+/* Responsive desktop navigation: prevent clipping at narrow widths and browser zoom */
+.sitebar .navrow{height:auto;min-width:0;flex-wrap:wrap;column-gap:clamp(8px,1.2vw,20px);row-gap:8px;padding-block:10px}
+.sitebar .brand{flex:0 0 auto;font-size:clamp(17px,1.35vw,23px)}
+.sitebar .navlinks{flex:1 1 600px;min-width:0;flex-wrap:wrap;justify-content:flex-end;column-gap:clamp(9px,1.15vw,22px);row-gap:6px;margin-left:0}
+.sitebar .navlinks a{font-size:clamp(12px,.9vw,14px);line-height:1.4}
+.sitebar .nav-actions{display:flex;align-items:center;flex:0 1 auto;flex-wrap:wrap;justify-content:flex-end;gap:7px;min-width:0}
+.sitebar .nav-actions .mini-btn{padding:7px clamp(8px,.8vw,14px);font-size:clamp(12px,.82vw,14px);white-space:nowrap}
+@media (min-width:761px) and (max-width:1450px){.sitebar .navlinks{order:3;flex:1 0 100%;justify-content:center}.sitebar .nav-actions{margin-left:auto}.sitebar .navrow{padding-block:9px}}
+@media (max-width:760px){.sitebar .navrow{flex-wrap:wrap}.sitebar .brand{font-size:18px}.sitebar .navlinks{display:none;order:5;flex-basis:100%;justify-content:flex-start}.sitebar .navlinks.open{display:flex}.sitebar .nav-actions{margin-left:auto;flex-wrap:wrap}.sitebar .nav-actions .mini-btn{padding:6px 8px;font-size:12px}#lyy-home-notifications{font-size:12px!important}}
 </style>
 </head>
 <body>
