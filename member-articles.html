@@ -17,7 +17,7 @@ async function save(submit){
  if(selected){({error}=await db.from('member_articles').update({title,body,status:submit?'pending':'draft'}).eq('id',selected));}
  else {const created=await db.from('member_articles').insert({author_id:user.id,title,body,status:'draft'}).select('id').single();error=created.error;if(!error){selected=created.data.id;if(submit){({error}=await db.from('member_articles').update({status:'pending'}).eq('id',selected));}}}
  for(const id of ['save','submit'])$(id).disabled=false;
- msg(error?'保存或申请失败：'+error.message:submit?'已提交发表申请，请等待站长或管理员审核。':'草稿已保存，仅您本人和审核管理员可见。');
+ msg(error?'保存或申请失败：'+error.message:submit?'已提交发表申请，请等待站长或管理员审核。':'草稿已保存，仅您本人可见。');
  if(!error){reset();await loadMine();await loadPending()}
 }
 $('save').onclick=()=>save(false);$('submit').onclick=()=>save(true);
