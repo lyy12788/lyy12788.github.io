@@ -106,6 +106,16 @@ function openUnifiedAccountDialog(){
  }
  const frame=unifiedAccountDialog.querySelector('iframe');
  frame.src='/?account_embed=1#account';
+ const compact=window.innerWidth<650;
+ unifiedAccountDialog.style.setProperty('width',compact?'100vw':'min(900px,94vw)','important');
+ unifiedAccountDialog.style.setProperty('min-width',compact?'0':'min(720px,94vw)','important');
+ unifiedAccountDialog.style.setProperty('height',compact?'100dvh':'min(900px,90dvh)','important');
+ unifiedAccountDialog.style.setProperty('max-height',compact?'100dvh':'90dvh','important');
+ unifiedAccountDialog.style.setProperty('padding','0','important');
+ unifiedAccountDialog.style.setProperty('box-sizing','border-box','important');
+ unifiedAccountDialog.style.setProperty('overflow','hidden','important');
+ frame.style.setProperty('width','100%','important');
+ frame.style.setProperty('height','100%','important');
  if(!unifiedAccountDialog.open)unifiedAccountDialog.showModal();
 }
 let ownAccountPopupOpen=false;
