@@ -20,7 +20,20 @@ const safe=raw=>{try{const u=new URL(raw,location.origin);return u.origin===loca
 const fmt=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00';
 const requested=()=>safe(new URLSearchParams(location.search).get('page')||'/gospel.html')||new URL('/gospel.html',location.origin);
 function navigate(u,push=true){if(!u)return;const dest=u.pathname+u.search+u.hash;frame.src=dest;if(push)history.pushState({},'', '/player.html?page='+encodeURIComponent(dest))}
-function wire(){let doc;try{doc=frame.contentDocument;if(!doc)return}catch{return}const u=safe(frame.contentWindow.location.href);if(u){history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));document.title=(doc.title||'真实之声')+' · 音频播放'}
+function syncFrameAddress(){
+ let doc,u;try{doc=frame.contentDocument;u=safe(frame.contentWindow.location.href)}catch{return}
+ if(!u)return;
+ const dest=u.pathname+u.search+u.hash;
+ const shown=new URLSearchParams(location.search).get('page');
+ if(shown!==dest)history.replaceState({},'', '/player.html?page='+encodeURIComponent(dest));
+ if(doc)document.title=(doc.title||'真实之声')+' · 音频播放';
+}
+function wire(){let doc;try{doc=frame.contentDocument;if(!doc)return}catch{return}
+ syncFrameAddress();
+ // In-page article routing uses hashes; iframe load does not fire for these changes.
+ // Keep the outer URL in sync so a refresh cannot reopen the previously read article.
+ frame.contentWindow.removeEventListener('hashchange',syncFrameAddress);
+ frame.contentWindow.addEventListener('hashchange',syncFrameAddress);
 doc.addEventListener('click',e=>{const a=e.target.closest?.('a[href]');if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;const u=safe(a.href);if(!u)return;const now=frame.contentWindow.location;if(u.pathname===now.pathname&&u.search===now.search)return;e.preventDefault();navigate(u)},true);
 }
 function syncIframeLanguage(){try{const doc=frame.contentDocument;if(!doc)return;const lang=localStorage.getItem('lyy-site-language')||'zh-CN';const inner=doc.getElementById('lyy-language-wrap');if(inner)inner.remove();let style=doc.getElementById('lyy-hide-inner-language');if(!style){style=doc.createElement('style');style.id='lyy-hide-inner-language';style.textContent='#lyy-language-wrap{display:none!important}';doc.head.appendChild(style)}if(frame.contentWindow.lyyLanguage?.apply)frame.contentWindow.lyyLanguage.apply(lang);frame.contentWindow.postMessage({type:'lyy-language',lang},location.origin)}catch(e){}}
