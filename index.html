@@ -327,7 +327,36 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
   #home-view .section-heading h2 {font-size:19px}
 }
 </style>
-<link rel="stylesheet" href="/tablet-touch.css?v=1"><link rel="stylesheet" href="/wide-layout.css?v=1"></head>
+<link rel="stylesheet" href="/tablet-touch.css?v=1"><link rel="stylesheet" href="/wide-layout.css?v=1"><style>
+@media (min-width: 1000px) and (hover: hover) and (pointer: fine) {
+  #home-view .community-hero .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 28px;
+    padding-bottom: 18px;
+  }
+  #home-view .hero-inner > :is(.eyebrow, h1) { grid-column: 1 / -1; }
+  #home-view .hero-inner > p {
+    grid-area: 3 / 1;
+    align-self: end;
+    margin-bottom: 0;
+  }
+  #home-view .home-hero-actions { display: contents; }
+  #home-view .home-hero-actions .hero-feedback-row {
+    grid-area: 3 / 2;
+    align-self: end;
+    margin: 0;
+  }
+  #home-view .home-hero-actions .hero-cta {
+    grid-area: 4 / 1 / 5 / -1;
+    margin-top: 16px;
+  }
+  #home-view .home-hero-actions .site-save-tools {
+    grid-area: 5 / 1 / 6 / -1;
+    margin: 8px 0 0;
+  }
+}
+</style></head>
 <body><script>if(new URLSearchParams(location.search).has('account_embed')&&window.parent!==window)document.body.classList.add('lyy-account-embed');</script>
 <div class="sitebar"><div class="wrap navrow"><a class="brand" href="#home"><span>真实之声</span><small>说真话 · 听见彼此</small></a><nav class="navlinks" id="navlinks" aria-label="网站导航"><a href="#home">首页</a><a href="/forum.html">公共论坛</a><a href="#community-feed">最新讨论</a><a href="/articles.html">文章专区</a><a href="#resources">资料库</a><a href="/aid.html">公益援助</a><a href="/suggestions.html">网站建议</a><a href="#about">关于平台</a></nav><div class="nav-actions"><button class="mini-btn gold" id="nav-login" type="button">注册 / 登录</button><button class="mini-btn" id="nav-user" type="button" hidden>我的账户 <span id="nav-member-level" class="nav-member-level" hidden></span></button><button class="mini-btn" id="nav-admin" type="button" hidden>评论管理</button><button class="mini-btn menu-toggle" id="menu-toggle" type="button" aria-label="展开菜单">☰</button></div></div></div>
 <div id="home-view">
