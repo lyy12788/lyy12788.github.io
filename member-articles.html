@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网友文章 · 真实之声</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#081321;color:#edf3f9;font:16px/1.7 system-ui,sans-serif}main{max-width:960px;margin:auto;padding:26px 18px 90px}h1,h2{color:#f5c84b}a{color:#f5c84b}p{color:#bac8d7}.card{background:#12263a;border:1px solid #344b60;border-radius:13px;padding:18px;margin:16px 0}input,textarea{display:block;width:100%;margin:8px 0 15px;padding:12px;border:1px solid #5b6b80;border-radius:8px;background:#09192b;color:white;font:inherit}textarea{min-height:230px;resize:vertical}button{border:0;border-radius:8px;padding:10px 17px;background:#e8bd40;color:#0a192a;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.5}small{color:#aebfd0}article h3{margin:0}article p{white-space:pre-wrap;overflow-wrap:anywhere}#editor[hidden]{display:none}</style></head><body><main><a href="/articles.html">← 返回文章专区</a><h1>网友文章</h1><p>这里展示会员正式投稿的文章，与公共论坛帖子分开管理。所有已验证邮箱的会员均可提交文章。提交后立即进入待审核状态，仅作者与审核人员可见；审核通过后自动公开，并通知作者。</p><section class="card"><h2>文章创作与投稿</h2><p id="eligibility">正在检查会员权限……</p><div id="editor" hidden><label>文章标题<input id="title" maxlength="30" placeholder="5—30个字符"></label><label>文章正文<textarea id="body" maxlength="50000" placeholder="100—50000个字符"></textarea></label><p id="grant-review-info" style="font-size:13px">提交发布即授权站长和管理员审核此篇文章，审核通过前不对外展示。</p><input id="grant-review" type="checkbox" hidden checked><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="save" type="button">保存私人草稿</button><button id="submit" type="button">提交发布</button><button id="clear" type="button">新建文章</button></div></div><p id="result" role="status"></p><a href="/forum.html">前往公共论坛发帖 →</a></section><section class="card" id="mine" hidden><h2>我的文章与草稿</h2><div id="mine-list"></div></section><section class="card" id="delete-review" hidden><h2>文章删除申请</h2><div id="delete-request-list"></div></section><section id="revision-review" hidden><h2>待审核文章修改</h2><div id="revision-list"></div></section><section id="admin-review" hidden><h2>待审核文章</h2><div id="pending-list"></div></section><section><h2>已发表的网友文章</h2><div id="list">正在加载文章……</div></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网友文章 · 真实之声</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#081321;color:#edf3f9;font:16px/1.7 system-ui,sans-serif}main{max-width:960px;margin:auto;padding:26px 18px 90px}h1,h2{color:#f5c84b}a{color:#f5c84b}p{color:#bac8d7}.card{background:#12263a;border:1px solid #344b60;border-radius:13px;padding:18px;margin:16px 0}input,textarea{display:block;width:100%;margin:8px 0 15px;padding:12px;border:1px solid #5b6b80;border-radius:8px;background:#09192b;color:white;font:inherit}textarea{min-height:230px;resize:vertical}button{border:0;border-radius:8px;padding:10px 17px;background:#e8bd40;color:#0a192a;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.5}small{color:#aebfd0}article h3{margin:0}article p{white-space:pre-wrap;overflow-wrap:anywhere}#editor[hidden]{display:none}</style></head><body><main><a href="/articles.html">← 返回文章专区</a><h1>网友文章</h1><p>这里展示会员正式投稿的文章，与公共论坛帖子分开管理。所有已验证邮箱的会员均可提交文章。提交后立即公开，无须事前审核；涉嫌违规内容可举报并依法处理。</p><section class="card"><h2>文章创作与投稿</h2><p id="eligibility">正在检查会员权限……</p><div id="editor" hidden><label>文章标题<input id="title" maxlength="30" placeholder="5—30个字符"></label><label>文章正文<textarea id="body" maxlength="50000" placeholder="100—50000个字符"></textarea></label><p id="grant-review-info" style="font-size:13px">文章提交后立即公开；请遵守社区规则。</p><input id="grant-review" type="checkbox" hidden checked><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="save" type="button">保存私人草稿</button><button id="submit" type="button">提交发布</button><button id="clear" type="button">新建文章</button></div></div><p id="result" role="status"></p><a href="/forum.html">前往公共论坛发帖 →</a></section><section class="card" id="mine" hidden><h2>我的文章与草稿</h2><div id="mine-list"></div></section><section class="card" id="delete-review" hidden><h2>文章删除申请</h2><div id="delete-request-list"></div></section><section id="revision-review" hidden><h2>待审核文章修改</h2><div id="revision-list"></div></section><section id="admin-review" hidden><h2>待审核文章</h2><div id="pending-list"></div></section><section><h2>已发表的网友文章</h2><div id="list">正在加载文章……</div></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
 (async()=>{'use strict';
 const $=id=>document.getElementById(id),db=window.supabase?.createClient('https://mkchupvmervxkskvjyhz.supabase.co','sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z');
 if(!db){$('eligibility').textContent='服务暂不可用';return}
@@ -14,12 +14,11 @@ async function save(submit){
  if(title.length>30||body.length>50000){msg('标题最多30字，正文最多50000字。');return}
  for(const id of ['save','submit'])$(id).disabled=true;
  let error;
- if(selected&&editingPublished){if(!submit){msg('已发表文章的修改必须申请审核，不能直接保存覆盖原文。');for(const id of ['save','submit'])$(id).disabled=false;return}const result=await db.rpc('member_article_request_revision',{p_article_id:selected,p_title:title,p_body:body});error=result.error;for(const id of ['save','submit'])$(id).disabled=false;msg(error?'修改申请失败：'+error.message:'修改申请已提交。审核期间继续显示原文。');if(!error){reset();await loadMine();await loadRevisions()}return}
- if(selected){({error}=await db.from('member_articles').update({title,body,status:submit?'pending':'draft',reviewer_access:submit}).eq('id',selected));}
- else {const created=await db.from('member_articles').insert({author_id:user.id,title,body,status:'draft'}).select('id').single();error=created.error;if(!error){selected=created.data.id;if(submit){({error}=await db.from('member_articles').update({status:'pending',reviewer_access:true}).eq('id',selected));}}}
+ if(selected){({error}=await db.from('member_articles').update({title,body,status:submit?'published':'draft'}).eq('id',selected));}
+ else {const created=await db.from('member_articles').insert({author_id:user.id,title,body,status:submit?'published':'draft'}).select('id').single();error=created.error;if(!error)selected=created.data.id;}
  for(const id of ['save','submit'])$(id).disabled=false;
- msg(error?'保存或发布失败：'+error.message:submit?'文章发布成功，审核通过之后就对外展示':'草稿已保存，仅您本人可见。');
- if(!error){const feedback=submit?'文章发布成功，审核通过之后就对外展示':'草稿已保存，仅您本人可见。';reset();msg(feedback);await loadMine();await loadPending()}
+ if(!error){const feedback=submit?'文章发布成功，已对外公开。':'草稿已保存，仅您本人可见。';reset();msg(feedback);await loadMine();await loadPublic();}
+ else msg('保存或发布失败：'+error.message);
 }
 $('save').onclick=()=>save(false);$('submit').onclick=()=>save(true);
 async function loadMine(){
@@ -27,10 +26,9 @@ async function loadMine(){
  const {data,error}=await db.from('member_articles').select('id,title,body,status,review_note,reviewer_access,updated_at,published_at,created_at').eq('author_id',user.id).order('updated_at',{ascending:false}).limit(100);
  if(error){root.textContent='我的文章加载失败';return}
  if(!data?.length){root.textContent='还没有草稿或文章。';return}
- for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('h3',item.title||'未命名草稿'),safeText('small',({draft:'私人草稿',pending:'等待审核',published:'已公开发表',rejected:'审核未通过'})[item.status]||item.status));
+ for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('h3',item.title||'未命名草稿'),safeText('small',({draft:'私人草稿',pending:'旧待审核文章',published:'已公开发表',rejected:'旧未通过文章'})[item.status]||item.status));
  if(item.review_note)card.append(safeText('p','审核意见：'+item.review_note));
- if(item.status==='pending'){const withdraw=document.createElement('button');withdraw.textContent='撤回申请';withdraw.onclick=async()=>{const {error}=await db.from('member_articles').update({status:'draft',reviewer_access:false}).eq('id',item.id);if(error)alert(error.message);else await loadMine()};card.append(withdraw)}if(item.status==='draft'||item.status==='rejected'||item.status==='published'){
- const b=document.createElement('button');b.textContent=item.status==='published'?'修改并重新申请审核':'继续编辑';b.onclick=()=>{selected=item.id;editingPublished=item.status==='published';$('title').value=item.title;$('body').value=item.body;$('grant-review').checked=true;window.scrollTo({top:0,behavior:'smooth'});msg(item.status==='published'?'请修改后点击申请审核发表；审核期间仍显示原文。':'正在编辑文章。')};card.append(b)}
+ if(['draft','rejected','pending','published'].includes(item.status)){const b=document.createElement('button');b.textContent=item.status==='published'?'修改文章':'继续编辑';b.onclick=()=>{selected=item.id;editingPublished=item.status==='published';$('title').value=item.title;$('body').value=item.body;window.scrollTo({top:0,behavior:'smooth'});msg('正在编辑文章。')};card.append(b)}
  if(item.status==='draft'||item.status==='rejected'||(item.status==='published'&&Date.now()-new Date(item.published_at||item.created_at).getTime()<259200000)){
  const del=document.createElement('button');del.textContent='删除文章';del.onclick=async()=>{if(!confirm('确定永久删除这篇文章？此操作不可撤销。'))return;const {error}=await db.from('member_articles').delete().eq('id',item.id);if(error)alert('删除失败：'+error.message);else{reset();await loadMine();await loadPublic()}};card.append(del);
  }else if(item.status==='published'){
@@ -50,7 +48,7 @@ async function loadPending(){
  const b=document.createElement('button');b.textContent=label;b.style.marginRight='8px';
  b.onclick=async()=>{if(status==='rejected'&&!note.value.trim()){alert('拒绝投稿时请填写原因。');return}b.disabled=true;
  const {error}=await db.from('member_articles').update({status,review_note:note.value.trim()||null}).eq('id',item.id);
- if(error){alert('操作失败：'+error.message);b.disabled=false}else{await loadPending();await loadPublic();await loadMine();await loadDeleteRequests()}};
+ if(error){alert('操作失败：'+error.message);b.disabled=false}else{await loadPublic();await loadMine();await loadDeleteRequests()}};
  card.append(b)}root.append(card)}
 }
 async function loadDeleteRequests(){
@@ -72,7 +70,7 @@ async function loadRevisions(){
  const note=document.createElement('textarea');note.placeholder='修改审核意见';note.rows=2;card.append(note);
  for(const [approve,label] of [[true,'批准修改'],[false,'拒绝修改']]){const b=document.createElement('button');b.textContent=label;b.style.marginRight='8px';b.onclick=async()=>{
  const {error}=await db.rpc('member_article_review_revision',{p_revision_id:item.id,p_approve:approve,p_note:note.value.trim()});
- if(error)alert('修改审核失败：'+error.message);else{await loadRevisions();await loadPublic();await loadMine()}};card.append(b)}root.append(card)}
+ if(error)alert('修改审核失败：'+error.message);else{await loadPublic();await loadMine()}};card.append(b)}root.append(card)}
 }
 async function loadPublic(){
  const root=$('list');root.replaceChildren();const {data,error}=await db.from('member_articles').select('id,title,body,created_at').eq('status','published').order('created_at',{ascending:false}).limit(50);
@@ -85,8 +83,8 @@ else if(!user.email_confirmed_at){$('eligibility').textContent='请先完成邮�
 else{
  const {data,error}=await db.rpc('forum_public_member_level',{p_user_id:user.id});
  admin=!error&&Boolean(data?.[0]?.is_admin);const {data:reviewer,error:reviewError}=await db.rpc('can_review_member_articles');const canReview=!reviewError&&reviewer===true;
- $('eligibility').textContent='您可以保存私人草稿，或直接提交文章进入审核队列。审核通过前文章不会对外展示。';
- $('editor').hidden=false;await loadMine();if(canReview)await loadPending();if(admin){await loadDeleteRequests();await loadRevisions();}
+ $('eligibility').textContent='您可以保存私人草稿，或直接发布公开文章，无须事前审核。';
+ $('editor').hidden=false;await loadMine();if(canReview)if(admin){await loadDeleteRequests();}
 }
 await loadPublic();
 })();
