@@ -986,6 +986,74 @@ Object.assign(data,{
     "コンテンツモデレーター"
   ]
 });
+Object.assign(data,{
+  "站长负责全站设置，可任免管理员，限制或恢复管理员及会员账号，并处理所有举报和申诉。管理员可处理普通会员作品的举报及移除违规作品。站长的账号和作品由站长管理。": [
+    "站長負責全站設定，可任免管理員、限制或恢復管理員及會員帳號，並處理所有檢舉和申訴。管理員可處理一般會員作品的檢舉及移除違規作品。站長的帳號及作品由站長管理。",
+    "The site owner manages site settings, appoints and removes administrators, restricts or restores administrator and member accounts, and handles all reports and appeals. Administrators can review reports about ordinary members’ content and remove violating content. The site owner manages the owner’s account and content.",
+    "사이트 운영자는 사이트 설정, 관리자 임명과 해제, 관리자 및 회원 계정 제한과 해제, 모든 신고와 이의 신청 처리를 담당합니다. 관리자는 일반 회원 콘텐츠에 대한 신고를 검토하고 위반 콘텐츠를 삭제할 수 있습니다. 운영자 계정과 콘텐츠는 운영자가 관리합니다.",
+    "サイト所有者はサイト設定、管理者の任免、管理者と会員のアカウント制限・解除、すべての通報と異議申し立てを担当します。管理者は一般会員のコンテンツに関する通報を確認し、違反コンテンツを削除できます。所有者のアカウントとコンテンツは所有者が管理します。"
+  ],
+  "举报和申诉不公开。管理员可查看普通会员作品的相关举报，站长可处理全部举报和申诉。申诉人可查看自己的申诉记录。": [
+    "檢舉和申訴不公開。管理員可查看一般會員作品的相關檢舉，站長可處理全部檢舉和申訴。申訴人可查看自己的申訴紀錄。",
+    "Reports and appeals are private. Administrators may view reports about ordinary members’ content. The site owner may handle all reports and appeals. Members can view their own appeal history.",
+    "신고와 이의 신청은 비공개입니다. 관리자는 일반 회원의 콘텐츠에 관한 신고를 볼 수 있습니다. 사이트 운영자는 모든 신고와 이의 신청을 처리할 수 있습니다. 신청자는 자신의 이의 신청 기록을 볼 수 있습니다.",
+    "通報と異議申し立ては非公開です。管理者は一般会員のコンテンツに関する通報を確認できます。サイト所有者はすべての通報と異議申し立てに対応できます。申し立てた本人は自分の履歴を確認できます。"
+  ],
+  "站长": [
+    "站長",
+    "Site owner",
+    "사이트 운영자",
+    "サイト所有者"
+  ],
+  "管理员权限": [
+    "管理員權限",
+    "Administrator permissions",
+    "관리자 권한",
+    "管理者の権限"
+  ],
+  "内容管理": [
+    "內容管理",
+    "Content moderation",
+    "콘텐츠 관리",
+    "コンテンツ管理"
+  ],
+  "账号限制": [
+    "帳號限制",
+    "Account restrictions",
+    "계정 제한",
+    "アカウント制限"
+  ],
+  "搜索昵称或邮箱": [
+    "搜尋暱稱或電子郵件地址",
+    "Search by nickname or email",
+    "닉네임 또는 이메일 검색",
+    "ニックネームまたはメールアドレスで検索"
+  ],
+  "此举报已处理或超出你的权限。": [
+    "此檢舉已處理或超出你的權限。",
+    "This report has already been handled or is outside your permissions.",
+    "이미 처리되었거나 권한 범위를 벗어난 신고입니다.",
+    "この通報は処理済みか、権限の範囲外です。"
+  ],
+  "仅站长可管理账号": [
+    "僅站長可管理帳號",
+    "Only the site owner can manage accounts.",
+    "사이트 운영자만 계정을 관리할 수 있습니다.",
+    "サイト所有者のみがアカウントを管理できます。"
+  ],
+  "无法管理此账号": [
+    "無法管理此帳號",
+    "This account cannot be managed here.",
+    "이 계정은 여기서 관리할 수 없습니다.",
+    "このアカウントはここでは管理できません。"
+  ],
+  "站长（此处不可更改站长权限）": [
+    "站長（無法在此變更站長權限）",
+    "Site owner (owner permissions cannot be changed here)",
+    "사이트 운영자(여기서는 운영자 권한을 변경할 수 없음)",
+    "サイト所有者（ここでは所有者の権限を変更できません）"
+  ]
+});
 const issueAliases=new Map(Object.entries({
  'Active verified membership required':'请先验证邮箱，并确认账号状态正常。',
  'Verified active membership required':'请先验证邮箱，并确认账号状态正常。',
