@@ -49,7 +49,12 @@ Object.assign(data,{"请先完成人机验证，再申请重设密码。":["請�
 const labels={'zh-CN':'简体中文','zh-TW':'繁體中文',en:'English',ko:'한국어',ja:'日本語'};
 const storage='lyy-site-language';const current=()=>{try{const v=localStorage.getItem(storage);return langs.includes(v)?v:'zh-CN'}catch{return 'zh-CN'}};
 const original=new WeakMap();const rendered=new WeakMap();const attrOriginal=new WeakMap();const attrRendered=new WeakMap();
-const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],time[data-lyy-local-time],[data-lyy-member-count],.post-body,.comment-body,.user-content,#post-list,.forum-comment-text,.forum-comment-wrap .forum-comment-text,.forum-post-content,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]')||!!(e?.closest('#drive-list,#drive-player')&&!e.closest('[data-lyy-media-ui]'));
+const excluded=e=>{
+ if(e?.closest('[data-lyy-forum-ui]')){
+  return !!e.closest('[data-user-content],[data-no-translate],script,style,noscript,textarea,pre,code,[contenteditable]');
+ }
+ return !!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],time[data-lyy-local-time],[data-lyy-member-count],.post-body,.comment-body,.user-content,#post-list,.forum-comment-text,.forum-comment-wrap .forum-comment-text,.forum-post-content,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]')||!!(e?.closest('#drive-list,#drive-player')&&!e.closest('[data-lyy-media-ui]'));
+};
 const normalize=t=>String(t||'').replace(/\s+/g,' ').trim();
 Object.assign(data,{"请输入旧密码。":["請輸入舊密碼。","Enter your current password.","현재 비밀번호를 입력하세요.","現在のパスワードを入力してください。"],"当前密码不正确。":["目前密碼不正確。","Current password is incorrect.","현재 비밀번호가 올바르지 않습니다.","現在のパスワードが正しくありません。"],"两次输入的新密码不一致。":["兩次輸入的新密碼不一致。","New passwords do not match.","새 비밀번호가 일치하지 않습니다.","新しいパスワードが一致しません。"],"新密码不能与旧密码相同。":["新密碼不能與舊密碼相同。","New password must differ from the old password.","새 비밀번호는 이전 비밀번호와 달라야 합니다.","新しいパスワードは以前のものと異なる必要があります。"],"正在验证旧密码……":["正在驗證舊密碼……","Verifying current password…","현재 비밀번호 확인 중…","現在のパスワードを確認中…"],"旧密码验证成功，正在更新密码……":["舊密碼驗證成功，正在更新密碼……","Password verified. Updating…","비밀번호 확인 완료. 변경 중…","パスワード確認完了。更新中…"],"密码修改成功。下次登录请使用新密码。":["密碼修改成功。下次登入請使用新密碼。","Password changed. Use the new password next time you sign in.","비밀번호가 변경되었습니다. 다음 로그인부터 새 비밀번호를 사용하세요.","パスワードを変更しました。次回から新しいパスワードでログインしてください。"],"必须先验证当前密码。":["必須先驗證目前密碼。","Verify your current password first.","먼저 현재 비밀번호를 확인하세요.","先に現在のパスワードを確認してください。"],"新密码不符合安全要求。":["新密碼不符合安全要求。","New password does not meet security requirements.","새 비밀번호가 보안 요구사항을 충족하지 않습니다.","新しいパスワードがセキュリティ要件を満たしていません。"],"操作过于频繁，请稍后重试。":["操作過於頻繁，請稍後重試。","Too many attempts. Try again later.","요청이 너무 많습니다. 잠시 후 다시 시도하세요.","操作が多すぎます。しばらくしてから再試行してください。"],"网络连接失败，请检查网络后重试。":["網路連線失敗，請檢查網路後重試。","Network error. Check your connection and retry.","네트워크 오류입니다. 연결을 확인하고 다시 시도하세요.","ネットワークエラーです。接続を確認して再試行してください。"],"登录已过期，请重新登录。":["登入已過期，請重新登入。","Session expired. Sign in again.","로그인 세션이 만료되었습니다. 다시 로그인하세요.","セッションが期限切れです。再度ログインしてください。"],"操作失败，请稍后重试。":["操作失敗，請稍後重試。","Operation failed. Try again later.","작업에 실패했습니다. 잠시 후 다시 시도하세요.","操作に失敗しました。後でもう一度お試しください。"],"再次输入新密码":["再次輸入新密碼","Confirm new password","새 비밀번호 다시 입력","新しいパスワードを再入力"],"请输入旧密码":["請輸入舊密碼","Enter current password","현재 비밀번호 입력","現在のパスワードを入力"]});
 Object.assign(data,{"举报文章":["舉報文章","Report article","게시글 신고","記事を通報"],"删除评论":["刪除評論","Delete comment","댓글 삭제","コメントを削除"],"举报":["舉報","Report","신고","通報"],"标记已处理":["標記已處理","Mark resolved","처리 완료 표시","対応済みにする"],"请输入举报文章的原因（5～300字）：":["請輸入舉報文章的原因（5～300字）：","Enter a reason for reporting this article (5–300 characters):","게시글 신고 사유를 입력하세요(5~300자):","記事の通報理由を入力してください（5～300文字）："],"举报原因需为5～300字。":["舉報原因須為5～300字。","Report reason must be 5–300 characters.","신고 사유는 5~300자여야 합니다.","通報理由は5～300文字で入力してください。"],"文章举报已提交，等待管理员处理。":["文章舉報已提交，等待管理員處理。","Article report submitted for review.","게시글 신고가 접수되었습니다. 관리자 검토를 기다려 주세요.","記事の通報を受け付けました。管理者が確認します。"],"请先完成邮箱验证。":["請先完成電子郵件驗證。","Verify your email first.","먼저 이메일 인증을 완료하세요.","先にメール認証を完了してください。"],"文章举报读取失败：":["文章舉報讀取失敗：","Failed to load article reports: ","게시글 신고 내역을 불러오지 못했습니다: ","記事の通報を読み込めませんでした："],"文章举报":["文章舉報","Article report","게시글 신고","記事の通報"],"举报失败：":["舉報失敗：","Report failed: ","신고 실패: ","通報失敗："],"请先在“我的账户”中设置公开昵称，再发表评论。":["請先在「我的帳戶」設定公開暱稱，再發表評論。","Set your public nickname in My Account before commenting.","댓글 작성 전 내 계정에서 공개 닉네임을 설정하세요.","コメント前にマイアカウントで公開ニックネームを設定してください。"],"正在提交文章，请稍候。":["正在提交文章，請稍候。","Submitting article…","게시글 제출 중…","記事を送信中…"]});
@@ -1466,6 +1471,278 @@ Object.assign(data, {
     "心の声を伝え、互いの声に耳を傾ける"
   ]
 });
+Object.assign(data,{
+  "Author": [
+    "作者",
+    "Author",
+    "작성자",
+    "著者"
+  ],
+  "普通会员": [
+    "一般會員",
+    "Member",
+    "일반 회원",
+    "一般会員"
+  ],
+  "读者": [
+    "讀者",
+    "Reader",
+    "독자",
+    "読者"
+  ],
+  "音频播放": [
+    "音訊播放",
+    "Audio playback",
+    "오디오 재생",
+    "音声再生"
+  ],
+  "基督教网络牧会线上福音聚会宣传海报，含聚会时间、Zoom会议信息与二维码": [
+    "基督教網路牧會線上福音聚會海報，附聚會時間、Zoom 會議資訊及 QR 碼",
+    "Online Christian gospel meeting poster with the meeting time, Zoom details, and a QR code",
+    "온라인 기독교 복음 모임 포스터. 모임 시간, Zoom 회의 정보, QR 코드가 포함되어 있습니다.",
+    "オンラインのキリスト教福音集会の告知ポスター。開催日時、Zoomの詳細、QRコードを掲載。"
+  ],
+  "⚠️ 敏感图片：可能包含血腥、暴力或成人内容，未成年人不宜观看": [
+    "⚠️ 敏感圖片：可能包含血腥、暴力或成人內容，未成年人不宜觀看",
+    "⚠️ Sensitive image. May contain graphic violence or adult content and is unsuitable for minors.",
+    "⚠️ 민감한 이미지. 잔혹하거나 폭력적이거나 성인용인 콘텐츠를 포함할 수 있으며 미성년자에게 적합하지 않습니다.",
+    "⚠️ デリケートな画像です。流血、暴力、成人向けの内容を含む可能性があり、未成年者には適しません。"
+  ],
+  "我已了解，点击查看图片": [
+    "我已了解，點選查看圖片",
+    "I understand. Show the image.",
+    "확인했습니다. 이미지 보기",
+    "確認しました。画像を表示"
+  ],
+  "🎧 音频播放": [
+    "🎧 音訊播放",
+    "🎧 Audio playback",
+    "🎧 오디오 재생",
+    "🎧 音声再生"
+  ],
+  "🎧 已发送至底部播放器": [
+    "🎧 已傳送至底部播放器",
+    "🎧 Sent to the bottom player",
+    "🎧 하단 플레이어로 전송됨",
+    "🎧 画面下部のプレーヤーに送信しました"
+  ],
+  "无法直接播放，请点击下方原音频链接": [
+    "無法直接播放，請點選下方的原始音訊連結",
+    "This audio cannot play here. Open the original audio link below.",
+    "여기에서 재생할 수 없습니다. 아래의 원본 오디오 링크를 여세요.",
+    "ここでは再生できません。下にある元の音声リンクを開いてください。"
+  ],
+  "原视频地址：": [
+    "原始影片網址：",
+    "Original video URL: ",
+    "원본 동영상 주소: ",
+    "元の動画URL："
+  ],
+  "如果站内播放器不可用，请使用上方原视频地址观看。": [
+    "若站內播放器無法使用，請透過上方的原始影片網址觀看。",
+    "If the embedded player is unavailable, use the original video link above.",
+    "내장 플레이어를 사용할 수 없으면 위의 원본 동영상 링크를 이용하세요.",
+    "埋め込みプレーヤーを利用できない場合は、上の元の動画リンクをご利用ください。"
+  ],
+  "正在加载 X 官方嵌入内容……": [
+    "正在載入 X 官方嵌入內容……",
+    "Loading the official X embed…",
+    "X 공식 임베드를 불러오는 중…",
+    "Xの公式埋め込みを読み込んでいます…"
+  ],
+  "X 不允许显示此帖子，请使用原视频地址。": [
+    "X 不允許顯示這篇貼文，請使用原始影片網址。",
+    "X does not allow this post to be embedded. Use the original video link.",
+    "X에서 이 게시물의 임베드를 허용하지 않습니다. 원본 동영상 링크를 이용하세요.",
+    "Xはこの投稿の埋め込みを許可していません。元の動画リンクをご利用ください。"
+  ],
+  "X 嵌入失败，请使用原视频地址。": [
+    "X 嵌入內容載入失敗，請使用原始影片網址。",
+    "Could not load the X embed. Use the original video link.",
+    "X 임베드를 불러오지 못했습니다. 원본 동영상 링크를 이용하세요.",
+    "Xの埋め込みを読み込めませんでした。元の動画リンクをご利用ください。"
+  ],
+  "X 嵌入服务不可用，请使用原视频地址。": [
+    "X 嵌入服務無法使用，請使用原始影片網址。",
+    "The X embed service is unavailable. Use the original video link.",
+    "X 임베드 서비스를 사용할 수 없습니다. 원본 동영상 링크를 이용하세요.",
+    "Xの埋め込みサービスを利用できません。元の動画リンクをご利用ください。"
+  ],
+  "此分享链接暂无法直接嵌入，请点击下方原视频地址观看。": [
+    "這個分享連結暫時無法直接嵌入，請透過下方的原始影片網址觀看。",
+    "This share link cannot be embedded. Watch using the original video link below.",
+    "이 공유 링크를 삽입할 수 없습니다. 아래 원본 동영상 링크를 이용하세요.",
+    "この共有リンクは埋め込めません。下の元の動画リンクから視聴してください。"
+  ],
+  "请输入链接地址（https:// 开头）": [
+    "請輸入連結網址（以 https:// 開頭）",
+    "Enter a URL starting with https://.",
+    "https://로 시작하는 URL을 입력하세요.",
+    "https:// で始まるURLを入力してください。"
+  ],
+  "链接显示文字": [
+    "連結顯示文字",
+    "Link text",
+    "링크 표시 문구",
+    "リンクの表示テキスト"
+  ],
+  "链接必须是有效的 http:// 或 https:// 地址": [
+    "連結須為有效的 http:// 或 https:// 網址",
+    "Enter a valid HTTP or HTTPS URL.",
+    "유효한 HTTP 또는 HTTPS URL을 입력하세요.",
+    "有効なHTTPまたはHTTPSのURLを入力してください。"
+  ],
+  "请先登录并验证邮箱后上传图片": [
+    "請先登入並驗證電子郵件地址，再上傳圖片",
+    "Sign in and verify your email before uploading images.",
+    "이미지를 업로드하려면 로그인하고 이메일을 인증하세요.",
+    "画像をアップロードするには、ログインしてメールアドレスを認証してください。"
+  ],
+  "请输入有效的 http:// 或 https:// 视频链接": [
+    "請輸入有效的 http:// 或 https:// 影片連結",
+    "Enter a valid HTTP or HTTPS video link.",
+    "유효한 HTTP 또는 HTTPS 동영상 링크를 입력하세요.",
+    "有効なHTTPまたはHTTPSの動画リンクを入力してください。"
+  ],
+  "目前还没有公开的会员讨论。欢迎发表第一篇文章。": [
+    "目前尚無公開會員討論，歡迎發表第一篇貼文。",
+    "There are no public member discussions yet. Start the first discussion.",
+    "아직 공개 회원 토론이 없습니다. 첫 토론을 시작해 보세요.",
+    "公開の会員ディスカッションはまだありません。最初の投稿をしてみましょう。"
+  ],
+  "最新讨论暂时无法加载，请前往讨论广场查看。": [
+    "暫時無法載入最新討論，請前往公共論壇查看。",
+    "Recent discussions could not load. Open the public forum to see them.",
+    "최근 토론을 불러오지 못했습니다. 공개 포럼에서 확인하세요.",
+    "最近のディスカッションを読み込めませんでした。公開フォーラムでご確認ください。"
+  ],
+  "文章暂时无法加载，请检查 articles.json 与 GitHub Actions。": [
+    "暫時無法載入文章，請檢查 articles.json 及 GitHub Actions。",
+    "Articles could not load. Check articles.json and GitHub Actions.",
+    "글을 불러오지 못했습니다. articles.json과 GitHub Actions를 확인하세요.",
+    "記事を読み込めませんでした。articles.json と GitHub Actions を確認してください。"
+  ],
+  "正在读取会员……": [
+    "正在載入會員……",
+    "Loading members…",
+    "회원을 불러오는 중…",
+    "会員を読み込んでいます…"
+  ],
+  "确定退出所有设备的登录吗？": [
+    "確定要從所有裝置登出嗎？",
+    "Sign out on all devices?",
+    "모든 기기에서 로그아웃할까요?",
+    "すべての端末からログアウトしますか？"
+  ],
+  "评论服务暂时不可用。": [
+    "留言服務暫時無法使用。",
+    "Comments are temporarily unavailable.",
+    "댓글 서비스를 일시적으로 사용할 수 없습니다.",
+    "コメント機能を一時的に利用できません。"
+  ],
+  "暂无评论，欢迎发表第一条评论。": [
+    "目前沒有留言，歡迎發表第一則留言。",
+    "No comments yet. Be the first to comment.",
+    "아직 댓글이 없습니다. 첫 댓글을 작성해 보세요.",
+    "コメントはまだありません。最初のコメントを投稿してみましょう。"
+  ],
+  "确定永久删除这条评论？此操作无法撤销。": [
+    "確定要永久刪除這則留言嗎？此操作無法復原。",
+    "Permanently delete this comment? This cannot be undone.",
+    "이 댓글을 영구 삭제할까요? 되돌릴 수 없습니다.",
+    "このコメントを完全に削除しますか？この操作は元に戻せません。"
+  ],
+  "播放失败：请检查R2文件是否存在及可访问": [
+    "播放失敗：請確認 R2 檔案存在且可存取",
+    "Playback failed. Check whether the R2 file exists and can be accessed.",
+    "재생에 실패했습니다. R2 파일이 존재하며 접근할 수 있는지 확인하세요.",
+    "再生できませんでした。R2 ファイルが存在し、アクセスできるか確認してください。"
+  ],
+  "从公开列表移除此录音？不会删除 Google Drive 或 R2 文件，可以恢复。": [
+    "要將這段錄音從公開清單移除嗎？Google Drive 或 R2 檔案會保留，之後可恢復顯示。",
+    "Hide this recording from the public list? Google Drive and R2 files will stay in place, and you can restore the listing.",
+    "이 녹음을 공개 목록에서 숨길까요? Google Drive와 R2 파일은 유지되며 목록을 복원할 수 있습니다.",
+    "この録音を公開一覧から非表示にしますか？Google Drive と R2 のファイルは残り、一覧への表示を再開できます。"
+  ],
+  "编辑资料": [
+    "編輯資料",
+    "Edit details",
+    "정보 편집",
+    "詳細を編集"
+  ],
+  "录音简介": [
+    "錄音簡介",
+    "Recording description",
+    "녹음 설명",
+    "録音の説明"
+  ],
+  "录音分类": [
+    "錄音分類",
+    "Recording category",
+    "녹음 분류",
+    "録音のカテゴリー"
+  ],
+  "数字越小越靠前": [
+    "數字越小越靠前",
+    "Lower numbers appear first.",
+    "숫자가 작을수록 앞에 표시됩니다.",
+    "小さい数字ほど先に表示されます。"
+  ],
+  "删除记录": [
+    "刪除紀錄",
+    "Delete record",
+    "기록 삭제",
+    "記録を削除"
+  ],
+  "确定删除这条录音发布记录？R2原始文件不会被删除。": [
+    "確定刪除這筆錄音發佈紀錄？R2 原始檔案會保留。",
+    "Delete this recording entry? The original R2 file will be retained.",
+    "이 녹음 게시 기록을 삭제할까요? R2 원본 파일은 유지됩니다.",
+    "この録音の公開記録を削除しますか？R2 の元ファイルは保持されます。"
+  ],
+  "写下你的听后感（最多1500字）": [
+    "寫下你的聆聽感想（最多 1,500 字）",
+    "Share your thoughts (up to 1,500 characters)",
+    "청취 소감 작성(최대 1,500자)",
+    "感想を入力（最大1,500文字）"
+  ],
+  "所有人可以阅读评论；注册并登录会员后可以发表评论。": [
+    "所有人都可閱讀留言；註冊並登入後即可發表留言。",
+    "Anyone can read comments. Sign in as a member to post one.",
+    "누구나 댓글을 읽을 수 있습니다. 회원으로 로그인하면 댓글을 작성할 수 있습니다.",
+    "どなたでもコメントを閲覧できます。投稿するには会員としてログインしてください。"
+  ],
+  "当前账户没有录音上传权限": [
+    "目前帳戶沒有錄音上傳權限",
+    "This account does not have permission to upload recordings.",
+    "이 계정에는 녹음 업로드 권한이 없습니다.",
+    "このアカウントに録音のアップロード権限はありません。"
+  ],
+  "▶ 播放视频": [
+    "▶ 播放影片",
+    "▶ Play video",
+    "▶ 동영상 재생",
+    "▶ 動画を再生"
+  ],
+  "视频封面": [
+    "影片封面",
+    "Video thumbnail",
+    "동영상 썸네일",
+    "動画のサムネイル"
+  ],
+  "视频播放器": [
+    "影片播放器",
+    "Video player",
+    "동영상 플레이어",
+    "動画プレーヤー"
+  ],
+  "播放音频": [
+    "播放音訊",
+    "Play audio",
+    "오디오 재생",
+    "音声を再生"
+  ]
+});
 const dateFormats=new Map();
 const issueAliases=new Map(Object.entries({
  'Active verified membership required':'请先验证邮箱，并确认账号状态正常。',
@@ -1494,7 +1771,7 @@ function translateIssue(value,index){
 }
 function apply(lang){
 if(!document.body||!langs.includes(lang))return;
-document.documentElement.lang=lang;const titleSource=document.documentElement.dataset.lyyTitleSource||(document.documentElement.dataset.lyyTitleSource=document.title);const titleTranslation=data[titleSource];if(titleTranslation)document.title=lang==='zh-CN'?titleSource:titleTranslation[langs.indexOf(lang)-1];
+document.documentElement.lang=lang;const titleSource=document.documentElement.dataset.lyyTitleSource||(document.documentElement.dataset.lyyTitleSource=document.title);const titleTranslation=data[titleSource];if(titleTranslation&&!document.documentElement.hasAttribute('data-lyy-frame-title'))document.title=lang==='zh-CN'?titleSource:titleTranslation[langs.indexOf(lang)-1];
 const idx=langs.indexOf(lang)-1;
 const fragments={
 '收藏':['收藏','Bookmark','즐겨찾기','ブックマーク'],
@@ -1581,11 +1858,11 @@ if(!matchesKnown){src=visible;original.set(n,src)}
 const translated=translateSource(src,uiFragment(el));
 if(visible!==translated)n.nodeValue=translated;rendered.set(n,translated);
 }
-document.querySelectorAll('[aria-label],[title],[placeholder],input[type="button"],input[type="submit"],input[type="reset"]').forEach(el=>{
-if(el.hasAttribute('data-user-content')||(excluded(el.parentElement)&&!el.hasAttribute('data-lyy-media-ui')))return;
+document.querySelectorAll('[aria-label],[title],[placeholder],[data-placeholder],img[alt],input[type="button"],input[type="submit"],input[type="reset"]').forEach(el=>{
+if(el.hasAttribute('data-user-content')||(excluded(el.parentElement)&&!el.hasAttribute('data-lyy-media-ui')&&!el.hasAttribute('data-lyy-forum-ui')))return;
 let state=attrOriginal.get(el);if(!state){state={};attrOriginal.set(el,state)}
 let localized=attrRendered.get(el);if(!localized){localized={};attrRendered.set(el,localized)}
-for(const name of ['aria-label','title','placeholder','value']){
+for(const name of ['aria-label','title','placeholder','data-placeholder','alt','value']){
 if(!el.hasAttribute(name))continue;
 if(name==='value'&&!['button','submit','reset'].includes(el.type))continue;
 const current=el.getAttribute(name);
@@ -1630,7 +1907,7 @@ if(node.nodeValue!==next)node.nodeValue=next;
 const sel=document.getElementById('lyy-language');if(sel&&sel.value!==lang)sel.value=lang;
 }
 function set(lang){if(!langs.includes(lang))return;try{localStorage.setItem(storage,lang)}catch{}apply(lang);if(window.parent!==window)window.parent.postMessage({type:'lyy-language',lang},location.origin);else{const f=document.getElementById('page');try{f?.contentWindow?.postMessage({type:'lyy-language',lang},location.origin)}catch{}}}
-function init(){if(!document.body)return;const shell=location.pathname==='/player.html';if(!document.getElementById('lyy-language')&&window.parent===window){const wrap=document.createElement('div');wrap.id='lyy-language-wrap';wrap.setAttribute('data-no-translate','');wrap.innerHTML='<label for="lyy-language" style="font-size:12px">🌐</label><select id="lyy-language" aria-label="选择网站语言"></select>';Object.assign(wrap.style,{position:shell?'fixed':'relative',top:shell?'7px':'auto',right:shell?'8px':'auto',zIndex:'99999',display:'flex',alignItems:'center',gap:'4px',background:'#101f30',color:'#fff',border:'1px solid #786535',borderRadius:'8px',padding:'3px 5px',width:'max-content',margin:shell?'0':'8px'});const sel=wrap.querySelector('select');Object.assign(sel.style,{background:'#101f30',color:'#fff',border:'0',fontSize:'12px',maxWidth:'110px',padding:'3px',margin:'0',width:'auto'});for(const l of langs){const o=document.createElement('option');o.value=l;o.textContent=labels[l];sel.appendChild(o)}sel.addEventListener('change',()=>set(sel.value));if(shell)document.body.appendChild(wrap);else{const h=document.querySelector('header');if(h)h.appendChild(wrap);else document.body.prepend(wrap)}}
+function init(){if(!document.body)return;const shell=location.pathname==='/player.html';if(!document.getElementById('lyy-language')&&window.parent===window){const wrap=document.createElement('div');wrap.id='lyy-language-wrap';wrap.innerHTML='<label for="lyy-language" style="font-size:12px">🌐</label><select id="lyy-language" aria-label="选择网站语言"></select>';Object.assign(wrap.style,{position:shell?'fixed':'relative',top:shell?'7px':'auto',right:shell?'8px':'auto',zIndex:'99999',display:'flex',alignItems:'center',gap:'4px',background:'#101f30',color:'#fff',border:'1px solid #786535',borderRadius:'8px',padding:'3px 5px',width:'max-content',margin:shell?'0':'8px'});const sel=wrap.querySelector('select');Object.assign(sel.style,{background:'#101f30',color:'#fff',border:'0',fontSize:'12px',maxWidth:'110px',padding:'3px',margin:'0',width:'auto'});for(const l of langs){const o=document.createElement('option');o.value=l;o.textContent=labels[l];sel.appendChild(o)}sel.addEventListener('change',()=>set(sel.value));if(shell)document.body.appendChild(wrap);else{const h=document.querySelector('header');if(h)h.appendChild(wrap);else document.body.prepend(wrap)}}
 const existing=document.getElementById('lyy-language');
 if(existing&&!existing.dataset.lyyBound){existing.dataset.lyyBound='1';existing.addEventListener('change',()=>set(existing.value));}
 apply(current());

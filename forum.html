@@ -101,7 +101,7 @@ function openUnifiedAccountDialog(){
   unifiedAccountDialog=dialog;
  }
  const frame=unifiedAccountDialog.querySelector('iframe');
- frame.src='/?account_embed=1&appearance=4&tablet_ui=1#account';
+ frame.src='/?account_embed=1&appearance=4&tablet_ui=1&locale_ui=2#account';
  if(!unifiedAccountDialog.open)unifiedAccountDialog.showModal();
 }
 let ownAccountPopupOpen=false;
@@ -124,13 +124,13 @@ function renderArticle(body){
  const target=$('detail-body');
  if(!window.marked||!window.DOMPurify){target.textContent=body;return}
  const raw=window.marked.parse(body,{breaks:true,gfm:true});
- target.innerHTML=window.DOMPurify.sanitize(raw,{USE_PROFILES:{html:true},FORBID_TAGS:['style','iframe','form','video','audio','svg','math']});
+ target.innerHTML=window.DOMPurify.sanitize(raw,{USE_PROFILES:{html:true},FORBID_TAGS:['style','iframe','form','video','audio','svg','math'],FORBID_ATTR:['data-lyy-forum-ui']});
  for(const a of target.querySelectorAll('a')){try{const u=new URL(a.href);if(!['http:','https:'].includes(u.protocol))a.removeAttribute('href');else{a.target='_blank';a.rel='noopener noreferrer nofollow'}}catch{a.removeAttribute('href')}}
  for(const img of target.querySelectorAll('img')){try{const u=new URL(img.src);if(u.protocol!=='https:'||u.hostname!=='mkchupvmervxkskvjyhz.supabase.co'||!u.pathname.includes('/storage/v1/object/public/forum-images/'))img.remove()}catch{img.remove()}}
  for(const img of Array.from(target.querySelectorAll('img'))){
   if(img.alt!=='敏感图片')continue;
   img.loading='lazy';
-  const cover=document.createElement('div');cover.className='sensitive-cover';
+  const cover=document.createElement('div');cover.className='sensitive-cover';cover.setAttribute('data-lyy-forum-ui','');
   cover.style.cssText='padding:18px;border:1px solid #6b7280;border-radius:12px;background:#222833;margin:12px 0;text-align:center';
   const warning=document.createElement('p');warning.textContent='⚠️ 敏感图片：可能包含血腥、暴力或成人内容，未成年人不宜观看';
   const reveal=document.createElement('button');reveal.type='button';reveal.textContent='我已了解，点击查看图片';
@@ -142,7 +142,7 @@ function renderArticle(body){
   if(!['http:','https:'].includes(u.protocol))continue;
   const isAudio=/\.(mp3|m4a|aac|ogg|oga|wav|flac|opus)(?:$|[?#])/i.test(u.href);
   if(isAudio){
-   const wrap=document.createElement('div');wrap.className='forum-audio-card';
+   const wrap=document.createElement('div');wrap.className='forum-audio-card';wrap.setAttribute('data-lyy-forum-ui','');
    const heading=document.createElement('div');heading.className='forum-audio-heading';heading.textContent='🎧 音频播放';
    const btn=document.createElement('button');btn.type='button';btn.className='forum-audio-play';btn.textContent='▶ 点击播放音频';btn.setAttribute('aria-label','播放音频');
    const audio=document.createElement('audio');audio.controls=true;audio.preload='none';audio.src=u.href;audio.style.display='none';audio.style.width='100%';
@@ -171,14 +171,14 @@ function renderArticle(body){
    platform=host.includes('douyin')?'抖音':host.includes('b23')?'哔哩哔哩':'TikTok';
   }
   if(!platform)continue;
-  const wrap=document.createElement('div');wrap.className='embedded-video';
-  const button=document.createElement('button');button.type='button';button.className='video-launch';button.textContent='▶ 在本站播放 '+platform+' 视频';
-  if(thumb){const image=document.createElement('img');image.src=thumb;image.alt=platform+' 视频封面';image.loading='lazy';image.className='video-cover';button.prepend(image)}
-  const source=document.createElement('a');source.href=u.href;source.target='_blank';source.rel='noopener noreferrer nofollow';source.className='source-link';source.textContent='原视频地址：'+u.href;
+  const wrap=document.createElement('div');wrap.className='embedded-video';wrap.setAttribute('data-lyy-forum-ui','');
+  const button=document.createElement('button');button.type='button';button.className='video-launch';button.textContent='▶ 播放视频';const name=document.createElement('span');name.setAttribute('data-user-content','');name.textContent=platform;button.append(' · ',name);
+  if(thumb){const image=document.createElement('img');image.src=thumb;image.alt='视频封面';image.loading='lazy';image.className='video-cover';button.prepend(image)}
+  const source=document.createElement('a');source.href=u.href;source.target='_blank';source.rel='noopener noreferrer nofollow';source.className='source-link';source.textContent='原视频地址：';const urlText=document.createElement('span');urlText.setAttribute('data-user-content','');urlText.textContent=u.href;source.append(urlText);
   const fallback=document.createElement('div');fallback.className='embed-fallback';fallback.textContent='如果站内播放器不可用，请使用上方原视频地址观看。';
   button.onclick=()=>{
    if(embed){
-    const iframe=document.createElement('iframe');iframe.src=embed;iframe.title=platform+' 视频播放器';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';iframe.allowFullscreen=true;iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.loading='lazy';button.replaceWith(iframe);
+    const iframe=document.createElement('iframe');iframe.src=embed;iframe.title='视频播放器';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';iframe.allowFullscreen=true;iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.loading='lazy';button.replaceWith(iframe);
    }else if(tweetId){
     button.disabled=true;button.textContent='正在加载 X 官方嵌入内容……';
     const area=document.createElement('div');area.className='tweet-frame';button.replaceWith(area);
@@ -641,6 +641,6 @@ window.addEventListener('hashchange',route);
  }
 })();
 </script>
-<script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261119-entry-translation" defer></script><script src="/notification-bell.js?v=3" defer></script><script src="/turnstile-auth.js?v=3" defer></script>
+<script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261119-global-locale-review" defer></script><script src="/notification-bell.js?v=3" defer></script><script src="/turnstile-auth.js?v=3" defer></script>
 <script defer src="/swipe-navigation.js?v=1"></script>
 </body></html>
