@@ -53,12 +53,17 @@
  #post-list .forum-list-date{font-size:11px}
  #post-list .forum-list-metrics{gap:15px;font-size:12px;justify-content:flex-start}
 }
-<style>
 #lyy-unified-account-dialog{position:fixed;inset:0;margin:auto;padding:0;width:min(94vw,900px);max-width:900px;height:min(90dvh,900px);max-height:94dvh;background:#101f30;color:#edf3f9;border:1px solid #607087;border-radius:14px;box-shadow:0 20px 70px #000b;overflow:hidden}
 #lyy-unified-account-dialog::backdrop{background:rgba(0,0,0,.75)}
 .lyy-unified-account-top{height:48px;display:flex;align-items:center;justify-content:space-between;padding:5px 12px;background:#14283d;border-bottom:1px solid #536377}
 .lyy-unified-account-close{width:auto!important;margin:0!important;padding:7px 14px!important;background:#293b50!important;color:white!important;border:1px solid #8795a8!important}
 #lyy-unified-account-dialog iframe{display:block;width:100%;height:100%;border:0;background:#101f30}#lyy-unified-account-dialog .lyy-unified-account-top{display:none!important}
+@media(max-width:600px){
+#lyy-unified-account-dialog{inset:0!important;width:100vw!important;max-width:100vw!important;height:100dvh!important;max-height:100dvh!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#102034!important}
+#lyy-unified-account-dialog iframe{width:100%!important;height:100%!important;border:0!important}
+#lyy-unified-account-dialog::backdrop{background:#081321!important}
+}
+
 </style></head><body><header><a href="/">← 网站首页</a><nav><a href="/forum.html">论坛首页</a><a href="#mine" id="mine-link">我的文章</a><a href="#account" id="account-link">我的账户</a><a href="#moderation" id="moderation-link" class="hide">举报与禁言</a><a href="#appeal" id="appeal-link">账号申诉</a></nav><button id="login-btn">注册 / 登录</button></header>
 <main><h1><a href="/forum.html" class="forum-heading-link">公共论坛 · 自由交流</a></h1><p class="muted">会员发表观点，公开交流讨论。文章与评论提交后立即公开；违规内容可举报处理。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
