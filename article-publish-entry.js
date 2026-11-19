@@ -1,12 +1,78 @@
-(()=>{'use strict';
-const btn=document.getElementById('article-publish-entry');if(!btn)return;
-const words={
-'zh-CN':{title:'文章投稿权限',guest:"请先注册并验证邮箱。所有正式会员均可写作、保存私人草稿，并申请站长或管理员审核发表。",low:"您可以保存私人草稿，也可以提交文章申请审核发表。",yes:"您可以保存私人草稿，也可以提交文章申请审核发表。",fail:'暂时无法验证会员等级，请稍后再试。',register:'注册 / 登录',forum:'参与论坛交流',publish:'前往投稿',close:'关闭'},
-'zh-TW':{title:'文章投稿權限',guest:"請先註冊並驗證郵箱。所有正式會員均可寫作、儲存私人草稿並申請審核發表。",low:"您可以儲存私人草稿，也可以申請審核發表文章。",yes:"您可以儲存私人草稿，也可以申請審核發表文章。",fail:'暫時無法驗證會員等級，請稍後再試。',register:'註冊 / 登入',forum:'參與論壇交流',publish:'前往投稿',close:'關閉'},
-'en':{title:'Article submission access',guest:"Register and verify your email. All verified members may write, save private drafts and request publication review.",low:"You may save private drafts or request article publication review.",yes:"You may save private drafts or request article publication review.",fail:'Unable to verify your membership level. Please try again later.',register:'Register / Sign in',forum:'Join the forum',publish:'Write an article',close:'Close'},
-'ko':{title:'글 투고 권한',guest:"가입하고 이메일 인증을 완료하세요. 모든 인증 회원은 글 작성, 비공개 초안 저장 및 게시 심사를 신청할 수 있습니다.",low:"비공개 초안을 저장하거나 게시 심사를 신청할 수 있습니다.",yes:"비공개 초안을 저장하거나 게시 심사를 신청할 수 있습니다.",fail:'회원 등급을 확인할 수 없습니다. 잠시 후 다시 시도하세요.',register:'가입 / 로그인',forum:'포럼 참여',publish:'글 작성',close:'닫기'},
-'ja':{title:'記事投稿の権限',guest:"登録してメール認証を完了してください。認証済み会員は下書き保存と公開審査申請ができます。",low:"非公開下書きの保存と公開審査の申請ができます。",yes:"非公開下書きの保存と公開審査の申請ができます。",fail:'会員ランクを確認できません。しばらくしてからお試しください。',register:'登録 / ログイン',forum:'フォーラムに参加',publish:'記事を投稿',close:'閉じる'}};
-function lang(){try{return localStorage.getItem('lyy-site-language')||'zh-CN'}catch{return 'zh-CN'}}
-function modal(type){const t=words[lang()]||words['zh-CN'];const overlay=document.createElement('div');overlay.style.cssText='position:fixed;inset:0;z-index:999999;background:#000b;display:flex;align-items:center;justify-content:center;padding:18px';const box=document.createElement('section');box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.style.cssText='width:min(460px,100%);background:#102235;color:#eaf0f7;border:1px solid #caa643;border-radius:16px;padding:25px;box-shadow:0 18px 55px #0009';const h=document.createElement('h2');h.textContent=t.title;h.style.margin='0 0 12px';const p=document.createElement('p');p.textContent=t[type];p.style.lineHeight='1.8';const actions=document.createElement('div');actions.style.cssText='display:flex;flex-wrap:wrap;gap:9px;margin-top:20px';const close=document.createElement('button');close.textContent=t.close;close.onclick=()=>overlay.remove();actions.append(close);if(type==='guest'){const a=document.createElement('button');a.textContent=t.register;a.onclick=()=>{overlay.remove();document.getElementById('nav-login')?.click()};actions.append(a)}else if(type==='low'||type==='yes'){const a=document.createElement('a');a.textContent=type==='yes'?t.publish:t.forum;a.href=type==='yes'?'/member-articles.html#submit':'/member-articles.html';a.style.cssText='display:inline-block;background:#e5b832;color:#101b2a;border-radius:8px;padding:10px 14px;font-weight:bold';actions.append(a)}box.append(h,p,actions);overlay.append(box);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});document.body.append(overlay);close.focus()}
-btn.addEventListener('click',async()=>{btn.disabled=true;try{const client=typeof db!=='undefined'?db:null;if(!client){modal('fail');return}const {data:{user},error}=await client.auth.getUser();if(error||!user){modal('guest');return}if(!user.email_confirmed_at){modal('guest');return}const {data,error:levelError}=await client.rpc('forum_public_member_level',{p_user_id:user.id});if(levelError||!Array.isArray(data)||!data.length){modal('fail');return}modal('yes')}catch{modal('fail')}finally{btn.disabled=false}});
+(() => {
+  'use strict';
+  const button = document.getElementById('article-publish-entry');
+  if (!button) return;
+
+  const messages = {
+    guest: '发布文章前，请先登录并验证邮箱。邮箱已验证且账号正常的会员可保存私人草稿或直接发布。',
+    allowed: '您可以保存私人草稿，或直接发布公开文章。',
+    restricted: '您的账号目前无法发布文章。如对限制有异议，可以提交账号申诉。',
+    unavailable: '暂时无法确认发布权限，请稍后再试。'
+  };
+
+  function showMessage(state) {
+    if (document.getElementById('article-publishing-access')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'article-publishing-access';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:#000b;display:flex;align-items:center;justify-content:center;padding:18px';
+    const box = document.createElement('section');
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-labelledby', 'article-publishing-title');
+    box.style.cssText = 'width:min(460px,100%);background:#102235;color:#eaf0f7;border:1px solid #caa643;border-radius:16px;padding:25px;box-shadow:0 18px 55px #0009';
+    const heading = document.createElement('h2');
+    heading.id = 'article-publishing-title';
+    heading.textContent = '文章投稿权限';
+    heading.style.margin = '0 0 12px';
+    const message = document.createElement('p');
+    message.textContent = messages[state];
+    message.style.lineHeight = '1.8';
+    const actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;flex-wrap:wrap;gap:9px;margin-top:20px';
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.textContent = '关闭';
+    const dismiss = () => { overlay.remove(); button.focus(); };
+    close.onclick = dismiss;
+    actions.append(close);
+    if (state === 'guest') {
+      const login = document.createElement('button');
+      login.type = 'button';
+      login.textContent = '注册 / 登录';
+      login.onclick = () => { overlay.remove(); document.getElementById('nav-login')?.click(); };
+      actions.append(login);
+    } else if (state === 'allowed' || state === 'restricted') {
+      const link = document.createElement('a');
+      link.textContent = state === 'allowed' ? '前往发布' : '账号申诉';
+      link.href = state === 'allowed' ? '/member-articles.html#submit' : '/forum.html#appeal';
+      link.style.cssText = 'display:inline-block;background:#e5b832;color:#101b2a;border-radius:8px;padding:10px 14px;font-weight:bold';
+      actions.append(link);
+    }
+    box.append(heading, message, actions);
+    overlay.append(box);
+    overlay.addEventListener('click', event => { if (event.target === overlay) dismiss(); });
+    overlay.addEventListener('keydown', event => { if (event.key === 'Escape') dismiss(); });
+    document.body.append(overlay);
+    const language = window.lyyLanguage;
+    if (language) language.apply(language.current());
+    close.focus();
+  }
+
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    try {
+      const client = typeof db !== 'undefined' ? db : null;
+      if (!client) { showMessage('unavailable'); return; }
+      const { data, error } = await client.auth.getUser();
+      if (error && error.name !== 'AuthSessionMissingError') { showMessage('unavailable'); return; }
+      const user = data?.user;
+      if (!user?.email_confirmed_at) { showMessage('guest'); return; }
+      const eligibility = await client.rpc('forum_is_active_member', { p_uid: user.id });
+      showMessage(eligibility.error ? 'unavailable' : eligibility.data === true ? 'allowed' : 'restricted');
+    } catch {
+      showMessage('unavailable');
+    } finally {
+      button.disabled = false;
+    }
+  });
 })();

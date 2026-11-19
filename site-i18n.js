@@ -1384,6 +1384,80 @@ Object.assign(data,{
     "ミュート解除"
   ]
 });
+Object.assign(data,{
+  "发布文章前，请先登录并验证邮箱。邮箱已验证且账号正常的会员可保存私人草稿或直接发布。": [
+    "發佈文章前，請先登入並驗證電子郵件地址。電子郵件已驗證且帳號正常的會員可儲存私人草稿或直接發佈。",
+    "Sign in and verify your email before publishing. Verified members in good standing can save private drafts or publish directly.",
+    "글을 게시하기 전에 로그인하고 이메일을 인증해 주세요. 인증을 마치고 계정 상태가 정상인 회원은 비공개 초안을 저장하거나 바로 게시할 수 있습니다.",
+    "記事を公開する前にログインし、メールアドレスを認証してください。認証済みでアカウントが正常な会員は、非公開の下書きを保存するか、記事を直接公開できます。"
+  ],
+  "您的账号目前无法发布文章。如对限制有异议，可以提交账号申诉。": [
+    "您的帳號目前無法發佈文章。若對限制有異議，可提出帳號申訴。",
+    "Your account cannot publish articles right now. If you believe the restriction is incorrect, submit an appeal.",
+    "현재 계정으로 글을 게시할 수 없습니다. 제한에 이의가 있으면 이의 신청을 제출할 수 있습니다.",
+    "現在、このアカウントでは記事を公開できません。制限に異議がある場合は申し立てを送信できます。"
+  ],
+  "暂时无法确认发布权限，请稍后再试。": [
+    "暫時無法確認發佈權限，請稍後再試。",
+    "Could not check your publishing access. Try again later.",
+    "게시 권한을 확인할 수 없습니다. 잠시 후 다시 시도해 주세요.",
+    "投稿権限を確認できませんでした。しばらくしてからお試しください。"
+  ],
+  "前往发布": [
+    "前往發佈",
+    "Write an article",
+    "글 작성하기",
+    "記事を書く"
+  ],
+  "即将离开真实之声": [
+    "即將離開真實之聲",
+    "Leaving Voice of Truth",
+    "진실의 목소리를 떠납니다",
+    "真実の声から移動します"
+  ],
+  "目标网站：": [
+    "目標網站：",
+    "Destination: ",
+    "이동할 사이트: ",
+    "移動先："
+  ],
+  "关闭提示": [
+    "關閉提示",
+    "Close notice",
+    "안내 닫기",
+    "案内を閉じる"
+  ],
+  "外部网站的内容、隐私和播放服务由对方提供。请选择下一步操作。": [
+    "外部網站的內容、隱私及播放服務由對方提供。請選擇下一步。",
+    "The external site provides its own content, privacy practices, and playback services. Choose how to continue.",
+    "외부 사이트는 자체 콘텐츠, 개인정보 처리 및 재생 서비스를 제공합니다. 다음 작업을 선택하세요.",
+    "外部サイトのコンテンツ、プライバシー対応、再生サービスは移動先が提供します。次の操作を選んでください。"
+  ],
+  "继续浏览本站": [
+    "繼續瀏覽本網站",
+    "Stay on this site",
+    "이 사이트 계속 이용하기",
+    "このサイトに留まる"
+  ],
+  "返回上一页": [
+    "返回上一頁",
+    "Go back",
+    "이전 페이지로 돌아가기",
+    "前のページに戻る"
+  ],
+  "前往外部网站": [
+    "前往外部網站",
+    "Continue to the external site",
+    "외부 사이트로 이동",
+    "外部サイトに進む"
+  ],
+  "即将离开本站，前往 {host}，是否继续？": [
+    "即將離開本網站並前往 {host}，是否繼續？",
+    "You are leaving this site for {host}. Continue?",
+    "이 사이트를 떠나 {host}(으)로 이동합니다. 계속할까요?",
+    "このサイトを離れて {host} に移動します。続けますか？"
+  ]
+});
 const dateFormats=new Map();
 const issueAliases=new Map(Object.entries({
  'Active verified membership required':'请先验证邮箱，并确认账号状态正常。',
