@@ -10,7 +10,19 @@ button{border:1px solid #826d36;background:#24364b;color:#f4d17c;border-radius:9
 #drive-box{display:none;position:fixed;right:8px;bottom:76px;width:min(420px,calc(100vw - 16px));padding:8px;background:#101f30;border:1px solid #786535;border-radius:10px;z-index:21}#drive-box iframe{width:100%;height:200px;border:0}
 @media (max-width:600px), (pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px)){#dock{gap:5px;padding:7px 8px}#title{max-width:5em}#volume{width:36px;min-width:36px}#time{font-size:10px}#toggle{min-width:40px;padding:5px}}
 @media (pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px)){#drive-box iframe{height:min(200px, calc(100dvh - 130px))}}
-</style><style id="lyy-language-visible-style">#lyy-language-toolbar{height:50px;display:flex;align-items:center;justify-content:flex-end;padding:5px 14px;background:#081321;border-bottom:1px solid #27394a}#lyy-language-wrap{position:static!important;display:flex!important;align-items:center!important;gap:5px!important;padding:4px 8px!important;background:#101f30!important;border:1px solid #b49a59!important;border-radius:9px!important;color:#fff!important;box-shadow:none!important}#lyy-language{display:block!important;background:#101f30!important;color:#fff!important;border:0!important;font-size:13px!important;min-width:92px!important;max-width:120px!important}@media (max-width:600px), (pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px)){#lyy-language-toolbar{height:44px;padding:4px 9px}#page{height:calc(100dvh - 44px)}body.has-audio #page{height:calc(100dvh - 112px)}}</style></head><body><div id="lyy-language-toolbar"><div id="lyy-language-wrap" data-no-translate=""><label for="lyy-language" title="切换网站语言">🌐</label><select id="lyy-language" aria-label="选择网站语言"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option><option value="ko">한국어</option><option value="ja">日本語</option></select></div></div>
+</style><style id="lyy-language-visible-style">#lyy-language-toolbar{height:50px;display:flex;align-items:center;justify-content:flex-end;padding:5px 14px;background:#081321;border-bottom:1px solid #27394a}#lyy-language-wrap{position:static!important;display:flex!important;align-items:center!important;gap:5px!important;padding:4px 8px!important;background:#101f30!important;border:1px solid #b49a59!important;border-radius:9px!important;color:#fff!important;box-shadow:none!important}#lyy-language{display:block!important;background:#101f30!important;color:#fff!important;border:0!important;font-size:13px!important;min-width:92px!important;max-width:120px!important}@media (max-width:600px), (pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px)){#lyy-language-toolbar{height:44px;padding:4px 9px}#page{height:calc(100dvh - 44px)}body.has-audio #page{height:calc(100dvh - 112px)}}</style><style>
+@media (pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px)) {
+ #lyy-language-toolbar{height:36px;padding-block:2px}
+ #dock{min-height:46px;padding-block:3px}
+ #dock button{padding-block:3px}
+ #page{height:calc(100dvh - 36px)}
+ body.has-audio #page{height:calc(100dvh - 82px)}
+ #drive-box{bottom:50px}
+ body.landscape-reading #lyy-language-toolbar,
+ body.landscape-reading.has-audio #dock{display:none}
+ body.landscape-reading #page{height:100dvh}
+}
+</style></head><body><div id="lyy-language-toolbar"><div id="lyy-language-wrap" data-no-translate=""><label for="lyy-language" title="切换网站语言">🌐</label><select id="lyy-language" aria-label="选择网站语言"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option><option value="ko">한국어</option><option value="ja">日本語</option></select></div></div>
 <iframe id="page" title="网站内容" allow="autoplay"></iframe>
 <div id="dock" role="region" aria-label="全站音频播放器"><button id="toggle" aria-label="播放或暂停">▶</button><span id="title">讲道录音</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放进度"><span id="time">0:00 / 0:00</span><button id="volume" type="button" aria-label="静音" aria-pressed="false" title="静音">🔊</button><button id="close" title="关闭播放器" aria-label="关闭播放器">✕</button></div>
 <div id="drive-box"><button id="drive-close" style="float:right">关闭</button><div id="drive-title">Google Drive 备用录音</div><iframe id="drive" title="Google Drive 音频" allow="autoplay"></iframe></div>
@@ -38,10 +50,58 @@ function wire(){let doc;try{doc=frame.contentDocument;if(!doc)return}catch{retur
 doc.addEventListener('click',e=>{const a=e.target.closest?.('a[href]');if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;const u=safe(a.href);if(!u)return;const now=frame.contentWindow.location;if(u.pathname===now.pathname&&u.search===now.search)return;e.preventDefault();navigate(u)},true);
 }
 function syncIframeLanguage(){try{const doc=frame.contentDocument;if(!doc)return;const lang=localStorage.getItem('lyy-site-language')||'zh-CN';const inner=doc.getElementById('lyy-language-wrap');if(inner)inner.remove();let style=doc.getElementById('lyy-hide-inner-language');if(!style){style=doc.createElement('style');style.id='lyy-hide-inner-language';style.textContent='#lyy-language-wrap{display:none!important}';doc.head.appendChild(style)}if(frame.contentWindow.lyyLanguage?.apply)frame.contentWindow.lyyLanguage.apply(lang);frame.contentWindow.postMessage({type:'lyy-language',lang},location.origin)}catch(e){}}
-frame.addEventListener('load',()=>{wire();syncIframeLanguage();});window.addEventListener('popstate',()=>navigate(requested(),false));
+const phoneLandscape = matchMedia('(pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px))');
+let readingFrameListeners;
+
+function bindLandscapeReading() {
+ readingFrameListeners?.abort();
+ document.body.classList.remove('landscape-reading');
+ const doc = frame.contentDocument;
+ if (!doc?.head || !phoneLandscape.matches) return;
+
+ // Let the page header scroll normally so it does not cover the reading area.
+ const headerStyle = doc.createElement('style');
+ headerStyle.textContent = '.sitebar{position:static}';
+ doc.head.append(headerStyle);
+ readingFrameListeners = new AbortController();
+ const {signal} = readingFrameListeners;
+ signal.addEventListener('abort', () => headerStyle.remove(), {once:true});
+
+ const scroller = doc.scrollingElement;
+ if (!scroller) return;
+ const body = document.body;
+ let previous = Math.max(0, scroller.scrollTop);
+ let travel = 0;
+ function showTools() {
+  body.classList.remove('landscape-reading');
+  previous = Math.max(0, scroller.scrollTop);
+  travel = 0;
+ }
+ doc.addEventListener('scroll', () => {
+  const bottom = scroller.scrollHeight - scroller.clientHeight;
+  const position = Math.max(0, Math.min(scroller.scrollTop, bottom));
+  const delta = position - previous;
+  previous = position;
+  if (position <= 12) { showTools(); return; }
+  if (!delta) return;
+  travel = Math.sign(travel) === Math.sign(delta) ? travel + delta : delta;
+  if (travel < -24) { showTools(); return; }
+  const focused = document.activeElement;
+  if (travel > 36 && position > 56 && !driveActive &&
+      !dock.contains(focused) && !document.getElementById('lyy-language-toolbar').contains(focused)) {
+   if (!body.classList.contains('landscape-reading')) {
+    body.classList.add('landscape-reading');
+    previous = Math.max(0, scroller.scrollTop);
+   }
+  }
+ }, {signal, passive:true});
+ doc.defaultView.addEventListener('hashchange', showTools, {signal});
+}
+phoneLandscape.addEventListener('change', bindLandscapeReading);
+frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();});window.addEventListener('popstate',()=>navigate(requested(),false));
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-site-navigate'){const u=safe(e.data.url);if(u)navigate(u,e.data.push!==false);return}
 if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
-if(e.data.type==='lyy-audio-play'){try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='播放失败：请检查R2音频地址';frame.contentWindow?.postMessage({type:'lyy-audio-error',title:title.textContent},location.origin)})}catch{return}}
+if(e.data.type==='lyy-audio-play'){document.body.classList.remove('landscape-reading');try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='播放失败：请检查R2音频地址';frame.contentWindow?.postMessage({type:'lyy-audio-error',title:title.textContent},location.origin)})}catch{return}}
 });
 audio.addEventListener('error',()=>{if(!current)return;time.textContent='音频加载失败：R2文件不存在或无法访问';frame.contentWindow?.postMessage({type:'lyy-audio-error',title:title.textContent},location.origin)});
 function stopDrive(){if(!driveActive)return;driveActive=false;drive.src='about:blank';driveBox.style.display='none';seek.disabled=false;volume.disabled=false;toggle.textContent='▶'}
