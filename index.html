@@ -453,5 +453,33 @@ $('article-search').addEventListener('input',()=>{articleLimit=12;renderArticles
 </script>
 <script src="/article-publish-entry.js?v=3" defer></script><script src="/external-link-guard.js" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/site-i18n.js?v=20261119-hotfix-syntax" defer></script><script src="/notification-bell.js?v=3" defer></script><script src="/turnstile-auth.js?v=4" defer></script>
 <script defer src="/swipe-navigation.js?v=1"></script>
+<style>
+/* Accessible password visibility controls */
+.lyy-password-wrap{position:relative;display:block}
+.lyy-password-wrap>input{width:100%;padding-right:48px!important}
+.lyy-password-toggle{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:6px}
+.lyy-password-toggle:focus-visible{outline:2px solid #f5c84b;outline-offset:1px}
+.lyy-password-toggle svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<script>
+(function(){
+'use strict';
+const eye='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+const hiddenEye='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A11 11 0 0 1 12 5c6.4 0 10 7 10 7a15 15 0 0 1-3.2 3.8M6.3 6.3C3.5 8.3 2 12 2 12s3.6 7 10 7a10.5 10.5 0 0 0 4.2-.9M10 10a3 3 0 0 0 4 4"/></svg>';
+const labels={'zh-CN':['显示密码','隐藏密码'],'zh-TW':['顯示密碼','隱藏密碼'],en:['Show password','Hide password'],ko:['비밀번호 표시','비밀번호 숨기기'],ja:['パスワードを表示','パスワードを隠す']};
+function label(showing){const lang=document.documentElement.lang||'zh-CN';const words=labels[lang]||labels[lang.split('-')[0]]||labels['zh-CN'];return words[showing?1:0]}
+function enhance(root){
+(root||document).querySelectorAll('input[type="password"]').forEach(function(input){
+if(input.closest('.lyy-password-wrap'))return;
+const wrap=document.createElement('span');wrap.className='lyy-password-wrap';input.parentNode.insertBefore(wrap,input);wrap.appendChild(input);
+const btn=document.createElement('button');btn.type='button';btn.className='lyy-password-toggle';btn.setAttribute('aria-label',label(false));btn.setAttribute('aria-pressed','false');btn.innerHTML=eye;
+btn.addEventListener('click',function(){const show=input.type==='password';input.type=show?'text':'password';btn.innerHTML=show?hiddenEye:eye;btn.setAttribute('aria-label',label(show));btn.setAttribute('aria-pressed',String(show));input.focus({preventScroll:true})});
+wrap.appendChild(btn);
+});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){enhance();new MutationObserver(function(){enhance()}).observe(document.body,{childList:true,subtree:true})});
+else{enhance();new MutationObserver(function(){enhance()}).observe(document.body,{childList:true,subtree:true})}
+})();
+</script>
 </body>
 </html>
