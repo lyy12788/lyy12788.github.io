@@ -68,12 +68,11 @@ const fragments={
 const fragmentKeys=Object.keys(fragments).sort((a,b)=>b.length-a.length);
 function translateSource(source,partial){
 const key=normalize(source);
-if(/^\\d+\\s*人点赞$/.test(key)){
- const n=key.match(/^\\d+/)[0];
- return [' 人点赞',' 人按讚',' likes','명이 좋아요','人がいいね'][idx+1]&&
- (idx===0?n+' 人点赞':idx===1?n+' 人按讚':idx===2?n+' likes':idx===3:n+'명이 좋아요':n+'人がいいね');
+if(/^\d+\s*人点赞$/.test(key)){
+ const n=key.match(/^\d+/)[0];
+ return idx<0?n+' 人点赞':idx===0?n+' 人按讚':idx===1?n+' likes':idx===2?n+'명이 좋아요':n+'人がいいね';
 }
-if(/^[♥♡]\\s*(已点赞\\s*·\\s*点击取消|点赞)$/.test(key)){
+if(/^[♥♡]\s*(已点赞\s*·\s*点击取消|点赞)$/.test(key)){
  const active=key.includes('已点赞'),mark=active?'♥':'♡';
  const v=active?['已点赞 · 点击取消','已按讚 · 點擊取消','Liked · click to unlike','좋아요 누름 · 취소하려면 클릭','いいね済み · クリックして解除']:['点赞','按讚','Like','좋아요','いいね'];
  return mark+' '+v[idx+1];
