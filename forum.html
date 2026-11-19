@@ -53,6 +53,12 @@
  #post-list .forum-list-date{font-size:11px}
  #post-list .forum-list-metrics{gap:15px;font-size:12px;justify-content:flex-start}
 }
+<style>
+#lyy-unified-account-dialog{position:fixed;inset:0;margin:auto;padding:0;width:min(96vw,920px);max-width:920px;height:min(94dvh,980px);max-height:94dvh;background:#101f30;color:#edf3f9;border:1px solid #607087;border-radius:14px;box-shadow:0 20px 70px #000b;overflow:hidden}
+#lyy-unified-account-dialog::backdrop{background:rgba(0,0,0,.75)}
+.lyy-unified-account-top{height:48px;display:flex;align-items:center;justify-content:space-between;padding:5px 12px;background:#14283d;border-bottom:1px solid #536377}
+.lyy-unified-account-close{width:auto!important;margin:0!important;padding:7px 14px!important;background:#293b50!important;color:white!important;border:1px solid #8795a8!important}
+#lyy-unified-account-dialog iframe{display:block;width:100%;height:calc(100% - 48px);border:0;background:#101f30}
 </style></head><body><header><a href="/">← 网站首页</a><nav><a href="/forum.html">论坛首页</a><a href="#mine" id="mine-link">我的文章</a><a href="#account" id="account-link">我的账户</a><a href="#moderation" id="moderation-link" class="hide">举报与禁言</a><a href="#appeal" id="appeal-link">账号申诉</a></nav><button id="login-btn">注册 / 登录</button></header>
 <main><h1><a href="/forum.html" class="forum-heading-link">公共论坛 · 自由交流</a></h1><p class="muted">会员发表观点，公开交流讨论。文章与评论提交后立即公开；违规内容可举报处理。</p><p id="status" class="status" role="status"></p>
 <section id="home"><div class="card"><div class="tools"><select id="category-filter" aria-label="文章分类"><option value="">全部分类</option><option>时事政治</option><option>国际局势</option><option>社会观察</option><option>宗教信仰</option><option>自由讨论</option></select><button id="new-btn">发表文章</button></div></div><div class="card" id="post-list">正在加载文章……</div></section>
@@ -71,6 +77,31 @@ const $=id=>document.getElementById(id),db=window.supabase?.createClient('https:
 let user=null,admin=false,opened=null;
 const say=t=>$('status').textContent=t;
 const show=id=>{closeOwnAccountPopup();for(const x of ['home','auth','account','compose','detail','member-public','mine','appeal','moderation'])$(x).classList.toggle('hide',x!==id);window.scrollTo(0,0)};
+let unifiedAccountDialog=null;
+function closeUnifiedAccountDialog(){
+ if(!unifiedAccountDialog)return;
+ if(unifiedAccountDialog.open)unifiedAccountDialog.close();
+ const frame=unifiedAccountDialog.querySelector('iframe');
+ if(frame)frame.src='about:blank';
+ if(location.hash==='#account')history.replaceState(null,'',location.pathname+location.search+'#home');
+}
+function openUnifiedAccountDialog(){
+ if(!user)return;
+ if(!unifiedAccountDialog){
+  const dialog=document.createElement('dialog');
+  dialog.id='lyy-unified-account-dialog';
+  dialog.setAttribute('aria-label','我的账户');
+  dialog.innerHTML='<div class="lyy-unified-account-top"><strong>我的账户</strong><button type="button" class="lyy-unified-account-close" aria-label="关闭账户窗口">× 关闭</button></div><iframe title="我的账户" loading="eager" referrerpolicy="same-origin"></iframe>';
+  document.body.append(dialog);
+  dialog.querySelector('button').addEventListener('click',closeUnifiedAccountDialog);
+  dialog.addEventListener('cancel',e=>{e.preventDefault();closeUnifiedAccountDialog()});
+  dialog.addEventListener('click',e=>{if(e.target===dialog)closeUnifiedAccountDialog()});
+  unifiedAccountDialog=dialog;
+ }
+ const frame=unifiedAccountDialog.querySelector('iframe');
+ frame.src='/?account_embed=1#account';
+ if(!unifiedAccountDialog.open)unifiedAccountDialog.showModal();
+}
 let ownAccountPopupOpen=false;
 function closeOwnAccountPopup(){if(!ownAccountPopupOpen)return;ownAccountPopupOpen=false;if(location.hash==='#account')history.replaceState(null,'',location.pathname+location.search+'#home');$('own-account-popup-close').hidden=true;$('account').classList.remove('forum-own-account-popup');$('account').classList.add('hide');$('own-account-backdrop').hidden=true;document.body.classList.remove('forum-account-modal-open')}
 async function openOwnAccountPopup(){if(!user)return;ownAccountPopupOpen=true;$('own-account-popup-close').hidden=false;$('account').classList.remove('hide');$('account').classList.add('forum-own-account-popup');$('own-account-backdrop').hidden=false;document.body.classList.add('forum-account-modal-open');await Promise.all([refreshAvatar(),loadAccountDetails(),loadDeletionState()])}
@@ -343,7 +374,7 @@ async function loadMemberMessages(){if(!user||!viewedMemberId)return;const uid=v
 $('member-message-send').onclick=async()=>{if(!user?.email_confirmed_at||!viewedMemberId)return;const body=$('member-message-body').value.trim();if(!body||body.length>1500){$('member-message-status').textContent='私信须为1—1500字';return}const btn=$('member-message-send');btn.disabled=true;const {error}=await db.from('member_direct_messages').insert({sender_id:user.id,recipient_id:viewedMemberId,body});btn.disabled=false;if(error){$('member-message-status').textContent='发送失败：'+error.message;return}$('member-message-body').value='';$('member-message-status').textContent='私信发送成功';await loadMemberMessages()};
 $('own-account-popup-close').onclick=closeOwnAccountPopup;$('own-account-backdrop').onclick=closeOwnAccountPopup;document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOwnAccountPopup()});
 $('member-public-back').onclick=()=>{location.hash=memberProfileReturn||'#home'};document.addEventListener('click',e=>{const a=e.target.closest?.('a[href^="#member="]');if(a&&location.hash!==a.getAttribute('href'))memberProfileReturn=location.hash||'#home'});
-async function route(){const hash=decodeURIComponent(location.hash);if(hash==='#moderation')return moderation();if(hash==='#appeal')return appeals();if(hash.startsWith('#member=')){const uid=hash.slice(8);if(user?.id===uid){history.replaceState(null,'',location.pathname+location.search+'#home');show('home');await listPosts();return openOwnAccountPopup()}return loadPublicMember(uid)}if(hash.startsWith('#post='))return loadPost(hash.slice(6));if(hash==='#compose'){if(!user){show('auth');return}show('compose');return}if(hash==='#mine')return mine();if(hash==='#account'){if(!user){show('auth');return}show('home');await openOwnAccountPopup();return}show('home');await listPosts()}
+async function route(){const hash=decodeURIComponent(location.hash);if(hash==='#moderation')return moderation();if(hash==='#appeal')return appeals();if(hash.startsWith('#member=')){const uid=hash.slice(8);if(user?.id===uid){history.replaceState(null,'',location.pathname+location.search+'#home');show('home');await listPosts();return openOwnAccountPopup()}return loadPublicMember(uid)}if(hash.startsWith('#post='))return loadPost(hash.slice(6));if(hash==='#compose'){if(!user){show('auth');return}show('compose');return}if(hash==='#mine')return mine();if(hash==='#account'){if(!user){show('auth');return}show('home');openUnifiedAccountDialog();return}show('home');await listPosts()}
 async function loadDeletionState(){
  if(!user)return;
  const {data,error}=await db.rpc('forum_account_deletion_status');
