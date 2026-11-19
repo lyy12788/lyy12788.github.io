@@ -101,7 +101,7 @@ function openUnifiedAccountDialog(){
   unifiedAccountDialog=dialog;
  }
  const frame=unifiedAccountDialog.querySelector('iframe');
- frame.src='/?account_embed=1#account';
+ frame.src='/?account_embed=1&appearance=2#account';
  if(!unifiedAccountDialog.open)unifiedAccountDialog.showModal();
 }
 let ownAccountPopupOpen=false;
