@@ -1,0 +1,32 @@
+/* Touch targets for tablet-sized viewports. Phone and mouse layouts use their existing styles. */
+@media (pointer: coarse) and (hover: none) and (min-width: 680px) and (max-width: 1366px) and (min-height: 560px) {
+  #lyy-language-toolbar { padding-block: 2px; }
+  #lyy-language-toolbar #lyy-language-wrap { padding-block: 0 !important; }
+  #lyy-language-toolbar #lyy-language { min-height: 42px; }
+  #lyy-language-toolbar #lyy-notification-link,
+  #lyy-language-toolbar #lyy-theme-control summary { min-height: 44px; display: inline-flex; align-items: center; }
+  #lyy-theme-control select { min-height: 44px; }
+
+  #dock :is(#toggle, #volume, #close) { min-width: 44px; min-height: 44px; }
+  #dock #seek { min-height: 32px; }
+
+  body > header > :is(a, button),
+  body > header nav a,
+  .sitebar .navlinks > a,
+  #lyy-section-tabs a,
+  #post-list .forum-list-title,
+  :is(#article-prev, #article-next) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  #lyy-section-tabs a { box-sizing: border-box; }
+  :is(#account-link, #mine-link, #moderation-link, #appeal-link).hide { display: none; }
+
+  .sitebar .nav-actions button,
+  :is(#category-filter, #new-btn, #auth-close, #admin-close),
+  button[aria-label^="播放录音"] {
+    min-height: 44px;
+  }
+  :is(#auth-close, #admin-close) { min-width: 44px; }
+}
