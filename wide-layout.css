@@ -1,0 +1,64 @@
+/* Desktop width shared by the site shell; prose keeps its own reading measure. */
+@media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
+  :root {
+    --lyy-wide-shell: min(1560px, calc(100% - clamp(64px, 6vw, 144px)));
+    --lyy-wide-prose: 90ch;
+  }
+
+  [data-lyy-page="index"] .wrap {
+    width: var(--lyy-wide-shell);
+  }
+  [data-lyy-page="index"] .community-hero {
+    background: var(--lyy-theme-panel);
+    border-bottom-color: var(--lyy-theme-edge);
+  }
+  [data-lyy-page="index"] .community-hero > .hero-inner {
+    background: none;
+    border-radius: 0;
+  }
+  [data-lyy-page="index"] .layout {
+    grid-template-columns: minmax(0, 1fr) clamp(290px, 22vw, 350px);
+    gap: clamp(28px, 3vw, 52px);
+  }
+  [data-lyy-page="index"] .reader-layout {
+    grid-template-columns: minmax(0, 1fr) clamp(245px, 18vw, 300px);
+  }
+  [data-lyy-page="index"] :is(.article-body, .reader-paper > h1) {
+    max-inline-size: var(--lyy-wide-prose);
+  }
+
+  [data-lyy-page]:not([data-lyy-page="index"]) body > main,
+  [data-lyy-page="forum"] body > header,
+  [data-lyy-page="aid"] body > :is(header, footer) {
+    box-sizing: border-box;
+    width: var(--lyy-wide-shell);
+    max-width: none;
+    padding-inline: 0;
+  }
+  [data-lyy-page="gospel"] body > header {
+    box-sizing: border-box;
+    padding-inline: max(clamp(32px, 3vw, 72px), calc((100% - 1560px) / 2));
+  }
+  [data-lyy-page="forum"] #detail-body,
+  [data-lyy-page="member-articles"] main article > p,
+  [data-lyy-page="suggestions"] main > .card:first-of-type {
+    max-inline-size: var(--lyy-wide-prose);
+  }
+
+  [data-lyy-page="editor-column"] main .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  [data-lyy-page]:is([data-lyy-page="rules"], [data-lyy-page="privacy"]) body > main,
+  [data-lyy-page="content-complaints"] body {
+    box-sizing: border-box;
+    width: min(1060px, calc(100% - 96px));
+    max-width: none;
+    padding-inline: 0;
+  }
+  [data-lyy-page]:is([data-lyy-page="rules"], [data-lyy-page="privacy"]) main :is(p, ul),
+  [data-lyy-page="content-complaints"] body :is(p, ul),
+  [data-lyy-page="aid"] main :is(p, ul) {
+    max-inline-size: var(--lyy-wide-prose);
+  }
+}
