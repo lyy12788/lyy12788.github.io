@@ -96,7 +96,6 @@ function openUnifiedAccountDialog(){
   dialog.setAttribute('aria-label','我的账户');
   dialog.innerHTML='<iframe title="我的账户" loading="eager" referrerpolicy="same-origin"></iframe>';
   document.body.append(dialog);
-  dialog.querySelector('button').addEventListener('click',closeUnifiedAccountDialog);
   dialog.addEventListener('cancel',e=>{e.preventDefault();closeUnifiedAccountDialog()});
   dialog.addEventListener('click',e=>{if(e.target===dialog)closeUnifiedAccountDialog()});
   unifiedAccountDialog=dialog;
