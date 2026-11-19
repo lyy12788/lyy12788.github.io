@@ -1,0 +1,38 @@
+/* Phone touch targets. Tablet and mouse layouts keep their existing dimensions. */
+@media (pointer: coarse) and (max-width: 600px),
+       (pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px)) {
+  #auth-modal #auth-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  #dock :is(#toggle, #volume, #close) {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  #dock #seek { min-height: 32px; }
+}
+
+/* Keep the time display on its own row when all controls cannot fit comfortably. */
+@media (pointer: coarse) and (orientation: portrait) and (max-width: 360px) {
+  body.has-audio #dock {
+    min-height: 82px;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px 44px;
+    grid-template-areas: "title title time time" "toggle seek volume close";
+    grid-template-rows: auto 44px;
+    gap: 4px 6px;
+    padding: 6px 8px;
+  }
+  #dock #title { grid-area: title; max-width: none; }
+  #dock #time { grid-area: time; justify-self: end; }
+  #dock #toggle { grid-area: toggle; }
+  #dock #seek { grid-area: seek; width: 100%; min-width: 0; margin: 0; }
+  #dock #volume { grid-area: volume; }
+  #dock #close { grid-area: close; }
+  body.has-audio #page { height: calc(100dvh - 126px); }
+}
+
+@media (pointer: coarse) and (orientation: landscape) and ((max-device-width: 500px) or (max-device-height: 500px)) {
+  #dock { min-height: 52px; }
+  body.has-audio:not(.landscape-reading) #page { height: calc(100dvh - 88px); }
+}
