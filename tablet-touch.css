@@ -25,7 +25,7 @@
 
   .sitebar .nav-actions button,
   :is(#category-filter, #new-btn, #auth-close, #admin-close),
-  button[aria-label^="播放录音"] {
+  .sermon-play-button {
     min-height: 44px;
   }
   :is(#auth-close, #admin-close) { min-width: 44px; }

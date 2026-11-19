@@ -48,8 +48,8 @@ Object.assign(data,{"密码（至少8位，含大小写字母和数字）":["密
 Object.assign(data,{"请先完成人机验证，再申请重设密码。":["請先完成人機驗證，再申請重設密碼。","Complete the CAPTCHA before requesting a password reset.","비밀번호 재설정을 요청하기 전에 CAPTCHA 인증을 완료하세요.","パスワード再設定を申請する前にCAPTCHA認証を完了してください。"]});
 const labels={'zh-CN':'简体中文','zh-TW':'繁體中文',en:'English',ko:'한국어',ja:'日本語'};
 const storage='lyy-site-language';const current=()=>{try{const v=localStorage.getItem(storage);return langs.includes(v)?v:'zh-CN'}catch{return 'zh-CN'}};
-const original=new WeakMap();const rendered=new WeakMap();const attrOriginal=new WeakMap();
-const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],time[data-lyy-local-time],[data-lyy-member-count],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,.forum-comment-text,.forum-comment-wrap .forum-comment-text,.forum-post-content,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]');
+const original=new WeakMap();const rendered=new WeakMap();const attrOriginal=new WeakMap();const attrRendered=new WeakMap();
+const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],time[data-lyy-local-time],[data-lyy-member-count],.post-body,.comment-body,.user-content,#post-list,.forum-comment-text,.forum-comment-wrap .forum-comment-text,.forum-post-content,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]')||!!(e?.closest('#drive-list,#drive-player')&&!e.closest('[data-lyy-media-ui]'));
 const normalize=t=>String(t||'').replace(/\s+/g,' ').trim();
 Object.assign(data,{"请输入旧密码。":["請輸入舊密碼。","Enter your current password.","현재 비밀번호를 입력하세요.","現在のパスワードを入力してください。"],"当前密码不正确。":["目前密碼不正確。","Current password is incorrect.","현재 비밀번호가 올바르지 않습니다.","現在のパスワードが正しくありません。"],"两次输入的新密码不一致。":["兩次輸入的新密碼不一致。","New passwords do not match.","새 비밀번호가 일치하지 않습니다.","新しいパスワードが一致しません。"],"新密码不能与旧密码相同。":["新密碼不能與舊密碼相同。","New password must differ from the old password.","새 비밀번호는 이전 비밀번호와 달라야 합니다.","新しいパスワードは以前のものと異なる必要があります。"],"正在验证旧密码……":["正在驗證舊密碼……","Verifying current password…","현재 비밀번호 확인 중…","現在のパスワードを確認中…"],"旧密码验证成功，正在更新密码……":["舊密碼驗證成功，正在更新密碼……","Password verified. Updating…","비밀번호 확인 완료. 변경 중…","パスワード確認完了。更新中…"],"密码修改成功。下次登录请使用新密码。":["密碼修改成功。下次登入請使用新密碼。","Password changed. Use the new password next time you sign in.","비밀번호가 변경되었습니다. 다음 로그인부터 새 비밀번호를 사용하세요.","パスワードを変更しました。次回から新しいパスワードでログインしてください。"],"必须先验证当前密码。":["必須先驗證目前密碼。","Verify your current password first.","먼저 현재 비밀번호를 확인하세요.","先に現在のパスワードを確認してください。"],"新密码不符合安全要求。":["新密碼不符合安全要求。","New password does not meet security requirements.","새 비밀번호가 보안 요구사항을 충족하지 않습니다.","新しいパスワードがセキュリティ要件を満たしていません。"],"操作过于频繁，请稍后重试。":["操作過於頻繁，請稍後重試。","Too many attempts. Try again later.","요청이 너무 많습니다. 잠시 후 다시 시도하세요.","操作が多すぎます。しばらくしてから再試行してください。"],"网络连接失败，请检查网络后重试。":["網路連線失敗，請檢查網路後重試。","Network error. Check your connection and retry.","네트워크 오류입니다. 연결을 확인하고 다시 시도하세요.","ネットワークエラーです。接続を確認して再試行してください。"],"登录已过期，请重新登录。":["登入已過期，請重新登入。","Session expired. Sign in again.","로그인 세션이 만료되었습니다. 다시 로그인하세요.","セッションが期限切れです。再度ログインしてください。"],"操作失败，请稍后重试。":["操作失敗，請稍後重試。","Operation failed. Try again later.","작업에 실패했습니다. 잠시 후 다시 시도하세요.","操作に失敗しました。後でもう一度お試しください。"],"再次输入新密码":["再次輸入新密碼","Confirm new password","새 비밀번호 다시 입력","新しいパスワードを再入力"],"请输入旧密码":["請輸入舊密碼","Enter current password","현재 비밀번호 입력","現在のパスワードを入力"]});
 Object.assign(data,{"举报文章":["舉報文章","Report article","게시글 신고","記事を通報"],"删除评论":["刪除評論","Delete comment","댓글 삭제","コメントを削除"],"举报":["舉報","Report","신고","通報"],"标记已处理":["標記已處理","Mark resolved","처리 완료 표시","対応済みにする"],"请输入举报文章的原因（5～300字）：":["請輸入舉報文章的原因（5～300字）：","Enter a reason for reporting this article (5–300 characters):","게시글 신고 사유를 입력하세요(5~300자):","記事の通報理由を入力してください（5～300文字）："],"举报原因需为5～300字。":["舉報原因須為5～300字。","Report reason must be 5–300 characters.","신고 사유는 5~300자여야 합니다.","通報理由は5～300文字で入力してください。"],"文章举报已提交，等待管理员处理。":["文章舉報已提交，等待管理員處理。","Article report submitted for review.","게시글 신고가 접수되었습니다. 관리자 검토를 기다려 주세요.","記事の通報を受け付けました。管理者が確認します。"],"请先完成邮箱验证。":["請先完成電子郵件驗證。","Verify your email first.","먼저 이메일 인증을 완료하세요.","先にメール認証を完了してください。"],"文章举报读取失败：":["文章舉報讀取失敗：","Failed to load article reports: ","게시글 신고 내역을 불러오지 못했습니다: ","記事の通報を読み込めませんでした："],"文章举报":["文章舉報","Article report","게시글 신고","記事の通報"],"举报失败：":["舉報失敗：","Report failed: ","신고 실패: ","通報失敗："],"请先在“我的账户”中设置公开昵称，再发表评论。":["請先在「我的帳戶」設定公開暱稱，再發表評論。","Set your public nickname in My Account before commenting.","댓글 작성 전 내 계정에서 공개 닉네임을 설정하세요.","コメント前にマイアカウントで公開ニックネームを設定してください。"],"正在提交文章，请稍候。":["正在提交文章，請稍候。","Submitting article…","게시글 제출 중…","記事を送信中…"]});
@@ -1298,6 +1298,92 @@ Object.assign(data,{
     "会員 {name} の情報を変更しますか？"
   ]
 });
+Object.assign(data,{
+  "播放录音：": [
+    "播放錄音：",
+    "Play recording: ",
+    "녹음 재생: ",
+    "録音を再生："
+  ],
+  "播放：": [
+    "播放：",
+    "Play: ",
+    "재생: ",
+    "再生："
+  ],
+  "下载：": [
+    "下載：",
+    "Download: ",
+    "다운로드: ",
+    "ダウンロード："
+  ],
+  "录音暂不可下载": [
+    "錄音暫時無法下載",
+    "This recording is not available for download",
+    "이 녹음은 현재 다운로드할 수 없습니다",
+    "この録音は現在ダウンロードできません"
+  ],
+  "💬 录音评论 · 欢迎交流": [
+    "💬 錄音留言",
+    "💬 Recording comments",
+    "💬 녹음 댓글",
+    "💬 録音へのコメント"
+  ],
+  "评论读取失败：": [
+    "留言讀取失敗：",
+    "Could not load comments: ",
+    "댓글을 불러오지 못했습니다: ",
+    "コメントを読み込めませんでした："
+  ],
+  "写下你的评论（登录会员可发表，最多1000字）": [
+    "寫下你的留言（登入會員可留言，最多 1,000 字）",
+    "Write a comment (sign-in required, up to 1,000 characters)",
+    "댓글 작성(로그인 필요, 최대 1,000자)",
+    "コメントを入力（ログインが必要、最大1,000文字）"
+  ],
+  "刚刚": [
+    "剛剛",
+    "Just now",
+    "방금",
+    "たった今"
+  ],
+  "请先输入评论": [
+    "請先輸入留言",
+    "Enter a comment first.",
+    "먼저 댓글을 입력해 주세요.",
+    "先にコメントを入力してください。"
+  ],
+  "请先登录会员账号：": [
+    "請先登入會員帳號：",
+    "Sign in to your member account: ",
+    "회원 계정에 로그인하세요: ",
+    "会員アカウントにログインしてください："
+  ],
+  "前往登录": [
+    "前往登入",
+    "Go to sign in",
+    "로그인하기",
+    "ログインへ"
+  ],
+  "发表成功": [
+    "發表成功",
+    "Comment posted.",
+    "댓글이 게시되었습니다.",
+    "コメントを投稿しました。"
+  ],
+  "点赞需要登录论坛会员账号。现在前往登录页面？": [
+    "按讚須登入論壇會員帳號。現在前往登入頁面？",
+    "Sign in to your forum account to like this recording. Go to sign in now?",
+    "이 녹음에 좋아요를 누르려면 포럼에 로그인해야 합니다. 로그인 페이지로 이동할까요?",
+    "この録音にいいねするにはフォーラムへのログインが必要です。ログインページに進みますか？"
+  ],
+  "解除静音": [
+    "解除靜音",
+    "Unmute",
+    "음소거 해제",
+    "ミュート解除"
+  ]
+});
 const dateFormats=new Map();
 const issueAliases=new Map(Object.entries({
  'Active verified membership required':'请先验证邮箱，并确认账号状态正常。',
@@ -1308,7 +1394,7 @@ const issueAliases=new Map(Object.entries({
  'Invalid article state':'当前文章状态不支持此操作。',
  'Published article cannot be made draft':'已公开的网友文章无法改为草稿。'
 }));
-const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：','评论发布失败：','保存或发布失败：','删除失败：','申请失败：','处理失败：','申诉已通过，但解除禁言失败：'];
+const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：','评论发布失败：','保存或发布失败：','删除失败：','申请失败：','处理失败：','申诉已通过，但解除禁言失败：','评论读取失败：'];
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
 function translateIssue(value,index){
  const key=normalize(value);
@@ -1346,6 +1432,18 @@ const fragments={
 const fragmentKeys=Object.keys(fragments).sort((a,b)=>b.length-a.length);
 function translateSource(source,partial){
 const key=normalize(source);
+if(idx>=0){
+ for(const prefix of ['播放录音：','播放：','下载：']){
+  if(key.startsWith(prefix)&&key.length>prefix.length)return translations.get(prefix)[idx]+source.slice(source.indexOf(prefix)+prefix.length);
+ }
+ const audioMetric=key.match(/^(?:▶\s*(\d+)\s*播放|♥\s*点赞\s*(\d+)|💬\s*评论\s*(\d+))$/u);
+ if(audioMetric){
+  const [plays,likes,comments]=audioMetric.slice(1);
+  if(plays!==undefined)return '▶ '+plays+' '+fragments['播放'][idx];
+  if(likes!==undefined)return '♥ '+fragments['点赞'][idx]+' '+likes;
+  return '💬 '+fragments['评论'][idx]+' '+comments;
+ }
+}
 if(/^\d+\s*人点赞$/.test(key)){
  const n=key.match(/^\d+/)[0];
  return idx<0?n+' 人点赞':idx===0?n+' 人按讚':idx===1?n+' likes':idx===2?n+'명이 좋아요':n+'人がいいね';
@@ -1402,17 +1500,19 @@ const translated=translateSource(src,uiFragment(el));
 if(visible!==translated)n.nodeValue=translated;rendered.set(n,translated);
 }
 document.querySelectorAll('[aria-label],[title],[placeholder],input[type="button"],input[type="submit"],input[type="reset"]').forEach(el=>{
-if(excluded(el.parentElement))return;
+if(el.hasAttribute('data-user-content')||(excluded(el.parentElement)&&!el.hasAttribute('data-lyy-media-ui')))return;
 let state=attrOriginal.get(el);if(!state){state={};attrOriginal.set(el,state)}
+let localized=attrRendered.get(el);if(!localized){localized={};attrRendered.set(el,localized)}
 for(const name of ['aria-label','title','placeholder','value']){
 if(!el.hasAttribute(name))continue;
 if(name==='value'&&!['button','submit','reset'].includes(el.type))continue;
 const current=el.getAttribute(name);
 if(!(name in state))state[name]=current;
 const expected=translateSource(state[name],false);
-if(current!==state[name]&&current!==expected&&!(translations.get(normalize(state[name]))||[]).includes(current))state[name]=current;
+if(current!==state[name]&&current!==expected&&current!==localized[name]&&!(translations.get(normalize(state[name]))||[]).includes(current))state[name]=current;
 const next=translateSource(state[name],false);
 if(current!==next)el.setAttribute(name,next);
+localized[name]=next;
 }
 });
 document.querySelectorAll('select:not(#lyy-language) option').forEach(el=>{
