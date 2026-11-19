@@ -1,0 +1,13 @@
+#lyy-theme-control{position:relative;z-index:30;flex:none;margin:0;color:var(--lyy-theme-ink);font:600 14px/1.35 system-ui,sans-serif}
+body>#lyy-theme-control{position:fixed;inset:12px 12px auto auto;z-index:70}
+#lyy-theme-control summary{display:flex;align-items:center;gap:6px;padding:6px 9px;min-height:34px;border:1px solid var(--lyy-theme-edge);border-radius:8px;background:var(--lyy-theme-panel);color:var(--lyy-theme-ink);cursor:pointer;white-space:nowrap;list-style:none}
+#lyy-theme-control summary::-webkit-details-marker{display:none}
+#lyy-theme-control summary span:first-child{color:var(--lyy-theme-accent);font-size:17px;line-height:1}
+#lyy-theme-control>div{position:absolute;inset:calc(100% + 7px) 0 auto auto;display:grid;gap:10px;width:min(260px,calc(100vw - 24px));padding:12px;background:var(--lyy-theme-panel);color:var(--lyy-theme-ink);border:1px solid var(--lyy-theme-edge);border-radius:10px;box-shadow:0 8px 25px #0004}
+#lyy-theme-control:not([open])>div{display:none}
+#lyy-theme-control label{display:grid;gap:4px;margin:0;color:var(--lyy-theme-ink)}
+#lyy-theme-control select{width:100%;min-height:36px;padding:6px 8px;margin:0;background:var(--lyy-theme-raised);color:var(--lyy-theme-ink);border:1px solid var(--lyy-theme-edge);border-radius:6px;font:inherit}
+#lyy-theme-control :focus-visible{outline:2px solid var(--lyy-theme-accent);outline-offset:2px}
+@media(max-width:430px){#lyy-theme-control summary{padding-inline:6px;font-size:12px}}
+#lyy-language-wrap>#lyy-theme-control{margin-inline-start:4px}
+#lyy-language-toolbar>#lyy-theme-control{margin-inline-start:6px}
