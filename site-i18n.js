@@ -111,7 +111,7 @@ const translated=translateSource(src,uiFragment(el));
 if(visible!==translated)n.nodeValue=translated;rendered.set(n,translated);
 }
 document.querySelectorAll('[aria-label],[title],[placeholder],input[type="button"],input[type="submit"],input[type="reset"]').forEach(el=>{
-if(excluded(el))return;
+if(excluded(el.parentElement))return;
 let state=attrOriginal.get(el);if(!state){state={};attrOriginal.set(el,state)}
 for(const name of ['aria-label','title','placeholder','value']){
 if(!el.hasAttribute(name))continue;
