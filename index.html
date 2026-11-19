@@ -294,6 +294,19 @@ body.lyy-account-embed #auth-modal[hidden]{display:none!important}
 body.lyy-account-embed .auth-box{width:100%!important;max-width:none!important;height:100%!important;max-height:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;overflow:auto!important;padding:18px 26px!important}
 body.lyy-account-embed #auth-member{max-width:100%!important}
 @media(min-width:680px){body.lyy-account-embed .auth-box{padding:22px 34px!important}}
+@media (max-width: 600px), (pointer: coarse) and (orientation: landscape) and (max-device-height: 500px) {
+  #community-feed-list { gap: 7px; }
+  #community-feed-list .discussion-item { padding-block: 10px; }
+  #community-feed-list .discussion-item strong {
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  #community-feed-list .discussion-item small {
+    display: block;
+    margin-top: 2px;
+    line-height: 1.35;
+  }
+}
 </style>
 <link rel="stylesheet" href="/tablet-touch.css?v=1"></head>
 <body><script>if(new URLSearchParams(location.search).has('account_embed')&&window.parent!==window)document.body.classList.add('lyy-account-embed');</script>
