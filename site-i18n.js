@@ -49,7 +49,7 @@ Object.assign(data,{"请先完成人机验证，再申请重设密码。":["請�
 const labels={'zh-CN':'简体中文','zh-TW':'繁體中文',en:'English',ko:'한국어',ja:'日本語'};
 const storage='lyy-site-language';const current=()=>{try{const v=localStorage.getItem(storage);return langs.includes(v)?v:'zh-CN'}catch{return 'zh-CN'}};
 const original=new WeakMap();const rendered=new WeakMap();const attrOriginal=new WeakMap();
-const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,.forum-comment-text,.forum-comment-wrap .forum-comment-text,.forum-post-content,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]');
+const excluded=e=>!!e?.closest('script,style,noscript,textarea,pre,code,[contenteditable],[data-user-content],[data-no-translate],time[data-lyy-local-time],[data-lyy-member-count],.post-body,.comment-body,.user-content,.sermon-row,.sermon-metrics,#drive-list,#drive-player,#post-list,.forum-comment-text,.forum-comment-wrap .forum-comment-text,.forum-post-content,[id*="nickname"],[id*="display-name"],[id*="author-name"],[id*="user-name"],[class*="nickname"],[class*="author-name"],[class*="user-name"],[data-nickname],[data-username]');
 const normalize=t=>String(t||'').replace(/\s+/g,' ').trim();
 Object.assign(data,{"请输入旧密码。":["請輸入舊密碼。","Enter your current password.","현재 비밀번호를 입력하세요.","現在のパスワードを入力してください。"],"当前密码不正确。":["目前密碼不正確。","Current password is incorrect.","현재 비밀번호가 올바르지 않습니다.","現在のパスワードが正しくありません。"],"两次输入的新密码不一致。":["兩次輸入的新密碼不一致。","New passwords do not match.","새 비밀번호가 일치하지 않습니다.","新しいパスワードが一致しません。"],"新密码不能与旧密码相同。":["新密碼不能與舊密碼相同。","New password must differ from the old password.","새 비밀번호는 이전 비밀번호와 달라야 합니다.","新しいパスワードは以前のものと異なる必要があります。"],"正在验证旧密码……":["正在驗證舊密碼……","Verifying current password…","현재 비밀번호 확인 중…","現在のパスワードを確認中…"],"旧密码验证成功，正在更新密码……":["舊密碼驗證成功，正在更新密碼……","Password verified. Updating…","비밀번호 확인 완료. 변경 중…","パスワード確認完了。更新中…"],"密码修改成功。下次登录请使用新密码。":["密碼修改成功。下次登入請使用新密碼。","Password changed. Use the new password next time you sign in.","비밀번호가 변경되었습니다. 다음 로그인부터 새 비밀번호를 사용하세요.","パスワードを変更しました。次回から新しいパスワードでログインしてください。"],"必须先验证当前密码。":["必須先驗證目前密碼。","Verify your current password first.","먼저 현재 비밀번호를 확인하세요.","先に現在のパスワードを確認してください。"],"新密码不符合安全要求。":["新密碼不符合安全要求。","New password does not meet security requirements.","새 비밀번호가 보안 요구사항을 충족하지 않습니다.","新しいパスワードがセキュリティ要件を満たしていません。"],"操作过于频繁，请稍后重试。":["操作過於頻繁，請稍後重試。","Too many attempts. Try again later.","요청이 너무 많습니다. 잠시 후 다시 시도하세요.","操作が多すぎます。しばらくしてから再試行してください。"],"网络连接失败，请检查网络后重试。":["網路連線失敗，請檢查網路後重試。","Network error. Check your connection and retry.","네트워크 오류입니다. 연결을 확인하고 다시 시도하세요.","ネットワークエラーです。接続を確認して再試行してください。"],"登录已过期，请重新登录。":["登入已過期，請重新登入。","Session expired. Sign in again.","로그인 세션이 만료되었습니다. 다시 로그인하세요.","セッションが期限切れです。再度ログインしてください。"],"操作失败，请稍后重试。":["操作失敗，請稍後重試。","Operation failed. Try again later.","작업에 실패했습니다. 잠시 후 다시 시도하세요.","操作に失敗しました。後でもう一度お試しください。"],"再次输入新密码":["再次輸入新密碼","Confirm new password","새 비밀번호 다시 입력","新しいパスワードを再入力"],"请输入旧密码":["請輸入舊密碼","Enter current password","현재 비밀번호 입력","現在のパスワードを入力"]});
 Object.assign(data,{"举报文章":["舉報文章","Report article","게시글 신고","記事を通報"],"删除评论":["刪除評論","Delete comment","댓글 삭제","コメントを削除"],"举报":["舉報","Report","신고","通報"],"标记已处理":["標記已處理","Mark resolved","처리 완료 표시","対応済みにする"],"请输入举报文章的原因（5～300字）：":["請輸入舉報文章的原因（5～300字）：","Enter a reason for reporting this article (5–300 characters):","게시글 신고 사유를 입력하세요(5~300자):","記事の通報理由を入力してください（5～300文字）："],"举报原因需为5～300字。":["舉報原因須為5～300字。","Report reason must be 5–300 characters.","신고 사유는 5~300자여야 합니다.","通報理由は5～300文字で入力してください。"],"文章举报已提交，等待管理员处理。":["文章舉報已提交，等待管理員處理。","Article report submitted for review.","게시글 신고가 접수되었습니다. 관리자 검토를 기다려 주세요.","記事の通報を受け付けました。管理者が確認します。"],"请先完成邮箱验证。":["請先完成電子郵件驗證。","Verify your email first.","먼저 이메일 인증을 완료하세요.","先にメール認証を完了してください。"],"文章举报读取失败：":["文章舉報讀取失敗：","Failed to load article reports: ","게시글 신고 내역을 불러오지 못했습니다: ","記事の通報を読み込めませんでした："],"文章举报":["文章舉報","Article report","게시글 신고","記事の通報"],"举报失败：":["舉報失敗：","Report failed: ","신고 실패: ","通報失敗："],"请先在“我的账户”中设置公开昵称，再发表评论。":["請先在「我的帳戶」設定公開暱稱，再發表評論。","Set your public nickname in My Account before commenting.","댓글 작성 전 내 계정에서 공개 닉네임을 설정하세요.","コメント前にマイアカウントで公開ニックネームを設定してください。"],"正在提交文章，请稍候。":["正在提交文章，請稍候。","Submitting article…","게시글 제출 중…","記事を送信中…"]});
@@ -1074,6 +1074,231 @@ Object.assign(data,{
     "サイト所有者（ここでは所有者の権限を変更できません）"
   ]
 });
+Object.assign(data,{
+  "会员": [
+    "會員",
+    "Member",
+    "회원",
+    "会員"
+  ],
+  "管理员": [
+    "管理員",
+    "Administrator",
+    "관리자",
+    "管理者"
+  ],
+  "网站管理员": [
+    "網站管理員",
+    "Site administrator",
+    "사이트 관리자",
+    "サイト管理者"
+  ],
+  "正常": [
+    "正常",
+    "Active",
+    "정상",
+    "有効"
+  ],
+  "永久暂停": [
+    "永久暫停",
+    "Indefinitely suspended",
+    "무기한 정지",
+    "無期限停止"
+  ],
+  "禁言至": [
+    "禁言至",
+    "Muted until",
+    "발언 제한 종료",
+    "発言制限の終了"
+  ],
+  "选择处理方式": [
+    "選擇處理方式",
+    "Choose an action",
+    "조치 선택",
+    "対応を選択"
+  ],
+  "禁言24小时": [
+    "禁言 24 小時",
+    "Mute for 24 hours",
+    "24시간 발언 제한",
+    "24時間の発言制限"
+  ],
+  "禁言7天": [
+    "禁言 7 天",
+    "Mute for 7 days",
+    "7일간 발언 제한",
+    "7日間の発言制限"
+  ],
+  "禁言30天": [
+    "禁言 30 天",
+    "Mute for 30 days",
+    "30일간 발언 제한",
+    "30日間の発言制限"
+  ],
+  "暂停账号": [
+    "暫停帳號",
+    "Suspend account",
+    "계정 정지",
+    "アカウントを停止"
+  ],
+  "解除限制": [
+    "解除限制",
+    "Lift restrictions",
+    "제한 해제",
+    "制限を解除"
+  ],
+  "执行": [
+    "執行",
+    "Apply action",
+    "조치 적용",
+    "対応を実行"
+  ],
+  "暂无会员": [
+    "暫無會員",
+    "No members found",
+    "회원이 없습니다",
+    "会員が見つかりません"
+  ],
+  "查看文章": [
+    "查看文章",
+    "View post",
+    "게시물 보기",
+    "投稿を見る"
+  ],
+  "处理完毕 · 移除举报": [
+    "處理完成 · 移除檢舉",
+    "Mark handled and remove report",
+    "처리 완료 및 신고 제거",
+    "対応済みにして通報を削除"
+  ],
+  "确认已审查此举报？仅删除举报记录，不删除原内容。": [
+    "確定已審查這筆檢舉？此操作只會刪除檢舉紀錄，原內容會保留。",
+    "Mark this report as reviewed? This removes the report and keeps the original content.",
+    "이 신고를 검토 완료로 처리할까요? 신고 기록만 삭제되고 원래 콘텐츠는 유지됩니다.",
+    "この通報を確認済みにしますか？通報記録が削除され、元の内容は残ります。"
+  ],
+  "请输入具体处理理由（例如重复刷屏、威胁、骚扰）": [
+    "請輸入具體處理理由（例如重複洗版、威脅、騷擾）",
+    "Enter a specific reason, such as repeated spam, threats, or harassment.",
+    "도배, 위협, 괴롭힘 등 구체적인 조치 사유를 입력해 주세요.",
+    "繰り返しのスパム、脅迫、嫌がらせなど、具体的な理由を入力してください。"
+  ],
+  "请填写至少5字的处理理由": [
+    "請填寫至少 5 字的處理理由",
+    "Enter a reason of at least 5 characters.",
+    "조치 사유를 5자 이상 입력해 주세요.",
+    "対応の理由を5文字以上入力してください。"
+  ],
+  "确认对该会员执行：{action}？": [
+    "確定對這位會員執行「{action}」？",
+    "Apply this action to the selected member: {action}?",
+    "선택한 회원에게 다음 조치를 적용할까요? {action}",
+    "選択した会員に「{action}」を実行しますか？"
+  ],
+  "确认执行：{action}？": [
+    "確定執行「{action}」？",
+    "Confirm this action: {action}?",
+    "다음 조치를 실행할까요? {action}",
+    "「{action}」を実行しますか？"
+  ],
+  "处理失败：": [
+    "處理失敗：",
+    "Action failed: ",
+    "조치 실패: ",
+    "対応に失敗しました："
+  ],
+  "无效的处理方式": [
+    "無效的處理方式",
+    "Invalid action",
+    "유효하지 않은 조치",
+    "無効な操作です"
+  ],
+  "暂无待处理申诉": [
+    "暫無待處理申訴",
+    "No pending appeals",
+    "처리 대기 중인 이의 신청이 없습니다",
+    "対応待ちの異議申し立てはありません"
+  ],
+  "同意申诉并解除限制": [
+    "同意申訴並解除限制",
+    "Accept appeal and lift restrictions",
+    "이의 신청을 받아들이고 제한 해제",
+    "異議申し立てを認めて制限を解除"
+  ],
+  "驳回申诉": [
+    "駁回申訴",
+    "Reject appeal",
+    "이의 신청 기각",
+    "異議申し立てを却下"
+  ],
+  "给会员的处理说明（建议填写理由）": [
+    "給會員的處理說明（建議填寫理由）",
+    "Message to the member (include a reason if possible)",
+    "회원에게 전달할 설명(가능하면 사유를 포함하세요)",
+    "会員への説明（可能であれば理由を記入）"
+  ],
+  "申诉已通过，但解除禁言失败：": [
+    "申訴已通過，但解除禁言失敗：",
+    "Appeal accepted, but the mute could not be lifted: ",
+    "이의 신청은 승인됐으나 발언 제한을 해제하지 못했습니다: ",
+    "異議申し立ては承認されましたが、発言制限を解除できませんでした："
+  ],
+  "仅站长可管理账号限制、申诉和数据备份。": [
+    "僅站長可管理帳號限制、申訴及資料備份。",
+    "Only the site owner can manage account restrictions, appeals, and data backups.",
+    "사이트 운영자만 계정 제한, 이의 신청 및 데이터 백업을 관리할 수 있습니다.",
+    "アカウント制限、異議申し立て、データのバックアップを管理できるのはサイト所有者のみです。"
+  ],
+  "如果账号被误禁言或限制，可以在这里提交申诉。申诉内容仅本人和站长可查看。": [
+    "若帳號遭誤禁言或限制，可在此提交申訴。申訴內容僅本人及站長可查看。",
+    "If your account was muted or restricted in error, submit an appeal here. Only you and the site owner can view it.",
+    "계정이 잘못 제한되거나 발언이 금지되었다면 이곳에서 이의를 신청할 수 있습니다. 신청 내용은 본인과 사이트 운영자만 볼 수 있습니다.",
+    "誤って発言禁止や利用制限を受けた場合は、ここから異議を申し立てられます。内容は申立人とサイト所有者のみが閲覧できます。"
+  ],
+  "播放失败：请检查R2音频地址": [
+    "播放失敗：請檢查 R2 音訊網址",
+    "Playback failed. Check the R2 audio URL.",
+    "재생에 실패했습니다. R2 오디오 주소를 확인하세요.",
+    "再生できませんでした。R2 の音声 URL を確認してください。"
+  ],
+  "音频加载失败：R2文件不存在或无法访问": [
+    "音訊載入失敗：R2 檔案不存在或無法存取",
+    "Could not load audio. The R2 file is missing or inaccessible.",
+    "오디오를 불러오지 못했습니다. R2 파일이 없거나 접근할 수 없습니다.",
+    "音声を読み込めませんでした。R2 ファイルが存在しないか、アクセスできません。"
+  ],
+  "真实之声 · 公益援助中心 ｜ 本页为筹备说明，不构成公开募捐或援助承诺。": [
+    "真實之聲 · 公益援助中心 ｜ 本頁為籌備說明，不構成公開募款或援助承諾。",
+    "Voice of Truth · Public Aid Center. This page outlines plans and does not constitute a public fundraiser or a promise of aid.",
+    "진실의 목소리 · 공익 지원 센터. 이 페이지는 준비 계획을 설명하며 공개 모금이나 지원 약속이 아닙니다.",
+    "真実の声 · 公益支援センター。このページは準備状況の説明であり、公開募金や支援を約束するものではありません。"
+  ],
+  "已显示 {count} 位会员": [
+    "已顯示 {count} 位會員",
+    "Showing {count} members",
+    "회원 {count}명 표시 중",
+    "会員 {count} 人を表示中"
+  ],
+  "当前积分": [
+    "目前積分",
+    "Current points",
+    "현재 포인트",
+    "現在のポイント"
+  ],
+  "注册于": [
+    "註冊於",
+    "Joined on",
+    "가입일",
+    "登録日"
+  ],
+  "确定修改会员 {name} 的资料吗？": [
+    "確定變更會員 {name} 的資料嗎？",
+    "Apply changes to the account for {name}?",
+    "{name} 회원의 정보를 수정할까요?",
+    "会員 {name} の情報を変更しますか？"
+  ]
+});
+const dateFormats=new Map();
 const issueAliases=new Map(Object.entries({
  'Active verified membership required':'请先验证邮箱，并确认账号状态正常。',
  'Verified active membership required':'请先验证邮箱，并确认账号状态正常。',
@@ -1083,7 +1308,7 @@ const issueAliases=new Map(Object.entries({
  'Invalid article state':'当前文章状态不支持此操作。',
  'Published article cannot be made draft':'已公开的网友文章无法改为草稿。'
 }));
-const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：','评论发布失败：','保存或发布失败：','删除失败：','申请失败：'];
+const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：','评论发布失败：','保存或发布失败：','删除失败：','申请失败：','处理失败：','申诉已通过，但解除禁言失败：'];
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
 function translateIssue(value,index){
  const key=normalize(value);
@@ -1144,6 +1369,20 @@ return output;
 function uiFragment(el){
 return !!el.closest('button,a,nav,[class*="bookmark"],[id*="bookmark"],[class*="metric"],[class*="stat"],[class*="count"],[id*="account"],[id*="member"],[id*="article-count"]');
 }
+document.querySelectorAll('time[data-lyy-local-time]').forEach(el=>{
+ const date=new Date(el.dateTime);
+ if(!el.dateTime||!Number.isFinite(date.getTime()))return;
+ if(!dateFormats.has(lang))dateFormats.set(lang,new Intl.DateTimeFormat(lang,{dateStyle:'medium',timeStyle:'short'}));
+ const text=dateFormats.get(lang).format(date);
+ if(el.textContent!==text)el.textContent=text;
+});
+document.querySelectorAll('[data-lyy-member-count]').forEach(el=>{
+ const raw=el.dataset.lyyMemberCount;
+ if(!/^\d+$/.test(raw))return;
+ const key='已显示 {count} 位会员';
+ const text=(idx<0?key:translations.get(key)[idx]).replace('{count}',new Intl.NumberFormat(lang).format(Number(raw)));
+ if(el.textContent!==text)el.textContent=text;
+});
 const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
 let n;
 while((n=walker.nextNode())){
@@ -1224,6 +1463,10 @@ function translateMessage(value){
  const key=normalize(value);
  return (index>=0?translations.get(key)?.[index]:undefined)??translateIssue(value,index)??value;
 }
-window.lyyLanguage={set,apply,current,translate:translateMessage};
+function formatMessage(template,values){
+ return translateMessage(template).replace(/\{(\w+)\}/g,(match,name)=>
+   Object.hasOwn(values,name)?String(values[name]):match);
+}
+window.lyyLanguage={set,apply,current,translate:translateMessage,format:formatMessage};
 for(const method of ['alert','confirm','prompt']){const native=window[method];if(typeof native!=='function')continue;window[method]=function(message,...rest){return native.call(window,translateMessage(message),...rest)};}
 })();
