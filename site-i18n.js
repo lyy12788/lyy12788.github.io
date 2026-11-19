@@ -48,6 +48,695 @@ Object.assign(data,{"← 网站首页":["← 網站首頁","← Website home","�
 Object.assign(data,{"管理员：上传或替换这篇文章的宣传图片":["管理員：上傳或替換這篇文章的宣傳圖片","Admin: upload or replace this article's cover image","관리자: 이 글의 표지 이미지 업로드 또는 교체","管理者：この記事のカバー画像をアップロード・変更"],"注册 / 登录后评论":["註冊／登入後評論","Sign up or sign in to comment","가입 또는 로그인 후 댓글 작성","登録・ログインしてコメント"],"上传新头像（JPG、PNG、WebP、HEIC、HEIF，自动压缩）":["上傳新頭像（JPG、PNG、WebP、HEIC、HEIF，自動壓縮）","Upload avatar (JPG, PNG, WebP, HEIC, HEIF; auto-compressed)","프로필 사진 업로드(JPG, PNG, WebP, HEIC, HEIF; 자동 압축)","アイコンをアップロード（JPG、PNG、WebP、HEIC、HEIF、自動圧縮）"],"当前密码验证":["目前密碼驗證","Verify current password","현재 비밀번호 확인","現在のパスワードを確認"],"为保护账户安全，修改邮箱前必须验证当前密码。提交后请按邮件提示确认新邮箱；原邮箱验证方式正在完善。":["為保護帳戶安全，變更電子郵件前須驗證目前密碼。提交後請依郵件指示確認新信箱；原信箱驗證方式仍在完善中。","For security, verify your current password before changing email. Follow the confirmation email. Verification through your old email is still being developed.","보안을 위해 이메일 변경 전에 현재 비밀번호를 확인하세요. 확인 이메일의 안내를 따르세요. 기존 이메일 인증 방식은 개발 중입니다.","安全のため、メール変更前に現在のパスワードを確認してください。確認メールの案内に従ってください。旧メールによる認証は開発中です。"],"修改成功后将退出登录，之后请使用新密码登录。":["修改成功後將登出，之後請使用新密碼登入。","You will be signed out after changing your password. Sign in with your new password.","비밀번호 변경 후 로그아웃됩니다. 새 비밀번호로 로그인하세요.","変更後はログアウトします。新しいパスワードでログインしてください。"],"确认后立即无法发帖、评论、编辑或删除自己的历史内容。历史文章和评论保留。7天内可登录并撤销，过期不能自行恢复。":["確認後將立即無法發文、評論、編輯或刪除舊內容。歷史文章與評論保留。7天內可登入撤銷，逾期無法自行恢復。","Once confirmed, posting, commenting, editing and deleting are disabled immediately. Existing posts and comments remain. You can reverse this within 7 days; afterward you cannot restore access yourself.","확인 즉시 게시·댓글·수정·삭제가 중단됩니다. 기존 글과 댓글은 유지됩니다. 7일 이내 취소할 수 있으며 이후에는 직접 복구할 수 없습니다.","確定後は投稿・コメント・編集・削除がすぐにできなくなります。過去の投稿とコメントは残ります。7日以内は撤回できますが、以降は自分で復旧できません。"],"请先确认，再向注册邮箱发送验证码。":["請先確認，再向註冊信箱發送驗證碼。","Confirm first, then send a verification code to your registered email.","먼저 확인한 후 등록된 이메일로 인증 코드를 보내세요.","まず確認し、登録メールに認証コードを送信してください。"],"插入站外视频":["插入站外影片","Insert external video","외부 동영상 삽입","外部動画を挿入"],"图片最大5MB；视频仅支持站外链接，不上传视频文件":["圖片最大5MB；影片僅支援外部連結，不上傳影片檔案","Images up to 5 MB; videos must use external links (no video file uploads)","이미지 최대 5MB; 동영상은 외부 링크만 지원합니다","画像は最大5MB。動画は外部リンクのみ対応（動画ファイルのアップロード不可）"],"提交文章":["提交文章","Submit article","글 제출","記事を送信"],"♡ 点赞":["♡ 按讚","♡ Like","♡ 좋아요","♡ いいね"],"0 人点赞":["0 人按讚","0 likes","0명이 좋아요","0人がいいね"],"返回":["返回","Back","뒤로","戻る"],"发送私信":["發送私訊","Send private message","쪽지 보내기","ダイレクトメッセージを送信"],"与该会员的私信记录":["與該會員的私訊記錄","Private messages with this member","이 회원과 주고받은 쪽지","この会員とのメッセージ履歴"],"该会员公开发表的帖子":["該會員公開發表的貼文","This member's public posts","이 회원의 공개 게시글","この会員の公開投稿"],"⚙ 站长管理":["⚙ 站長管理","⚙ Site administration","⚙ 사이트 관리","⚙ サイト管理"],"会员文章审核":["會員文章審核","Member article review","회원 글 검토","会員記事の審査"],"论坛文章审核":["論壇文章審核","Forum post review","포럼 게시글 검토","フォーラム投稿の審査"],"这里展示会员公开发表的文章。会员提交后直接公开，违规内容依照社区规则处理。":["這裡展示會員公開發表的文章。會員提交後立即公開，違規內容依社群規則處理。","Public articles written by members appear here. Submissions are published immediately; violations are handled under community rules.","회원이 공개한 글을 표시합니다. 제출 즉시 공개되며 위반 콘텐츠는 커뮤니티 규칙에 따라 처리합니다.","会員が公開した記事を表示します。投稿は即時公開され、違反はコミュニティルールに従って対応します。"],"文章与论坛帖子均实行发布即公开；发现违规内容可举报，由管理员依法处理。":["文章與論壇貼文均為發布即公開；發現違規內容可檢舉，由管理員依法處理。","Articles and forum posts are published immediately. Report violations for administrator review.","기사와 포럼 게시글은 즉시 공개됩니다. 위반 사항은 관리자에게 신고할 수 있습니다.","記事とフォーラム投稿は即時公開されます。違反は管理者に通報できます。"],"这里展示会员正式投稿的文章，与公共论坛帖子分开管理。所有已验证邮箱的会员均可提交文章。发布后立即公开；涉嫌违规内容可举报并依法处理。":["此處展示會員正式投稿的文章，與公共論壇貼文分開管理。已驗證電子郵件的會員皆可投稿。發布後立即公開；違規內容可檢舉處理。","Formal member articles appear here, separate from forum posts. Members with verified email addresses can submit articles, which appear immediately. Suspected violations may be reported.","회원 정식 기사는 포럼 게시글과 별도로 표시됩니다. 이메일 인증 회원은 기사를 제출할 수 있으며 즉시 공개됩니다. 위반 사항은 신고할 수 있습니다.","会員の正式な記事をフォーラム投稿とは別に掲載します。メール認証済み会員は投稿でき、記事は即時公開されます。違反は通報できます。"]});
 Object.assign(data,{"登录成功！欢迎回来，您现在可以查看和修改个人资料。":["登入成功！歡迎回來，您現在可以查看及修改個人資料。","Signed in successfully! Welcome back. You can now view and edit your profile.","로그인에 성공했습니다! 다시 오신 것을 환영합니다. 이제 프로필을 확인하고 수정할 수 있습니다.","ログインに成功しました！おかえりなさい。プロフィールの確認と編集ができます。"]});
 Object.assign(data,{"暂无评论":["暫無評論","No comments yet","아직 댓글이 없습니다","まだコメントはありません"],"发表评论（最多1500字；不足30字不计积分）":["發表評論（最多1500字；不足30字不計積分）","Write a comment (max 1,500 characters; under 30 characters earns no points)","댓글 작성 (최대 1,500자, 30자 미만은 포인트 미지급)","コメントを入力（最大1,500文字、30文字未満はポイント対象外）"]});
+Object.assign(data,{
+  "重试人机验证": [
+    "重試人機驗證",
+    "Retry verification",
+    "인증 다시 시도",
+    "認証を再試行"
+  ],
+  "验证已重置，请重新完成人机验证。": [
+    "驗證已重設，請重新完成人機驗證。",
+    "Verification was reset. Please complete it again.",
+    "인증이 초기화되었습니다. 다시 인증해 주세요.",
+    "認証をリセットしました。もう一度認証してください。"
+  ],
+  "登录服务尚未加载，请刷新页面后重试。": [
+    "登入服務尚未載入，請重新整理頁面後再試。",
+    "Sign-in is unavailable. Refresh the page and try again.",
+    "로그인 서비스를 불러오지 못했습니다. 페이지를 새로고침하고 다시 시도해 주세요.",
+    "ログインサービスを読み込めませんでした。ページを再読み込みしてお試しください。"
+  ],
+  "请输入有效的邮箱地址和密码。": [
+    "請輸入有效的電子郵件地址及密碼。",
+    "Enter a valid email address and password.",
+    "유효한 이메일 주소와 비밀번호를 입력해 주세요.",
+    "有効なメールアドレスとパスワードを入力してください。"
+  ],
+  "注册密码至少10位，必须同时包含大写英文字母、小写英文字母和数字。": [
+    "註冊密碼至少 10 個字元，須包含英文大寫字母、小寫字母及數字。",
+    "Use at least 10 characters, including uppercase and lowercase letters and a number.",
+    "대문자, 소문자, 숫자를 포함해 10자 이상 입력해 주세요.",
+    "英大文字、英小文字、数字を含む10文字以上のパスワードを入力してください。"
+  ],
+  "人机验证尚未加载。若验证框一直未出现，请点击下方按钮重新加载页面。": [
+    "人機驗證尚未載入。若驗證框一直未出現，請按下方按鈕重新載入頁面。",
+    "Verification has not loaded. If the box does not appear, use the button below to reload the page.",
+    "인증 도구를 아직 불러오지 못했습니다. 인증 상자가 나타나지 않으면 아래 버튼으로 페이지를 새로고침하세요.",
+    "認証が読み込まれていません。認証欄が表示されない場合は、下のボタンでページを再読み込みしてください。"
+  ],
+  "正在注册……": [
+    "正在註冊……",
+    "Creating your account…",
+    "가입 처리 중…",
+    "アカウントを作成しています…"
+  ],
+  "正在登录……": [
+    "正在登入……",
+    "Signing in…",
+    "로그인 중…",
+    "ログインしています…"
+  ],
+  "请查收邮箱中的验证邮件。": [
+    "請查收電子郵件中的驗證信。",
+    "Check your inbox for the verification email.",
+    "받은편지함에서 인증 이메일을 확인해 주세요.",
+    "受信トレイで認証メールを確認してください。"
+  ],
+  "登录成功。": [
+    "登入成功。",
+    "Signed in successfully.",
+    "로그인했습니다.",
+    "ログインしました。"
+  ],
+  "邮箱或密码不正确，请检查后重试。": [
+    "電子郵件地址或密碼不正確，請確認後再試。",
+    "Incorrect email or password. Check your details and try again.",
+    "이메일 또는 비밀번호가 올바르지 않습니다. 확인 후 다시 시도해 주세요.",
+    "メールアドレスまたはパスワードが正しくありません。確認して再度お試しください。"
+  ],
+  "登录失败": [
+    "登入失敗",
+    "Sign-in failed",
+    "로그인 실패",
+    "ログインに失敗しました"
+  ],
+  "注册失败": [
+    "註冊失敗",
+    "Registration failed",
+    "가입 실패",
+    "登録に失敗しました"
+  ],
+  "登录失败，请稍后重试。": [
+    "登入失敗，請稍後再試。",
+    "Sign-in failed. Try again later.",
+    "로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+    "ログインに失敗しました。しばらくしてからお試しください。"
+  ],
+  "注册失败，请稍后重试。": [
+    "註冊失敗，請稍後再試。",
+    "Registration failed. Try again later.",
+    "가입에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+    "登録に失敗しました。しばらくしてからお試しください。"
+  ],
+  "登录失败：": [
+    "登入失敗：",
+    "Sign-in failed: ",
+    "로그인 실패: ",
+    "ログインに失敗しました："
+  ],
+  "注册失败：": [
+    "註冊失敗：",
+    "Registration failed: ",
+    "가입 실패: ",
+    "登録に失敗しました："
+  ],
+  "选择网站语言": [
+    "選擇網站語言",
+    "Choose site language",
+    "사이트 언어 선택",
+    "サイトの言語を選択"
+  ],
+  "机器人验证": [
+    "機器人驗證",
+    "Human verification",
+    "자동 입력 방지 인증",
+    "本人確認"
+  ],
+  "网站内容": [
+    "網站內容",
+    "Site content",
+    "사이트 콘텐츠",
+    "サイトのコンテンツ"
+  ],
+  "讲道录音播放器": [
+    "講道錄音播放器",
+    "Sermon audio player",
+    "설교 녹음 플레이어",
+    "説教音声プレーヤー"
+  ],
+  "请输入邮箱": [
+    "請輸入電子郵件地址",
+    "Enter your email address",
+    "이메일 주소를 입력하세요",
+    "メールアドレスを入力"
+  ],
+  "请输入密码": [
+    "請輸入密碼",
+    "Enter your password",
+    "비밀번호를 입력하세요",
+    "パスワードを入力"
+  ],
+  "请输入当前密码以验证身份": [
+    "請輸入目前密碼以驗證身分",
+    "Enter your current password to verify your identity",
+    "본인 확인을 위해 현재 비밀번호를 입력하세요",
+    "本人確認のため現在のパスワードを入力"
+  ],
+  "修改邮箱安全验证": [
+    "變更電子郵件安全驗證",
+    "Security verification for changing email",
+    "이메일 변경 보안 인증",
+    "メールアドレス変更のセキュリティ確認"
+  ],
+  "输入新密码": [
+    "輸入新密碼",
+    "Enter a new password",
+    "새 비밀번호 입력",
+    "新しいパスワードを入力"
+  ],
+  "头像裁切预览": [
+    "頭像裁切預覽",
+    "Profile photo crop preview",
+    "프로필 사진 자르기 미리보기",
+    "プロフィール画像の切り抜きプレビュー"
+  ],
+  "设置公开昵称": [
+    "設定公開暱稱",
+    "Set a public display name",
+    "공개 닉네임 설정",
+    "公開表示名を設定"
+  ],
+  "说明调整原因": [
+    "說明調整原因",
+    "Explain the reason for the change",
+    "변경 사유를 입력하세요",
+    "変更理由を入力"
+  ],
+  "网站建议：提出网站功能和使用体验改进意见": [
+    "網站建議：提出網站功能及使用體驗改進意見",
+    "Site feedback: suggest features and usability improvements",
+    "사이트 제안: 기능 및 사용성 개선 의견 보내기",
+    "サイトへの提案：機能や使いやすさの改善案を送る"
+  ],
+  "双核心栏目": [
+    "兩大主要欄目",
+    "Main sections",
+    "주요 섹션",
+    "主なセクション"
+  ],
+  "提交申诉": [
+    "提交申訴",
+    "Submit appeal",
+    "이의 신청 제출",
+    "異議申し立てを送信"
+  ],
+  "申诉理由": [
+    "申訴理由",
+    "Reason for appeal",
+    "이의 신청 사유",
+    "異議申し立ての理由"
+  ],
+  "我的申诉记录": [
+    "我的申訴紀錄",
+    "My appeal history",
+    "내 이의 신청 기록",
+    "自分の異議申し立て履歴"
+  ],
+  "如果账号被误禁言或限制，可以说明情况。申诉仅管理员可查看，审核通常需要人工处理。": [
+    "若帳號遭誤禁言或限制，可在此說明。申訴僅管理員可見，通常需人工審核。",
+    "If your account was muted or restricted by mistake, explain what happened. Only administrators can view appeals, which are usually reviewed manually.",
+    "계정이 잘못 제한되었거나 발언이 금지되었다면 상황을 설명해 주세요. 이의 신청은 관리자만 볼 수 있으며 일반적으로 수동 검토합니다.",
+    "誤って発言禁止や利用制限を受けた場合は、経緯を説明してください。申し立ては管理者のみ閲覧でき、通常は手動で審査されます。"
+  ],
+  "请说明账号受到的限制、相关事实和申诉理由（10—2000字）": [
+    "請說明帳號所受限制、相關事實及申訴理由（10–2,000 字）",
+    "Describe the account restriction, relevant facts, and grounds for appeal (10–2,000 characters)",
+    "계정 제한, 관련 사실, 이의 신청 사유를 설명해 주세요(10~2,000자)",
+    "アカウントの制限、関連する事実、異議申し立ての理由を記入（10～2,000文字）"
+  ],
+  "举报与账号管理": [
+    "檢舉與帳號管理",
+    "Reports and account management",
+    "신고 및 계정 관리",
+    "通報とアカウント管理"
+  ],
+  "仅管理员可见。依据公开规则处理刷屏、骚扰、威胁及隐私侵害；不因正常不同意见处罚。": [
+    "僅管理員可見。依公開規則處理洗版、騷擾、威脅及侵犯隱私，不會因正常的意見分歧而處罰。",
+    "Administrators only. Apply the published rules to spam, harassment, threats, and privacy violations. Ordinary disagreement is allowed.",
+    "관리자만 볼 수 있습니다. 공개 규칙에 따라 도배, 괴롭힘, 위협, 개인정보 침해를 처리합니다. 일반적인 의견 차이는 제재하지 않습니다.",
+    "管理者のみ閲覧できます。公開ルールに従い、連投、嫌がらせ、脅迫、プライバシー侵害に対応します。通常の意見の相違は処分の対象外です。"
+  ],
+  "数据备份": [
+    "資料備份",
+    "Data backup",
+    "데이터 백업",
+    "データのバックアップ"
+  ],
+  "导出论坛数据": [
+    "匯出論壇資料",
+    "Export forum data",
+    "포럼 데이터 내보내기",
+    "フォーラムデータをエクスポート"
+  ],
+  "待处理图片审核": [
+    "待處理圖片審核",
+    "Images awaiting review",
+    "검토 대기 이미지",
+    "審査待ちの画像"
+  ],
+  "刷新图片审核": [
+    "重新整理圖片審核",
+    "Refresh image review queue",
+    "이미지 검토 목록 새로고침",
+    "画像審査一覧を更新"
+  ],
+  "待处理举报": [
+    "待處理檢舉",
+    "Pending reports",
+    "처리 대기 신고",
+    "対応待ちの通報"
+  ],
+  "待处理申诉": [
+    "待處理申訴",
+    "Pending appeals",
+    "처리 대기 이의 신청",
+    "対応待ちの異議申し立て"
+  ],
+  "2—30字": [
+    "2–30 字",
+    "2–30 characters",
+    "2~30자",
+    "2～30文字"
+  ],
+  "5—30字": [
+    "5–30 字",
+    "5–30 characters",
+    "5~30자",
+    "5～30文字"
+  ],
+  "20—20000字；请勿公开他人隐私": [
+    "20–20,000 字；請勿公開他人隱私",
+    "20–20,000 characters. Do not share others’ private information.",
+    "20~20,000자. 타인의 개인정보를 공개하지 마세요.",
+    "20～20,000文字。他人の個人情報を公開しないでください。"
+  ],
+  "选择表情": [
+    "選擇表情符號",
+    "Choose an emoji",
+    "이모지 선택",
+    "絵文字を選択"
+  ],
+  "输入私信，最多1500字": [
+    "輸入私訊，最多 1,500 字",
+    "Enter a private message (up to 1,500 characters)",
+    "쪽지 입력(최대 1,500자)",
+    "メッセージを入力（最大1,500文字）"
+  ],
+  "暂无举报": [
+    "暫無檢舉",
+    "No reports",
+    "신고가 없습니다",
+    "通報はありません"
+  ],
+  "暂无申诉": [
+    "暫無申訴",
+    "No appeals",
+    "이의 신청이 없습니다",
+    "異議申し立てはありません"
+  ],
+  "暂无待审核图片": [
+    "暫無待審核圖片",
+    "No images awaiting review",
+    "검토 대기 이미지가 없습니다",
+    "審査待ちの画像はありません"
+  ],
+  "请登录后提交账号申诉": [
+    "請登入後提交帳號申訴",
+    "Sign in to submit an account appeal.",
+    "로그인 후 이의 신청을 제출해 주세요.",
+    "アカウントの異議申し立てを送信するにはログインしてください。"
+  ],
+  "请输入10—2000字": [
+    "請輸入 10–2,000 字",
+    "Enter 10–2,000 characters.",
+    "10~2,000자를 입력해 주세요.",
+    "10～2,000文字で入力してください。"
+  ],
+  "暂无公开文章": [
+    "暫無公開文章",
+    "No public posts yet",
+    "아직 공개 글이 없습니다",
+    "公開記事はまだありません"
+  ],
+  "文章不存在、未公开或无法访问": [
+    "文章不存在、未公開或無法存取",
+    "This post is missing, private, or inaccessible.",
+    "글이 없거나 비공개이거나 접근할 수 없습니다.",
+    "記事が存在しないか、非公開、またはアクセスできません。"
+  ],
+  "尚未投稿": [
+    "尚未投稿",
+    "No submissions yet",
+    "아직 제출한 글이 없습니다",
+    "投稿はまだありません"
+  ],
+  "请先登录并验证邮箱": [
+    "請先登入並驗證電子郵件",
+    "Sign in and verify your email first.",
+    "먼저 로그인하고 이메일을 인증해 주세요.",
+    "先にログインし、メールアドレスを認証してください。"
+  ],
+  "点赞暂不可用": [
+    "按讚功能暫時無法使用",
+    "Likes are temporarily unavailable.",
+    "좋아요 기능을 일시적으로 사용할 수 없습니다.",
+    "いいね機能は一時的に利用できません。"
+  ],
+  "加载中……": [
+    "載入中……",
+    "Loading…",
+    "불러오는 중…",
+    "読み込み中…"
+  ],
+  "正在提交……": [
+    "正在提交……",
+    "Submitting…",
+    "제출 중…",
+    "送信中…"
+  ],
+  "评论加载失败": [
+    "留言載入失敗",
+    "Could not load comments.",
+    "댓글을 불러오지 못했습니다.",
+    "コメントを読み込めませんでした。"
+  ],
+  "听众评论": [
+    "聽眾留言",
+    "Listener comments",
+    "청취자 댓글",
+    "リスナーのコメント"
+  ],
+  "正在连接本站音频服务器…": [
+    "正在連線至本站音訊伺服器…",
+    "Connecting to the audio server…",
+    "오디오 서버에 연결하는 중…",
+    "音声サーバーに接続しています…"
+  ],
+  "正在加载录音…": [
+    "正在載入錄音…",
+    "Loading recording…",
+    "녹음을 불러오는 중…",
+    "録音を読み込んでいます…"
+  ],
+  "录音暂不可播放，请联系站长检查媒体文件。": [
+    "錄音暫時無法播放，請聯絡站長檢查媒體檔案。",
+    "This recording is unavailable. Ask the site administrator to check the media file.",
+    "녹음을 재생할 수 없습니다. 사이트 관리자에게 미디어 파일 확인을 요청해 주세요.",
+    "この録音は再生できません。サイト管理者にメディアファイルの確認を依頼してください。"
+  ],
+  "▶ 点击播放音频": [
+    "▶ 點擊播放音訊",
+    "▶ Play audio",
+    "▶ 오디오 재생",
+    "▶ 音声を再生"
+  ],
+  "⏸ 暂停播放": [
+    "⏸ 暫停播放",
+    "⏸ Pause",
+    "⏸ 일시정지",
+    "⏸ 一時停止"
+  ],
+  "▶ 继续播放": [
+    "▶ 繼續播放",
+    "▶ Resume playback",
+    "▶ 재생 계속",
+    "▶ 再生を続ける"
+  ],
+  "打开原音频链接": [
+    "開啟原音訊連結",
+    "Open original audio link",
+    "원본 오디오 링크 열기",
+    "元の音声リンクを開く"
+  ],
+  "播放失败，请检查媒体链接": [
+    "播放失敗，請檢查媒體連結",
+    "Playback failed. Check the media link.",
+    "재생에 실패했습니다. 미디어 링크를 확인해 주세요.",
+    "再生に失敗しました。メディアリンクを確認してください。"
+  ],
+  "✓ 已复制": [
+    "✓ 已複製",
+    "✓ Copied",
+    "✓ 복사됨",
+    "✓ コピーしました"
+  ],
+  "请复制链接：": [
+    "請複製連結：",
+    "Copy this link: ",
+    "링크를 복사해 주세요: ",
+    "リンクをコピーしてください："
+  ],
+  "文章链接已复制": [
+    "文章連結已複製",
+    "Article link copied.",
+    "글 링크를 복사했습니다.",
+    "記事のリンクをコピーしました。"
+  ],
+  "点赞失败：": [
+    "按讚失敗：",
+    "Could not like: ",
+    "좋아요 실패: ",
+    "いいねに失敗しました："
+  ],
+  "评论加载失败：": [
+    "留言載入失敗：",
+    "Could not load comments: ",
+    "댓글을 불러오지 못했습니다: ",
+    "コメントを読み込めませんでした："
+  ],
+  "读取失败：": [
+    "讀取失敗：",
+    "Could not load: ",
+    "불러오지 못했습니다: ",
+    "読み込めませんでした："
+  ],
+  "发表失败：": [
+    "發表失敗：",
+    "Could not publish: ",
+    "게시 실패: ",
+    "投稿に失敗しました："
+  ],
+  "导出失败：": [
+    "匯出失敗：",
+    "Export failed: ",
+    "내보내기 실패: ",
+    "エクスポートに失敗しました："
+  ],
+  "图片上传失败：": [
+    "圖片上傳失敗：",
+    "Image upload failed: ",
+    "이미지 업로드 실패: ",
+    "画像のアップロードに失敗しました："
+  ],
+  "修改失败：": [
+    "修改失敗：",
+    "Update failed: ",
+    "변경 실패: ",
+    "変更に失敗しました："
+  ],
+  "审核失败：": [
+    "審核失敗：",
+    "Review failed: ",
+    "검토 처리 실패: ",
+    "審査の処理に失敗しました："
+  ]
+});
+Object.assign(data,{
+  "适用于论坛帖子、评论、昵称和图片。我们鼓励有根据的讨论、新闻分享、个人经历及不同政治、社会、宗教观点。": [
+    "適用於論壇貼文、留言、暱稱及圖片。我們鼓勵有根據的討論、新聞分享、個人經歷及不同的政治、社會與宗教觀點。",
+    "These rules apply to forum posts, comments, nicknames, and images. We welcome evidence-based discussion, news sharing, personal experiences, and diverse political, social, and religious views.",
+    "포럼 글, 댓글, 닉네임, 이미지에 적용됩니다. 근거 있는 토론, 뉴스 공유, 개인 경험, 다양한 정치·사회·종교적 견해를 환영합니다.",
+    "フォーラムの投稿、コメント、ニックネーム、画像に適用されます。根拠のある議論、ニュースの共有、個人の経験、多様な政治的・社会的・宗教的意見を歓迎します。"
+  ],
+  "允许批评政府、公共机构及公众人物，允许和平的政治观点、宗教表达、反驳和争论。观点不同本身不构成处罚理由。对于未经证实的信息，请标明来源及不确定性。": [
+    "允許批評政府、公共機構及公眾人物，以及和平表達政治或宗教觀點、反駁和辯論。意見分歧本身不構成處罰理由。未經證實的資訊請註明來源及不確定之處。",
+    "Criticism of governments, public institutions, and public figures is allowed, as are peaceful political and religious expression, rebuttal, and debate. Disagreement alone is not grounds for sanctions. Identify the sources and uncertainty of unverified information.",
+    "정부, 공공기관, 공인을 비판하거나 정치·종교적 견해를 평화적으로 표현하고 반론과 토론을 하는 것은 허용됩니다. 의견 차이만으로 제재하지 않습니다. 확인되지 않은 정보는 출처와 불확실한 부분을 밝혀 주세요.",
+    "政府、公共機関、公人への批判、平和的な政治的・宗教的表現、反論、議論は認められます。意見の相違だけでは処分の理由になりません。未確認情報には出典と不確かな点を明記してください。"
+  ],
+  "人身威胁、鼓励针对具体个人实施暴力、持续定向骚扰": [
+    "人身威脅、鼓吹對特定個人施暴、持續針對性騷擾",
+    "Threats, encouragement of violence against a specific person, and persistent targeted harassment",
+    "신체적 위협, 특정 개인에 대한 폭력 조장, 지속적인 표적 괴롭힘",
+    "身体への脅迫、特定個人への暴力の助長、継続的な嫌がらせ"
+  ],
+  "公开他人的住址、电话、私人邮箱、身份证件或其他未经许可的敏感信息": [
+    "未經許可公開他人的住址、電話、私人電子郵件地址、身分證件或其他敏感資訊",
+    "Sharing another person’s address, phone number, private email, identity documents, or other sensitive information without permission",
+    "타인의 주소, 전화번호, 개인 이메일, 신분증 또는 기타 민감한 정보를 허락 없이 공개하는 행위",
+    "他人の住所、電話番号、私用メールアドレス、身分証明書、その他の機微情報を無断で公開する行為"
+  ],
+  "诈骗、恶意软件、钓鱼链接、垃圾广告、机器刷屏、重复发帖和操纵互动": [
+    "詐騙、惡意軟體、網路釣魚連結、垃圾廣告、自動洗版、重複發文及操弄互動",
+    "Scams, malware, phishing links, spam ads, automated flooding, duplicate posts, and engagement manipulation",
+    "사기, 악성 소프트웨어, 피싱 링크, 스팸 광고, 자동 도배, 중복 게시, 반응 조작",
+    "詐欺、マルウェア、フィッシングリンク、スパム広告、自動連投、重複投稿、反応の操作"
+  ],
+  "非法性剥削内容、严重侵权转载及其他违反托管平台政策的内容": [
+    "非法性剝削內容、嚴重侵權轉載及其他違反託管平台政策的內容",
+    "Illegal sexual exploitation material, serious copyright infringement, and other content that violates the hosting platform’s policies",
+    "불법 성착취물, 중대한 저작권 침해, 그 밖에 호스팅 플랫폼 정책을 위반하는 콘텐츠",
+    "違法な性的搾取コンテンツ、重大な著作権侵害、その他のホスティングプラットフォームのポリシーに違反するコンテンツ"
+  ],
+  "冒充他人或故意捏造证据以伤害他人": [
+    "冒充他人或蓄意偽造證據以傷害他人",
+    "Impersonating someone or deliberately fabricating evidence to harm them",
+    "타인을 사칭하거나 타인에게 피해를 주려고 고의로 증거를 조작하는 행위",
+    "他人になりすましたり、他人に害を与える目的で証拠を捏造したりする行為"
+  ],
+  "需使用已验证邮箱注册。新会员前3篇文章需要人工审核。普通账号每小时最多发2篇、24小时最多5篇；新会员每小时最多5条论坛评论，符合条件的老会员最多20条；两条评论间隔至少30秒。相同内容重复发布会被拦截。": [
+    "註冊須使用已驗證的電子郵件地址。新會員的前 3 篇文章須人工審核。一般帳號每小時最多發表 2 篇、每 24 小時最多 5 篇；新會員每小時最多發表 5 則論壇留言，符合條件的資深會員最多 20 則。每則留言至少間隔 30 秒。系統會攔截重複內容。",
+    "Registration requires a verified email address. A new member’s first three articles are reviewed manually. Regular accounts may publish up to two articles per hour and five per 24 hours. New members may post up to five forum comments per hour, and eligible established members up to 20. Comments must be at least 30 seconds apart. Duplicate content is blocked.",
+    "가입하려면 인증된 이메일 주소가 필요합니다. 신규 회원의 첫 세 글은 수동 검토를 거칩니다. 일반 계정은 시간당 2개, 24시간당 5개까지 글을 올릴 수 있습니다. 포럼 댓글은 신규 회원은 시간당 최대 5개, 자격을 갖춘 기존 회원은 최대 20개까지 작성할 수 있습니다. 댓글 간격은 최소 30초이며, 동일한 내용의 중복 게시를 차단합니다.",
+    "登録には認証済みのメールアドレスが必要です。新規会員の最初の3件の記事は手動審査の対象です。一般アカウントは1時間に2件、24時間に5件まで投稿できます。フォーラムのコメントは、新規会員は1時間に5件、条件を満たす既存会員は20件までです。コメントには30秒以上の間隔が必要で、同じ内容の再投稿はブロックされます。"
+  ],
+  "登录会员可以举报文章或评论。管理员根据内容和行为采取删除违规内容、提醒、禁言24小时、7天、30天或暂停账号等措施。严重威胁和诈骗可直接处理。举报不代表内容自动违法，管理员需核实。": [
+    "已登入會員可以檢舉文章或留言。管理員可依內容及行為移除違規內容、發出提醒、禁言 24 小時、7 天或 30 天，或暫停帳號。嚴重威脅及詐騙可立即處理。檢舉不代表內容自動違法，仍須由管理員查證。",
+    "Signed-in members can report articles and comments. Depending on the content and conduct, administrators may remove violating content, issue a reminder, mute an account for 24 hours, 7 days, or 30 days, or suspend an account. Serious threats and scams may be addressed immediately. A report is not a finding of illegality and must be verified.",
+    "로그인한 회원은 글과 댓글을 신고할 수 있습니다. 관리자는 내용과 행위에 따라 위반 콘텐츠 삭제, 주의, 24시간·7일·30일 발언 제한 또는 계정 정지를 적용할 수 있습니다. 심각한 위협이나 사기는 즉시 처리할 수 있습니다. 신고만으로 불법으로 판단하지 않으며 관리자가 사실을 확인합니다.",
+    "ログインした会員は記事やコメントを通報できます。管理者は内容や行為に応じて、違反コンテンツの削除、注意、24時間・7日間・30日間の発言制限、アカウントの停止を行うことがあります。重大な脅迫や詐欺には直ちに対応でき、通報だけで違法と確定することはなく、管理者が確認します。"
+  ],
+  "会员可在": [
+    "會員可透過",
+    "Members may use",
+    "회원이 이용할 수 있는 곳:",
+    "会員向け窓口："
+  ],
+  "提交说明，管理员审核并可撤销限制。发现错误或需要更正文章，可通过": [
+    "提交說明，管理員審核後可撤銷限制。發現錯誤或需要更正文章時，可透過",
+    "to explain what happened. Administrators may lift restrictions after review. If you spot an error or need an article corrected, use",
+    "사유를 제출하면 관리자가 검토한 뒤 제한을 해제할 수 있습니다. 오류 신고 또는 기사 수정 요청:",
+    "事情を説明すると、管理者が審査し制限を解除する場合があります。誤りや記事の訂正に関する連絡先："
+  ],
+  "反馈。请勿在反馈中公开不必要的私人资料。": [
+    "提供意見。請勿在回饋中公開不必要的私人資料。",
+    "to send feedback. Do not include unnecessary personal information.",
+    "의견을 보낼 때 불필요한 개인정보를 공개하지 마세요.",
+    "意見を送る際は、不要な個人情報を公開しないでください。"
+  ],
+  "规则会随网站运营调整，重大变更应在网站公布。最后更新：2026年11月17日。": [
+    "規則會隨網站營運調整，重大變更應於網站公布。最後更新：2026 年 11 月 17 日。",
+    "These rules may change as the site evolves. Significant changes should be announced on the site. Last updated November 17, 2026.",
+    "사이트 운영에 따라 규칙이 변경될 수 있습니다. 주요 변경 사항은 사이트에 공지합니다. 최종 업데이트: 2026년 11월 17일.",
+    "サイトの運営に応じてルールが変更される場合があります。重要な変更はサイトで告知します。最終更新：2026年11月17日。"
+  ],
+  "注册登录使用 Supabase Auth。注册时提交的邮箱用于登录、验证和账号管理，不在论坛页面公开显示。你选择的公开昵称、发表的文章、评论和主动上传的图片可能对所有访客可见。": [
+    "註冊及登入使用 Supabase Auth。註冊時提交的電子郵件地址用於登入、驗證及帳號管理，不會在論壇公開顯示。你選擇的公開暱稱、發表的文章與留言，以及主動上傳的圖片，可能對所有訪客可見。",
+    "Registration and sign-in use Supabase Auth. The email address submitted at registration is used for sign-in, verification, and account management and is not shown publicly in the forum. Your public nickname, published articles and comments, and images you choose to upload may be visible to all visitors.",
+    "가입 및 로그인에는 Supabase Auth를 사용합니다. 가입 이메일은 로그인, 인증, 계정 관리에 쓰이며 포럼에 공개되지 않습니다. 공개 닉네임, 게시한 글과 댓글, 직접 업로드한 이미지는 모든 방문자에게 표시될 수 있습니다.",
+    "登録とログインには Supabase Auth を使用します。登録したメールアドレスはログイン、認証、アカウント管理に使われ、フォーラムに公開されません。公開ニックネーム、投稿やコメント、アップロードした画像はすべての訪問者に表示される場合があります。"
+  ],
+  "网页由 GitHub Pages 提供，域名及网络服务可能经过 Cloudflare，账号、文章、评论、举报、申诉和图片等数据由 Supabase 处理。服务商可能依据其政策处理连接日志、IP地址及其他必要的技术数据。本站无法保证服务商完全不记录访问信息。": [
+    "網頁由 GitHub Pages 提供，網域及網路服務可能經過 Cloudflare。帳號、文章、留言、檢舉、申訴及圖片等資料由 Supabase 處理。服務商可能依其政策處理連線紀錄、IP 位址及其他必要的技術資料。本網站無法保證服務商完全不記錄存取資訊。",
+    "GitHub Pages hosts the site, and domain or network services may use Cloudflare. Supabase processes accounts, articles, comments, reports, appeals, and images. Providers may handle connection logs, IP addresses, and other necessary technical data under their policies. We cannot guarantee providers never log visits.",
+    "사이트는 GitHub Pages에서 호스팅되며 도메인 및 네트워크 서비스에 Cloudflare가 사용될 수 있습니다. Supabase는 계정, 글, 댓글, 신고, 이의 신청 및 이미지 데이터를 처리합니다. 서비스 제공업체는 자사 정책에 따라 연결 로그, IP 주소 및 기타 필요한 기술 데이터를 처리할 수 있습니다. 제공업체가 접속 정보를 전혀 기록하지 않는다고 보장할 수 없습니다.",
+    "サイトは GitHub Pages で提供され、ドメインやネットワークサービスに Cloudflare を利用する場合があります。アカウント、記事、コメント、通報、異議申し立て、画像等のデータは Supabase が処理します。各サービスは自社の方針に従い、接続ログ、IPアドレス、その他必要な技術データを処理する場合があります。アクセス情報が一切記録されないことは保証できません。"
+  ],
+  "管理员可以查看会员举报理由、账号禁言状态及申诉内容。举报人身份不会在普通公开论坛展示。请不要在公开文章或评论中提交真实地址、私人联系方式、证件号码或敏感材料。": [
+    "管理員可查看會員檢舉理由、帳號禁言狀態及申訴內容。檢舉人身分不會在公開論壇顯示。請勿在公開文章或留言中提供真實地址、私人聯絡方式、證件號碼或敏感資料。",
+    "Administrators can see reasons for member reports, account mute status, and appeal details. Reporter identities are not displayed in the public forum. Do not include real addresses, private contact details, ID numbers, or sensitive materials in public articles or comments.",
+    "관리자는 회원의 신고 사유, 발언 제한 상태, 이의 신청 내용을 볼 수 있습니다. 신고자의 신원은 공개 포럼에 표시되지 않습니다. 공개 글이나 댓글에 실제 주소, 개인 연락처, 신분증 번호 또는 민감한 자료를 올리지 마세요.",
+    "管理者は会員の通報理由、発言制限の状態、異議申し立ての内容を確認できます。通報者の身元は公開フォーラムには表示されません。公開記事やコメントに実際の住所、私的な連絡先、身分証明書番号、機微な資料を掲載しないでください。"
+  ],
+  "打开 YouTube、X、TikTok 等外部视频或链接时，相关第三方可能收到浏览器网络信息。网站也可能使用外部图片、脚本及其他资源。": [
+    "開啟 YouTube、X、TikTok 等外部影片或連結時，相關第三方可能收到瀏覽器網路資訊。網站也可能使用外部圖片、指令碼及其他資源。",
+    "When you open external videos or links from services such as YouTube, X, or TikTok, those third parties may receive browser network information. The site may also load external images, scripts, and other resources.",
+    "YouTube, X, TikTok 등 외부 동영상이나 링크를 열면 해당 제3자가 브라우저 네트워크 정보를 수신할 수 있습니다. 사이트에서 외부 이미지, 스크립트 및 기타 리소스를 사용할 수도 있습니다.",
+    "YouTube、X、TikTok などの外部動画やリンクを開くと、第三者がブラウザーのネットワーク情報を受け取る場合があります。外部の画像やスクリプトなどのリソースを利用する場合もあります。"
+  ],
+  "用户可在论坛管理自己的文章；管理员可依社区规则移除违规内容。关于数据访问、更正、删除或安全问题，可通过": [
+    "使用者可在論壇管理自己的文章，管理員可依社群規則移除違規內容。有關資料存取、更正、刪除或安全問題，可透過",
+    "Members can manage their own forum articles. Administrators may remove content that violates community rules. For data access, correction, deletion, or security requests, use",
+    "회원은 포럼에서 자신의 글을 관리할 수 있으며, 관리자는 커뮤니티 규칙 위반 콘텐츠를 삭제할 수 있습니다. 데이터 열람, 수정, 삭제 또는 보안 관련 문의 창구:",
+    "利用者はフォーラムで自身の記事を管理できます。管理者はコミュニティルールに違反する内容を削除できます。データの閲覧、訂正、削除、セキュリティに関する窓口："
+  ],
+  "联系站方，但不应在公开留言中发送密码或证件。": [
+    "聯絡站方，但請勿在公開留言中傳送密碼或證件。",
+    "to contact the site. Do not send passwords or identity documents in public comments.",
+    "공개 댓글에 비밀번호나 신분증을 보내지 마세요.",
+    "公開コメントにパスワードや身分証明書を送信しないでください。"
+  ],
+  "不要重复使用其他平台密码；建议使用强密码及可靠邮箱。使用昵称不等于匿名；如果你的身份暴露可能造成严重后果，请谨慎考虑是否发布可识别个人的信息。": [
+    "請勿重複使用其他平台的密碼，建議使用強密碼及可靠的電子郵件地址。使用暱稱不代表匿名。如果身分曝光可能造成嚴重後果，請謹慎考慮是否發表可識別個人的資訊。",
+    "Avoid reusing passwords from other platforms. Use a strong password and a reliable email address. A nickname does not make you anonymous. If being identified could have serious consequences, consider carefully before sharing identifying information.",
+    "다른 플랫폼의 비밀번호를 재사용하지 마세요. 강력한 비밀번호와 신뢰할 수 있는 이메일을 사용하세요. 닉네임을 쓴다고 익명이 보장되지는 않습니다. 신원 노출에 따른 결과가 심각할 수 있다면 개인을 식별할 수 있는 정보를 공개하기 전에 신중히 판단하세요.",
+    "他のサービスのパスワードを使い回さず、強力なパスワードと信頼できるメールアドレスを使用してください。ニックネームは匿名性を保証しません。身元が明らかになることで重大な影響が生じる場合は、個人を特定できる情報の公開を慎重に検討してください。"
+  ],
+  "最后更新：2026年11月17日。": [
+    "最後更新：2026 年 11 月 17 日。",
+    "Last updated November 17, 2026.",
+    "최종 업데이트: 2026년 11월 17일.",
+    "最終更新：2026年11月17日。"
+  ],
+  "侵权投诉与内容处理 · 真实之声": [
+    "侵權申訴與內容處理 · 真實之聲",
+    "Rights complaints and content moderation · Voice of Truth",
+    "권리 침해 신고 및 콘텐츠 처리 · 진실의 목소리",
+    "権利侵害の申し立てとコンテンツ対応 · 真実の声"
+  ],
+  "注册并验证邮箱的会员可以在相关论坛文章或评论中点击「举报」，提供具体原因。请尽量注明文章标题、网址、相关内容、发生时间及可核实的证据。涉及版权、隐私、名誉、威胁、诈骗等问题，请明确指出具体内容和所主张的权利。": [
+    "已註冊並驗證電子郵件的會員，可在相關論壇文章或留言點選「檢舉」並提供具體理由。請盡量附上文章標題、網址、相關內容、發生時間及可查證的證據。涉及著作權、隱私、名譽、威脅或詐騙時，請指明具體內容及主張的權利。",
+    "Members with a verified email address can select Report on the relevant forum article or comment and explain why. Include the title, URL, relevant content, timing, and verifiable evidence where possible. For copyright, privacy, reputation, threats, or fraud, identify the specific content and any rights you are asserting.",
+    "이메일 인증을 마친 회원은 해당 포럼 글이나 댓글에서 신고를 선택해 사유를 제출할 수 있습니다. 가능한 경우 제목, URL, 관련 내용, 발생 시간 및 확인 가능한 증거를 포함하세요. 저작권, 개인정보, 명예, 위협 또는 사기와 관련된 경우 구체적인 내용과 주장하는 권리를 명시하세요.",
+    "メール認証済みの会員は、該当する記事やコメントの「通報」から具体的な理由を送信できます。可能な限り、タイトル、URL、該当箇所、発生日時、確認可能な証拠を添えてください。著作権、プライバシー、名誉、脅迫、詐欺に関する場合は、対象の内容と主張する権利を明記してください。"
+  ],
+  "如涉及即时人身危险，请优先联系所在地紧急服务机构；本站举报不能代替报警。": [
+    "如有立即的人身危險，請優先聯絡所在地的緊急服務機構。本網站的檢舉不能取代報警。",
+    "If anyone is in immediate physical danger, contact local emergency services first. Reporting here is not a substitute for contacting authorities.",
+    "신체에 즉각적인 위험이 있는 경우 먼저 현지 긴급 서비스에 연락하세요. 사이트 신고는 경찰 신고를 대신할 수 없습니다.",
+    "身の危険が差し迫っている場合は、まず現地の緊急機関に連絡してください。当サイトへの通報は警察への連絡に代わるものではありません。"
+  ],
+  "管理员会根据事实和风险采取保留、标注、更正、限制展示、删除或限制账号等措施。争议性观点原则上不因立场不同而删除；涉及儿童性虐待材料、可信的人身威胁、非自愿私密影像等严重违规内容不得仅靠敏感提示放行。": [
+    "管理員會依事實及風險採取保留、標示、更正、限制顯示、移除或限制帳號等措施。爭議性觀點原則上不會僅因立場不同而被移除。兒童性虐待資料、可信的人身威脅及未經同意的私密影像等嚴重違規內容，不能只加警示便予以放行。",
+    "Administrators may retain, label, correct, limit, or remove content, or restrict an account, based on the facts and risks. Controversial views are generally not removed solely because of disagreement. A warning alone is insufficient for serious violations such as child sexual abuse material, credible threats, or non-consensual intimate imagery.",
+    "관리자는 사실과 위험에 따라 콘텐츠 유지, 표시, 정정, 노출 제한, 삭제 또는 계정 제한을 적용할 수 있습니다. 의견 차이만을 이유로 논쟁적인 견해를 삭제하지 않는 것이 원칙입니다. 아동 성착취물, 신빙성 있는 신체 위협, 동의 없이 공유된 사적 이미지 등 심각한 위반은 경고만 붙여 허용할 수 없습니다.",
+    "管理者は事実とリスクに応じて、掲載の継続、注記、訂正、表示制限、削除、アカウント制限などを行います。見解が異なるという理由だけで、論争のある意見を削除することは原則ありません。児童の性的虐待資料、信憑性のある身体への脅迫、同意のない私的画像などの重大な違反は、警告表示だけで公開を続けることはできません。"
+  ],
+  "举报提交不代表一定删除。审核时会考虑证据、语境及适用法律，并尽量避免不必要地传播被投诉的个人信息。": [
+    "提交檢舉不代表一定會移除內容。審核會考慮證據、語境及適用法律，並盡量避免不必要地傳播遭申訴涉及的個人資訊。",
+    "A report does not guarantee removal. Review takes account of the evidence, context, and applicable law, and seeks to avoid unnecessary disclosure of personal information at issue.",
+    "신고했다고 해서 반드시 삭제되는 것은 아닙니다. 검토 시 증거, 맥락 및 적용 법률을 고려하며, 문제 된 개인정보가 불필요하게 퍼지지 않도록 합니다.",
+    "通報しても削除が保証されるわけではありません。審査では証拠、文脈、適用される法律を考慮し、問題となった個人情報が不必要に拡散されないようにします。"
+  ],
+  "会员如对禁言处理有异议，可使用论坛「账号申诉」入口。涉及本人个人资料的访问、更正或删除请求，建议先通过网站的「网站建议」入口联系管理员并说明请求类型；请勿在公开帖子中上传身份证件或其他敏感证件。具体处理仍须遵守适用的保存义务。": [
+    "會員若對禁言處理有異議，可使用論壇的「帳號申訴」。如要存取、更正或刪除本人的個人資料，建議先透過「網站建議」聯絡管理員並說明請求類型。請勿在公開貼文上傳身分證件或其他敏感證件。實際處理仍須遵守適用的保存義務。",
+    "Members may use Account appeal to challenge a mute. For access to, correction of, or deletion of your own personal data, contact an administrator through Site feedback and specify the type of request. Do not upload identity documents or other sensitive documents in public posts. Applicable retention obligations still apply.",
+    "회원은 발언 제한에 대해 포럼의 계정 이의 신청을 이용할 수 있습니다. 본인의 개인정보 열람, 수정 또는 삭제를 요청하려면 사이트 제안 메뉴를 통해 관리자에게 요청 유형을 알려 주세요. 공개 게시물에 신분증이나 민감한 문서를 올리지 마세요. 해당되는 보존 의무는 계속 적용됩니다.",
+    "発言制限に異議がある会員は、フォーラムの「アカウントの異議申し立て」を利用できます。ご自身の個人データの閲覧、訂正、削除を求める場合は、「サイトへの提案」から管理者に連絡し、請求の種類を明記してください。公開投稿に身分証明書やその他の機微な文書をアップロードしないでください。適用される保存義務には引き続き従います。"
+  ],
+  "请提供涉嫌侵权内容的具体网址、原创作品或权利证明、你的联系方式，以及希望采取的措施。本站不会因为未经核实的投诉自动认定侵权。": [
+    "請提供涉嫌侵權內容的具體網址、原創作品或權利證明、聯絡方式，以及希望採取的措施。本網站不會因未經查證的申訴自動認定侵權。",
+    "Provide the specific URL of the alleged infringement, the original work or evidence of rights, your contact details, and the action you are requesting. An unverified complaint does not automatically establish infringement.",
+    "침해 의심 콘텐츠의 정확한 URL, 원본 작품 또는 권리 증빙, 연락처, 원하는 조치를 제출하세요. 확인되지 않은 신고만으로 침해를 인정하지 않습니다.",
+    "権利侵害が疑われるコンテンツのURL、原作品または権利の証明、連絡先、希望する措置を提示してください。未確認の申し立てだけで権利侵害と認定することはありません。"
+  ],
+  "本页为网站处理流程说明，不替代法律咨询；自动图片识别与私有图片审核流程尚未全面启用。": [
+    "本頁說明網站處理流程，不能取代法律諮詢。自動圖片辨識與非公開圖片審核流程尚未全面啟用。",
+    "This page describes the site’s process and is not legal advice. Automated image recognition and private image review are not yet fully enabled.",
+    "이 페이지는 사이트 처리 절차를 안내하며 법률 상담을 대신하지 않습니다. 자동 이미지 인식과 비공개 이미지 검토 절차는 아직 전면 운영되지 않습니다.",
+    "このページはサイトの対応手順を説明するもので、法律相談に代わるものではありません。自動画像認識と非公開画像の審査手順はまだ全面的には有効になっていません。"
+  ],
+  "Google Drive 音频": [
+    "Google Drive 音訊",
+    "Google Drive audio",
+    "Google Drive 오디오",
+    "Google Drive の音声"
+  ],
+  "管理员手动导出公开讨论及管理数据为 JSON 文件。下载后请保存在加密的私人存储中，不要上传到公开 GitHub 仓库。此备份不包含账号密码、Supabase Auth 用户、图片文件或完整数据库结构。": [
+    "管理員可手動將公開討論及管理資料匯出為 JSON 檔案。下載後請儲存在加密的私人空間，請勿上傳至公開的 GitHub 儲存庫。備份不含帳號密碼、Supabase Auth 使用者、圖片檔案或完整的資料庫結構。",
+    "Administrators can manually export public discussions and moderation data as JSON. Store downloads in encrypted private storage and do not upload them to a public GitHub repository. This backup excludes passwords, Supabase Auth users, image files, and the full database schema.",
+    "관리자는 공개 토론과 관리 데이터를 JSON 파일로 직접 내보낼 수 있습니다. 다운로드한 파일은 암호화된 비공개 저장소에 보관하고 공개 GitHub 저장소에 올리지 마세요. 이 백업에는 비밀번호, Supabase Auth 사용자, 이미지 파일 또는 전체 데이터베이스 구조가 포함되지 않습니다.",
+    "管理者は公開の議論と管理データを JSON ファイルとして手動でエクスポートできます。ダウンロード後は暗号化された非公開の保管場所に保存し、公開 GitHub リポジトリにアップロードしないでください。バックアップにパスワード、Supabase Auth のユーザー、画像ファイル、完全なデータベース構造は含まれません。"
+  ],
+  "仅管理员可查看私有审核图片；图片不会自动公开。审核通过仅更新审核状态，发布仍需独立安全流程。": [
+    "僅管理員可查看非公開的審核圖片，圖片不會自動公開。核准只會更新審核狀態，發佈仍須經過獨立的安全程序。",
+    "Only administrators can view private review images. Images are not published automatically. Approval only updates the review status. Publication still requires a separate safety process.",
+    "관리자만 비공개 검토 이미지를 볼 수 있으며, 이미지는 자동으로 공개되지 않습니다. 승인은 검토 상태만 갱신하며 게시하려면 별도의 안전 절차를 거쳐야 합니다.",
+    "非公開の審査画像を閲覧できるのは管理者のみで、画像は自動公開されません。承認では審査状態のみが更新され、公開には別の安全確認手順が必要です。"
+  ]
+});
+const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：'];
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
 function apply(lang){
 if(!document.body||!langs.includes(lang))return;
@@ -84,7 +773,7 @@ const values=translations.get(key);
 if(values){const match=source.match(/^(\s*)([\s\S]*?)(\s*)$/);return match?match[1]+(idx<0?key:values[idx])+match[3]:(idx<0?key:values[idx]);}
 if(idx>=0){
 const count=key.match(/^共\s*(\d+)\s*篇$/);if(count)return ['共 '+count[1]+' 篇','共 '+count[1]+' 篇',count[1]+' articles','총 '+count[1]+'편','計'+count[1]+'件'][idx+1];
-for(const prefix of ['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 '])if(key.startsWith(prefix)){const translated=translations.get(prefix);if(translated)return translated[idx]+key.slice(prefix.length)}
+for(const prefix of messagePrefixes)if(key.startsWith(prefix)){const translated=translations.get(prefix);if(translated)return translated[idx]+key.slice(prefix.length)}
 }
 if(!partial||idx<0)return source;
 let output=source;
@@ -97,7 +786,7 @@ return !!el.closest('button,a,nav,[class*="bookmark"],[id*="bookmark"],[class*="
 const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
 let n;
 while((n=walker.nextNode())){
-const el=n.parentElement;if(!el||excluded(el))continue;
+const el=n.parentElement;if(!el||el.closest('option')||excluded(el))continue;
 const visible=n.nodeValue;
 let src=original.get(n);
 if(src===undefined){src=visible;original.set(n,src)}
@@ -128,10 +817,18 @@ if(current!==next)el.setAttribute(name,next);
 });
 document.querySelectorAll('select:not(#lyy-language) option').forEach(el=>{
 if(excluded(el))return;
-const src=el.dataset.lyyOptionSource||normalize(el.textContent);
-if(!el.dataset.lyyOptionSource)el.dataset.lyyOptionSource=src;
+const visible=el.textContent;
+let src=original.get(el);
+if(src===undefined||(visible!==src&&visible!==rendered.get(el))){
+ src=visible;
+ original.set(el,src);
+}
 const target=translateSource(src,false);
-if(el.textContent!==target)el.textContent=target;
+if(visible!==target){
+ if(!el.hasAttribute('value'))el.value=el.value;
+ el.textContent=target;
+}
+rendered.set(el,target);
 });
 document.querySelectorAll('#post-list').forEach(root=>{
 const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
@@ -160,7 +857,7 @@ window.addEventListener('message',e=>{if(e.origin===location.origin&&e.data?.typ
 window.addEventListener('storage',e=>{if(e.key===storage)apply(current())});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 let pending=false;const observer=new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply(current())})});const startObserver=()=>{if(document.body)observer.observe(document.body,{childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','title','aria-label'],subtree:true})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver);else startObserver();
-function translateMessage(value){if(typeof value!=='string')return value;const index=langs.indexOf(current())-1;if(index<0)return value;const key=normalize(value),direct=translations.get(key);if(direct)return direct[index];for(const prefix of ['举报失败：','点赞操作失败：','文章举报读取失败：','提交失败：','操作失败：','保存失败：','上传失败：']){if(key.startsWith(prefix)){const item=translations.get(prefix);if(item)return item[index]+key.slice(prefix.length)}}return value;}
+function translateMessage(value){if(typeof value!=='string')return value;const index=langs.indexOf(current())-1;if(index<0)return value;const key=normalize(value),direct=translations.get(key);if(direct)return direct[index];for(const prefix of messagePrefixes){if(key.startsWith(prefix)){const item=translations.get(prefix);if(item)return item[index]+key.slice(prefix.length)}}return value;}
 window.lyyLanguage={set,apply,current,translate:translateMessage};
 for(const method of ['alert','confirm','prompt']){const native=window[method];if(typeof native!=='function')continue;window[method]=function(message,...rest){return native.call(window,translateMessage(message),...rest)};}
 })();
