@@ -382,9 +382,28 @@
       control.querySelector('summary').focus();
       event.stopPropagation();
     });
-    document.addEventListener('click', event => {
-      if (!control.contains(event.target)) control.open = false;
-    });
+    const closeOnOutsidePress = event => {
+      if (control.open && !control.contains(event.target)) control.open = false;
+    };
+    const watchedDocuments = new WeakSet();
+
+    function watchEmbeddedPage(frame) {
+      const embedded = frame.contentDocument;
+      if (!embedded || watchedDocuments.has(embedded)) return;
+      watchedDocuments.add(embedded);
+      embedded.addEventListener('pointerdown', closeOnOutsidePress, true);
+      embedded.addEventListener('load', watchLoadedFrame, true);
+      embedded.querySelectorAll('iframe').forEach(watchEmbeddedPage);
+    }
+
+    function watchLoadedFrame(event) {
+      if (event.target?.localName === 'iframe') watchEmbeddedPage(event.target);
+    }
+
+    document.addEventListener('pointerdown', closeOnOutsidePress, true);
+    document.addEventListener('click', closeOnOutsidePress);
+    document.addEventListener('load', watchLoadedFrame, true);
+    document.querySelectorAll('iframe').forEach(watchEmbeddedPage);
     const toolbar = document.getElementById('lyy-language-toolbar') || document.getElementById('lyy-language-wrap');
     (toolbar || document.body).append(control);
     updateMenu();
