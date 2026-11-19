@@ -41,8 +41,7 @@ frame.addEventListener('load',()=>{wire();syncIframeLanguage();});window.addEven
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-site-navigate'){const u=safe(e.data.url);if(u)navigate(u,e.data.push!==false);return}
 if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
 if(e.data.type==='lyy-audio-play'){try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='点击 ▶ 开始播放'})}catch{return}}
-
-);
+});
 function stopDrive(){if(!driveActive)return;driveActive=false;drive.src='about:blank';driveBox.style.display='none';seek.disabled=false;volume.disabled=false;toggle.textContent='▶'}
 function close(){stopDrive();audio.pause();audio.removeAttribute('src');audio.load();current='';document.body.classList.remove('has-audio');seek.value=0;time.textContent='0:00 / 0:00'}
 document.getElementById('drive-close').onclick=stopDrive;document.getElementById('close').onclick=close;
