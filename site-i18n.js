@@ -736,6 +736,110 @@ Object.assign(data,{
     "非公開の審査画像を閲覧できるのは管理者のみで、画像は自動公開されません。承認では審査状態のみが更新され、公開には別の安全確認手順が必要です。"
   ]
 });
+Object.assign(data,{
+  "开放阅读与发布": [
+    "開放閱讀與發佈",
+    "Public access and publishing",
+    "공개 열람 및 게시",
+    "公開閲覧と投稿"
+  ],
+  "公开文章、论坛帖子、公开评论和音频可免登录浏览或收听。访客也可以提交非公开的网站建议。": [
+    "公開文章、論壇貼文、公開留言及音訊可免登入瀏覽或收聽。訪客也可以提交非公開的網站建議。",
+    "Anyone can read public articles, forum posts and comments, or listen to public audio without signing in. Visitors can also submit private site feedback.",
+    "공개 글, 포럼 게시물 및 댓글을 읽거나 공개 오디오를 들을 때 로그인할 필요가 없습니다. 방문자는 비공개로 사이트에 의견을 보낼 수 있습니다.",
+    "公開記事、フォーラム投稿、公開コメント、公開音声はログインせずに閲覧・再生できます。訪問者はサイトへの意見を非公開で送信できます。"
+  ],
+  "邮箱已验证且账号状态正常的会员可发表论坛帖子、评论和网友文章。帖子、评论和主动发布的网友文章提交后公开，无需事前人工审核。未发布的网友文章草稿仅作者可见。": [
+    "電子郵件已驗證且帳號狀態正常的會員可發表論壇貼文、留言與網友文章。貼文、留言和主動發佈的網友文章在提交後公開，無須事前人工審核。未發佈的網友文章草稿僅作者可見。",
+    "Members with a verified email and an account in good standing can post, comment, and publish member articles. These submissions go public without prior manual review. Unpublished drafts are visible only to their author.",
+    "이메일 인증을 마치고 계정 상태가 정상인 회원은 포럼 글과 댓글을 작성하고 회원 글을 게시할 수 있습니다. 게시물과 댓글은 사전 수동 검토 없이 공개되며, 미게시 초안은 작성자만 볼 수 있습니다.",
+    "メール認証済みでアカウントが正常な会員は、フォーラムに投稿・コメントし、会員記事を公開できます。投稿やコメントは事前の手動審査なしで公開され、未公開の下書きは著者だけが閲覧できます。"
+  ],
+  "发帖与评论频率": [
+    "發文與留言頻率",
+    "Posting and commenting limits",
+    "게시물 및 댓글 빈도 제한",
+    "投稿とコメントの頻度制限"
+  ],
+  "论坛帖子每小时最多 2 篇、24 小时最多 5 篇。论坛评论通常每小时最多 5 条；LV3 及以上会员，或已有至少 3 篇带审核记录的公开论坛帖的会员，每小时最多 20 条。两次论坛评论至少间隔 30 秒，重复内容会被拦截。": [
+    "論壇貼文每小時最多 2 篇、24 小時最多 5 篇。論壇留言通常每小時最多 5 則；LV3 以上（含 LV3）會員，或已有至少 3 篇附審核紀錄的公開論壇貼文的會員，每小時最多 20 則。兩次論壇留言至少相隔 30 秒，系統會攔截重複內容。",
+    "Forum posts are limited to 2 per hour and 5 per 24 hours. Forum comments are normally limited to 5 per hour. Members at LV3 or higher, or with at least 3 public forum posts with prior review records, may post up to 20 comments per hour. Leave at least 30 seconds between comments. Duplicate submissions are blocked.",
+    "포럼 게시물은 시간당 2개, 24시간당 5개까지 작성할 수 있습니다. 포럼 댓글은 일반적으로 시간당 최대 5개입니다. LV3 이상이거나 심사 기록이 있는 공개 포럼 글이 3개 이상인 회원은 시간당 최대 20개까지 작성할 수 있습니다. 댓글 간격은 최소 30초이며 중복 내용은 차단됩니다.",
+    "フォーラム投稿は1時間に2件、24時間に5件までです。コメントは通常1時間に5件までです。LV3以上の会員、または審査記録のある公開フォーラム投稿が3件以上ある会員は1時間に20件までコメントできます。コメントには30秒以上の間隔が必要で、重複投稿はブロックされます。"
+  ],
+  "网友文章的删除": [
+    "網友文章的刪除",
+    "Deleting member articles",
+    "회원 글 삭제",
+    "会員記事の削除"
+  ],
+  "网友文章公开后，作者可在发布未满 3 天时自行删除。满 3 天后须通过「我的文章与草稿」提交删除申请，由站点管理员处理。": [
+    "網友文章公開後，作者可在發佈未滿 3 天時自行刪除。滿 3 天後須透過「我的文章與草稿」提交刪除申請，由站點管理員處理。",
+    "Authors can delete a published member article within 3 days of publication. After 3 days, use My articles and drafts to submit a removal request for a site administrator to review.",
+    "회원 글은 공개 후 3일이 지나기 전까지 작성자가 직접 삭제할 수 있습니다. 3일이 지나면 내 글과 초안에서 삭제를 신청하면 사이트 관리자가 처리합니다.",
+    "会員記事は公開から3日未満であれば著者が削除できます。3日経過後は「自分の記事と下書き」で削除申請を送り、サイト管理者の対応をお待ちください。"
+  ],
+  "管理权限与分工": [
+    "管理權限與分工",
+    "Administrative roles and permissions",
+    "관리 역할 및 권한",
+    "管理の役割と権限"
+  ],
+  "会员等级用于站内成长及部分互动额度。内容管理员仅有获授权的审核权限。音频上传、编辑、排序、上下架和删除分别授权。举报、禁言、申诉和站内授权由站点管理员处理。": [
+    "會員等級用於站內成長及部分互動額度。內容管理員僅有獲授權的審核權限。音訊上傳、編輯、排序、上架與下架、刪除分別授權。檢舉、禁言、申訴及站內授權由站點管理員處理。",
+    "Membership levels track progress and affect some interaction limits. Content moderators only have their assigned review permissions. Audio upload, editing, sorting, visibility, and deletion are granted separately. Site administrators handle reports, mutes, appeals, and permission assignments.",
+    "회원 등급은 활동 수준과 일부 이용 한도에 적용됩니다. 콘텐츠 관리자는 부여받은 검토 권한만 가집니다. 오디오 업로드, 편집, 정렬, 공개 설정, 삭제는 각각 별도 권한입니다. 사이트 관리자가 신고, 발언 제한, 이의 신청, 사이트 권한 부여를 담당합니다.",
+    "会員レベルは活動状況と一部の利用上限に関係します。コンテンツモデレーターには付与された審査権限のみがあります。音声のアップロード、編集、並び替え、公開設定、削除は個別に付与されます。通報、発言制限、異議申し立て、権限付与はサイト管理者が担当します。"
+  ],
+  "规则会随网站运营调整，重大变更应在网站公布。最后更新：2026年11月19日。": [
+    "規則會隨網站營運調整，重大變更應於網站公布。最後更新：2026 年 11 月 19 日。",
+    "These rules may change as the site evolves. Significant changes will be announced on the site. Last updated November 19, 2026.",
+    "사이트 운영에 따라 규칙이 변경될 수 있습니다. 주요 변경 사항은 사이트에 공지합니다. 최종 업데이트: 2026년 11월 19일.",
+    "サイト運営に応じてルールが変更される場合があります。重要な変更はサイトで告知します。最終更新：2026年11月19日。"
+  ],
+  "旧待审核文章可继续编辑或联系站点管理员处理。": [
+    "舊待審核文章可繼續編輯或聯絡站點管理員處理。",
+    "You can continue editing a legacy pending article or contact a site administrator.",
+    "이전 심사 대기 글은 계속 편집하거나 사이트 관리자에게 문의할 수 있습니다.",
+    "旧審査待ちの記事は編集を続けるか、サイト管理者にお問い合わせください。"
+  ],
+  "举报和申诉不会公开。站点管理员可处理举报及申诉，申诉人可以查看自己的申诉记录。": [
+    "檢舉與申訴不會公開。站點管理員可處理檢舉及申訴，申訴人可查看自己的申訴紀錄。",
+    "Reports and appeals are private. Site administrators can handle reports and appeals. Members can view their own appeal history.",
+    "신고와 이의 신청은 공개되지 않습니다. 사이트 관리자가 처리하며, 신청자는 자신의 이의 신청 기록을 볼 수 있습니다.",
+    "通報や異議申し立ては非公開です。サイト管理者が対応し、申し立てを行った本人は自分の履歴を確認できます。"
+  ],
+  "皮肤选择保存在当前浏览器，只影响本人在该浏览器中看到的界面。": [
+    "佈景選擇儲存在目前的瀏覽器，只影響本人在該瀏覽器中看到的介面。",
+    "Appearance preferences are saved in the current browser and affect only what you see in that browser.",
+    "화면 테마 설정은 현재 브라우저에 저장되며, 해당 브라우저에서 본인에게 표시되는 화면에만 적용됩니다.",
+    "外観の設定は現在のブラウザーに保存され、そのブラウザーで自分に表示される画面にのみ反映されます。"
+  ],
+  "邮箱已验证且账号状态正常的会员可以举报文章或评论。": [
+    "電子郵件已驗證且帳號狀態正常的會員可以檢舉文章或留言。",
+    "Members with a verified email and an account in good standing can report posts or comments.",
+    "이메일 인증을 마치고 계정 상태가 정상인 회원은 게시물이나 댓글을 신고할 수 있습니다.",
+    "メール認証済みでアカウントが正常な会員は、投稿やコメントを通報できます。"
+  ],
+  "管理员根据内容和行为采取删除违规内容、提醒、禁言24小时、7天、30天或暂停账号等措施。严重威胁和诈骗可直接处理。举报不代表内容自动违法，管理员需核实。": [
+    "管理員可依內容及行為移除違規內容、發出提醒、禁言 24 小時、7 天或 30 天，或暫停帳號。嚴重威脅及詐騙可立即處理。檢舉不代表內容違法，仍須查證。",
+    "Depending on the content and conduct, administrators may remove content, issue a reminder, mute for 24 hours, 7 days, or 30 days, or suspend the account. Serious threats and scams may be handled immediately. Administrators verify reports before concluding content is unlawful.",
+    "관리자는 내용과 행위에 따라 콘텐츠를 삭제하거나 주의, 24시간·7일·30일 발언 제한 또는 계정 정지를 적용할 수 있습니다. 심각한 위협이나 사기는 즉시 처리할 수 있으며, 신고 내용은 확인을 거칩니다.",
+    "管理者は内容や行為に応じて、コンテンツの削除、注意、24時間・7日間・30日間の発言制限、アカウント停止を行えます。重大な脅迫や詐欺には直ちに対応でき、違法性は通報だけで判断せず、管理者が確認します。"
+  ],
+  "举报与申诉": [
+    "檢舉與申訴",
+    "Reports and appeals",
+    "신고 및 이의 신청",
+    "通報と異議申し立て"
+  ],
+  "外观": [
+    "外觀",
+    "Appearance",
+    "화면 테마",
+    "外観"
+  ]
+});
 const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：'];
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
 function apply(lang){
