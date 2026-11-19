@@ -11,3 +11,15 @@ body>#lyy-theme-control{position:fixed;inset:12px 12px auto auto;z-index:70}
 @media(max-width:430px){#lyy-theme-control summary{padding-inline:6px;font-size:12px}}
 #lyy-language-wrap>#lyy-theme-control{margin-inline-start:4px}
 #lyy-language-toolbar>#lyy-theme-control{margin-inline-start:6px}
+
+/* Decap's homepage colors are the default navy night look. Other skins override them. */
+html[data-lyy-mode="light"],html[data-lyy-palette]:not([data-lyy-palette="navy"]){
+  --bg:var(--lyy-theme-page)!important;
+  --panel:var(--lyy-theme-panel)!important;
+  --panel2:var(--lyy-theme-raised)!important;
+  --line:var(--lyy-theme-edge)!important;
+  --text:var(--lyy-theme-ink)!important;
+  --muted:var(--lyy-theme-muted)!important;
+  --gold:var(--lyy-theme-accent)!important;
+  --gold2:var(--lyy-theme-accent)!important;
+}
