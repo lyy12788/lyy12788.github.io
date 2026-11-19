@@ -36,7 +36,7 @@ html :is(input, textarea):not(:disabled)::placeholder {
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .hero .hero-inner,
-  .sitebar {
+  html .sitebar {
     background-color: var(--lyy-theme-page);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
