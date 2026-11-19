@@ -155,7 +155,172 @@
     observedStyles.set(element, element.getAttribute('style'));
   }
 
+  const contrastPreference = matchMedia('(prefers-contrast: more)');
+  const transparencyPreference = matchMedia('(prefers-reduced-transparency: reduce)');
+  const forcedColors = matchMedia('(forced-colors: active)');
+  const adjustedText = new Map();
+  let contrastFrame = 0;
+  let contrastStarted = false;
+
+  function parsePaint(value) {
+    const srgb = value.match(/^color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)$/i);
+    if (srgb) return srgb.slice(1, 4).map(channel => Number(channel) * 255).concat(Number(srgb[4] || 1));
+    return decode(value);
+  }
+
+  function over(top, bottom) {
+    return bottom.slice(0, 3).map((channel, index) => top[index] * top[3] + channel * (1 - top[3])).concat(1);
+  }
+
+  function luminance(rgb) {
+    const [r, g, b] = rgb.map(value => {
+      const channel = Math.max(0, Math.min(1, value / 255));
+      return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+    });
+    return .2126 * r + .7152 * g + .0722 * b;
+  }
+
+  function ratio(foreground, background) {
+    const front = luminance(over(foreground, background));
+    const back = luminance(background);
+    return (Math.max(front, back) + .05) / (Math.min(front, back) + .05);
+  }
+
+  function minimumRatio(foreground, surfaces) {
+    if (surfaces.length > 1 && foreground[3] === 1) {
+      const value = luminance(foreground);
+      if (value > luminance(surfaces[0]) && value < luminance(surfaces[1])) return 1;
+    }
+    return Math.min(...surfaces.map(surface => ratio(foreground, surface)));
+  }
+
+  function bestTextColor(surfaces, colors, target) {
+    let best = { color: colors[0], score: 0 };
+    for (const color of colors) {
+      const score = minimumRatio(parsePaint(color), surfaces);
+      if (score >= target) return { color, score };
+      if (score > best.score) best = { color, score };
+    }
+    return best;
+  }
+
+  function backdropOf(element, styleOf, cache) {
+    if (!element) return [root.dataset.lyyMode === 'dark' ? [18, 18, 18, 1] : [255, 255, 255, 1]];
+    if (cache.has(element)) return cache.get(element);
+    const style = styleOf(element);
+    const paint = parsePaint(style.backgroundColor) || [0, 0, 0, 0];
+    const underneath = paint[3] === 1 ? [paint] : backdropOf(element.parentElement, styleOf, cache).map(bg => over(paint, bg));
+    let surfaces = underneath;
+    if (style.backgroundImage.includes('gradient(')) {
+      const colors = (style.backgroundImage.match(/rgba?\([^()]+\)|color\(srgb[^()]+\)/gi) || []).map(parsePaint).filter(Boolean);
+      if (colors.length) {
+        surfaces = colors.flatMap(color => underneath.map(bg => over(color, bg)));
+        if (style.backgroundImage.includes('url(')) surfaces.push(...underneath);
+      }
+    }
+    surfaces.sort((a, b) => luminance(a) - luminance(b));
+    const result = surfaces.length < 2 ? surfaces : [surfaces[0], surfaces.at(-1)];
+    cache.set(element, result);
+    return result;
+  }
+
+  function setContrastProperty(element, property, value) {
+    let originals = adjustedText.get(element);
+    if (!originals) adjustedText.set(element, originals = new Map());
+    const current = element.style.getPropertyValue(property);
+    if (current === value && element.style.getPropertyPriority(property) === 'important') return;
+    const former = originals.get(property);
+    if (!former || current !== former.adjusted) {
+      originals.set(property, { value: current, priority: element.style.getPropertyPriority(property), adjusted: value });
+    } else {
+      former.adjusted = value;
+    }
+    element.style.setProperty(property, value, 'important');
+    observedStyles.set(element, element.getAttribute('style'));
+  }
+
+  function resetContrast() {
+    for (const [element, properties] of adjustedText) {
+      for (const [name, previous] of properties) {
+        if (element.style.getPropertyValue(name) !== previous.adjusted ||
+            element.style.getPropertyPriority(name) !== 'important') continue;
+        if (previous.value) element.style.setProperty(name, previous.value, previous.priority);
+        else element.style.removeProperty(name);
+      }
+      observedStyles.set(element, element.getAttribute('style'));
+    }
+    adjustedText.clear();
+  }
+
+  function checkContrast() {
+    contrastFrame = 0;
+    if (forcedColors.matches) { resetContrast(); return; }
+    const styles = new WeakMap();
+    const backgrounds = new WeakMap();
+    const styleOf = element => {
+      if (!styles.has(element)) styles.set(element, getComputedStyle(element));
+      return styles.get(element);
+    };
+    for (const element of adjustedText.keys()) if (!element.isConnected) adjustedText.delete(element);
+    const candidates = new Set(document.querySelectorAll('input:not([type]),input[type="search"],input[type="text"],input[type="email"],input[type="password"],input[type="number"],textarea,select'));
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let text;
+    while ((text = walk.nextNode())) {
+      if (text.nodeValue.trim() && text.parentElement) candidates.add(text.parentElement);
+    }
+    const exclude = 'script,style,noscript,svg,option,[hidden],[aria-hidden="true"],[data-no-contrast],:disabled,[aria-disabled="true"]';
+    const palette = palettes[settings.palette][root.dataset.lyyMode];
+    const target = contrastPreference.matches ? 7 : 4.5;
+    const changes = [];
+    for (const element of candidates) {
+      if (!element.style || element.closest(exclude)) continue;
+      const box = element.getBoundingClientRect();
+      if (!box.width || !box.height || box.bottom <= 0 || box.top >= innerHeight || box.right <= 0 || box.left >= innerWidth) continue;
+      const style = styleOf(element);
+      if (style.visibility !== 'visible' || Number(style.opacity) < .7) continue;
+      const front = parsePaint(style.color);
+      if (!front || front[3] === 0 || style.backgroundClip === 'text') continue;
+      const surfaces = backdropOf(element, styleOf, backgrounds);
+      if (minimumRatio(front, surfaces) >= target) continue;
+      const alternative = bestTextColor(surfaces, [palette.ink, '#101010', '#ffffff', '#000000'], target);
+      if (alternative.score >= target || (target > 4.5 && alternative.score >= 4.5)) {
+        changes.push([element, alternative.color]);
+      } else {
+        const panel = parsePaint(palette.panel);
+        const backed = bestTextColor([panel], [palette.ink, '#101010', '#ffffff', '#000000'], target);
+        changes.push([element, backed.color, palette.panel]);
+      }
+    }
+    for (const [element, color, backing] of changes) {
+      setContrastProperty(element, '--lyy-contrast-color', color);
+      setContrastProperty(element, 'color', 'var(--lyy-contrast-color)');
+      if (backing) {
+        setContrastProperty(element, '--lyy-contrast-backing', backing);
+        setContrastProperty(element, 'background-color', 'var(--lyy-contrast-backing)');
+        setContrastProperty(element, 'background-image', 'none');
+      }
+    }
+  }
+
+  function scheduleContrast() {
+    if (contrastStarted && !contrastFrame) contrastFrame = requestAnimationFrame(checkContrast);
+  }
+
+  function startContrast() {
+    contrastStarted = true;
+    addEventListener('resize', scheduleContrast, { passive: true });
+    addEventListener('scroll', scheduleContrast, { capture: true, passive: true });
+    document.addEventListener('toggle', scheduleContrast, true);
+    document.addEventListener('focusin', scheduleContrast);
+    document.addEventListener('pointerover', scheduleContrast);
+    contrastPreference.addEventListener('change', () => { resetContrast(); scheduleContrast(); });
+    forcedColors.addEventListener('change', () => { resetContrast(); scheduleContrast(); });
+    transparencyPreference.addEventListener('change', () => { resetContrast(); scheduleContrast(); });
+    scheduleContrast();
+  }
+
   function apply() {
+    resetContrast();
     const mode = settings.mode === 'system' ? (systemDark.matches ? 'dark' : 'light') : settings.mode;
     const palette = palettes[settings.palette][mode];
     root.dataset.lyyPalette = settings.palette;
@@ -166,6 +331,7 @@
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = palette.page;
     updateMenu();
+    scheduleContrast();
   }
 
   function updateMenu() {
@@ -213,11 +379,17 @@
     for (const sheet of document.styleSheets) adaptSheet(sheet);
     document.querySelectorAll('[style]').forEach(adaptInline);
     const observer = new MutationObserver(records => {
+      let checkText = false;
       for (const record of records) {
         if (record.type === 'attributes') {
-          adaptInline(record.target);
+          if (record.attributeName === 'style') {
+            if (observedStyles.get(record.target) === record.target.getAttribute('style')) continue;
+            adaptInline(record.target);
+          }
+          checkText = true;
           continue;
         }
+        checkText = true;
         for (const node of record.addedNodes) {
           if (node.nodeType !== 1) continue;
           if (node.matches('style') && node.sheet) adaptSheet(node.sheet);
@@ -226,10 +398,18 @@
           node.querySelectorAll('[style]').forEach(adaptInline);
         }
       }
+      if (checkText) scheduleContrast();
     });
-    observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['style'] });
-    new MutationObserver(updateMenu).observe(root, { attributes: true, attributeFilter: ['lang'] });
+    observer.observe(document.body, {
+      subtree: true, childList: true, characterData: true, attributes: true,
+      attributeFilter: ['style', 'class', 'hidden', 'aria-hidden', 'aria-disabled', 'disabled']
+    });
+    new MutationObserver(records => {
+      if (records.some(record => record.attributeName === 'lang')) updateMenu();
+      scheduleContrast();
+    }).observe(root, { attributes: true, attributeFilter: ['lang', 'style'] });
     if (window.parent === window) createMenu();
+    startContrast();
   }
 
   window.addEventListener('storage', event => {
