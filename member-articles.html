@@ -18,8 +18,8 @@ async function save(submit){
  if(selected){({error}=await db.from('member_articles').update({title,body,status:submit?'pending':'draft',reviewer_access:submit}).eq('id',selected));}
  else {const created=await db.from('member_articles').insert({author_id:user.id,title,body,status:'draft'}).select('id').single();error=created.error;if(!error){selected=created.data.id;if(submit){({error}=await db.from('member_articles').update({status:'pending',reviewer_access:true}).eq('id',selected));}}}
  for(const id of ['save','submit'])$(id).disabled=false;
- msg(error?'保存或发布失败：'+error.message:submit?'文章提交成功，已进入审核队列。审核通过前仅您和审核人员可见；审核通过后自动公开，并向您发送通知。':'草稿已保存，仅您本人可见。');
- if(!error){const feedback=submit?'文章提交成功，已进入审核队列。审核通过前仅您和审核人员可见；审核通过后自动公开，并向您发送通知。':'草稿已保存，仅您本人可见。';reset();msg(feedback);await loadMine();await loadPending()}
+ msg(error?'保存或发布失败：'+error.message:submit?'文章发布成功，审核通过之后就对外展示':'草稿已保存，仅您本人可见。');
+ if(!error){const feedback=submit?'文章发布成功，审核通过之后就对外展示':'草稿已保存，仅您本人可见。';reset();msg(feedback);await loadMine();await loadPending()}
 }
 $('save').onclick=()=>save(false);$('submit').onclick=()=>save(true);
 async function loadMine(){
@@ -90,5 +90,5 @@ else{
 }
 await loadPublic();
 })();
-</script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261119-publish-review" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/notification-bell.js?v=5" defer></script><script defer src="/swipe-navigation.js?v=1"></script>
+</script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261119-publish-message" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/notification-bell.js?v=5" defer></script><script defer src="/swipe-navigation.js?v=1"></script>
 </body></html>
