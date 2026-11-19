@@ -1458,6 +1458,14 @@ Object.assign(data,{
     "このサイトを離れて {host} に移動します。続けますか？"
   ]
 });
+Object.assign(data, {
+  "说出心声 · 听见彼此": [
+    "說出心聲 · 聽見彼此",
+    "Speak from the heart · Listen to one another",
+    "마음을 전하고 서로의 목소리에 귀 기울여요",
+    "心の声を伝え、互いの声に耳を傾ける"
+  ]
+});
 const dateFormats=new Map();
 const issueAliases=new Map(Object.entries({
  'Active verified membership required':'请先验证邮箱，并确认账号状态正常。',
