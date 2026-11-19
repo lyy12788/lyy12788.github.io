@@ -316,7 +316,6 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
   #home-view .dual-panel :is(.eyebrow,p,.dual-link),
   #home-view .section-heading .eyebrow,
   #home-view #community-feed-list > .discussion-item:nth-of-type(n+4),
-  #home-view #resources [href="/suggestions.html"],
   #home-view .sidebar > [href="#post=__site_guestbook_v1__"] {display:none}
   #home-view .dual-panel {display:flex;flex-direction:row;align-items:center;gap:8px;min-height:44px;padding:7px 10px}
   #home-view .dual-panel .dual-symbol {font-size:18px;line-height:1}
@@ -325,6 +324,25 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
   #home-view .section {margin-bottom:22px}
   #home-view .section-heading {margin-bottom:8px}
   #home-view .section-heading h2 {font-size:19px}
+  #home-view #resources .resource-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  #home-view #resources .resource-tile {
+    justify-content: center;
+    align-items: center;
+    min-height: 56px;
+    padding: 7px 4px;
+    gap: 4px;
+    text-align: center;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  #home-view #resources .resource-tile span {font-size: 18px}
+  #home-view #resources .resource-tile strong {font-size: 13px}
+  #home-view #resources .resource-tile small {display: none}
 }
 </style>
 <link rel="stylesheet" href="/tablet-touch.css?v=1"><link rel="stylesheet" href="/wide-layout.css?v=1"><style>
