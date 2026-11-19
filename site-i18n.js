@@ -125,7 +125,7 @@ if(!el||el.closest('h1,h2,h3,a,[class*="title"],[class*="nickname"],[class*="aut
 const raw=node.nodeValue;
 let src=original.get(node);
 if(src===undefined){src=raw;original.set(node,src)}
-if(!/^(\s*[◉◌●○♥❤]?\s*(浏览|评论|点赞)\s*\d+\s*|\s*(自由讨论|宗教信仰)\s*[·•]?\s*)$/.test(src))continue;
+if(!/^(\s*[◉◌●○♥❤]?\s*(浏览|评论|点赞)\s*\d+\s*|\s*(自由讨论|宗教信仰)(\s*[·•]?\s*(\d{4}\/\d{1,2}\/\d{1,2})?)?\s*)$/.test(src))continue;
 let next=src;
 if(idx>=0){for(const key of ['浏览','评论','点赞','自由讨论','宗教信仰']){const vals=translations.get(key);if(vals)next=next.split(key).join(vals[idx])}}
 if(node.nodeValue!==next)node.nodeValue=next;
