@@ -5,7 +5,7 @@ if(!db){$('eligibility').textContent='服务暂不可用';return}
 const {data:{user}}=await db.auth.getUser();let selected=null,editingPublished=false,admin=false;
 const msg=t=>$('result').textContent=t;
 const valid=(title,body)=>title.length>=5&&title.length<=30&&body.length>=100&&body.length<=50000;
-const safeText=(tag,value)=>{const el=document.createElement(tag);el.textContent=value;el.setAttribute('data-user-content','');return el};
+const safeText=(tag,value,userContent=false)=>{const el=document.createElement(tag);el.textContent=value;if(userContent)el.setAttribute('data-user-content','');return el};
 function reset() {selected=null;editingPublished=false;$('title').value='';$('body').value='';msg('已新建空白文章。')}
 $('clear').onclick=reset;
 async function save(submit){
@@ -26,7 +26,7 @@ async function loadMine(){
  const {data,error}=await db.from('member_articles').select('id,title,body,status,updated_at,published_at,created_at').eq('author_id',user.id).order('updated_at',{ascending:false}).limit(100);
  if(error){root.textContent='我的文章加载失败';return}
  if(!data?.length){root.textContent='还没有草稿或文章。';return}
- for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('h3',item.title||'未命名草稿'),safeText('small',({draft:'私人草稿',pending:'旧待审核文章',published:'已公开发表',rejected:'旧未通过文章'})[item.status]||item.status));
+ for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('h3',item.title||'未命名草稿',Boolean(item.title)),safeText('small',({draft:'私人草稿',pending:'旧待审核文章',published:'已公开发表',rejected:'旧未通过文章'})[item.status]||item.status));
  
  if(['draft','rejected','pending','published'].includes(item.status)){const b=document.createElement('button');b.textContent=item.status==='published'?'修改文章':'继续编辑';b.onclick=()=>{selected=item.id;editingPublished=item.status==='published';$('title').value=item.title;$('body').value=item.body;window.scrollTo({top:0,behavior:'smooth'});msg('正在编辑文章。')};card.append(b)}
  if(item.status==='draft'||item.status==='rejected'||(item.status==='published'&&Date.now()-new Date(item.published_at||item.created_at).getTime()<259200000)){
@@ -43,7 +43,7 @@ async function loadDeleteRequests(){
  if(!admin)return;$('delete-review').hidden=false;const root=$('delete-request-list');root.replaceChildren();
  const {data,error}=await db.from('member_article_delete_requests').select('id,article_id,reason,created_at').eq('status','pending').order('created_at',{ascending:true}).limit(100);
  if(error){root.textContent='删除申请读取失败';return}if(!data?.length){root.textContent='暂无待处理删除申请';return}
- for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('p','删除原因：'+item.reason));
+ for(const item of data){const card=document.createElement('div');card.className='card';const reason=safeText('p','删除原因：');reason.append(safeText('span',item.reason,true));card.append(reason);
  for(const [approve,label] of [[true,'同意删除'],[false,'不同意删除']]){const b=document.createElement('button');b.textContent=label;b.style.marginRight='8px';b.onclick=async()=>{
  if(!confirm(approve?'确认删除此文章？':'确认拒绝删除申请？'))return;
  const result=approve?await db.rpc('member_article_admin_remove',{p_article_id:item.article_id,p_reason:'根据作者删除申请'}):await db.from('member_article_delete_requests').update({status:'rejected'}).eq('id',item.id);
@@ -53,7 +53,7 @@ async function loadPublic(){
  const root=$('list');root.replaceChildren();const {data,error}=await db.from('member_articles').select('id,title,body,created_at').eq('status','published').order('created_at',{ascending:false}).limit(50);
  if(error){root.textContent='文章读取失败，请稍后再试。';return}
  if(!data?.length){root.textContent='暂无已发表的网友文章。';return}
- for(const item of data){const card=document.createElement('article');card.className='card';card.append(safeText('h3',item.title),safeText('small',new Date(item.created_at).toLocaleDateString()),safeText('p',item.body));if(admin){const del=document.createElement('button');del.textContent='管理员删除';del.onclick=async()=>{const reason=prompt('请输入管理员删除原因：');if(reason===null)return;if(!confirm('确认删除此公开文章？'))return;const {error}=await db.rpc('member_article_admin_remove',{p_article_id:item.id,p_reason:reason});if(error)alert('删除失败：'+error.message);else{await loadPublic();await loadMine();await loadDeleteRequests()}};card.append(del)}root.append(card)}
+ for(const item of data){const card=document.createElement('article');card.className='card';card.append(safeText('h3',item.title,true),safeText('small',new Date(item.created_at).toLocaleDateString(document.documentElement.lang)),safeText('p',item.body,true));if(admin){const del=document.createElement('button');del.textContent='管理员删除';del.onclick=async()=>{const reason=prompt('请输入管理员删除原因：');if(reason===null)return;if(!confirm('确认删除此公开文章？'))return;const {error}=await db.rpc('member_article_admin_remove',{p_article_id:item.id,p_reason:reason});if(error)alert('删除失败：'+error.message);else{await loadPublic();await loadMine();await loadDeleteRequests()}};card.append(del)}root.append(card)}
 }
 if(!user){$('eligibility').textContent='请先登录并完成邮箱验证，才能写作或保存私人草稿。'}
 else if(!user.email_confirmed_at){$('eligibility').textContent='请先完成邮箱验证。'}
@@ -65,5 +65,5 @@ else{
 }
 await loadPublic();
 })();
-</script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261119-open-policy" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/notification-bell.js?v=5" defer></script><script defer src="/swipe-navigation.js?v=1"></script>
+</script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261119-workflow-text" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/notification-bell.js?v=5" defer></script><script defer src="/swipe-navigation.js?v=1"></script>
 </body></html>

@@ -840,8 +840,177 @@ Object.assign(data,{
     "外観"
   ]
 });
-const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：'];
+Object.assign(data,{
+  "发布文章需要标题5—30字、正文100—50000字。": [
+    "發佈文章需要 5–30 字的標題及 100–50,000 字的正文。",
+    "To publish, use a title of 5–30 characters and a body of 100–50,000 characters.",
+    "게시하려면 제목은 5~30자, 본문은 100~50,000자로 작성하세요.",
+    "公開するには、タイトルを5～30文字、本文を100～50,000文字で入力してください。"
+  ],
+  "旧待审核文章": [
+    "舊待審核文章",
+    "Legacy article awaiting review",
+    "이전 심사 대기 글",
+    "旧審査待ちの記事"
+  ],
+  "旧未通过文章": [
+    "舊未通過文章",
+    "Legacy rejected article",
+    "이전 심사에서 반려된 글",
+    "旧審査で非承認の記事"
+  ],
+  "根据作者删除申请": [
+    "依作者的刪除申請",
+    "At the author's request",
+    "작성자의 삭제 요청에 따라",
+    "著者の削除申請に基づく"
+  ],
+  "评论频率超过每小时限制": [
+    "留言次數超過每小時上限",
+    "You have reached your hourly forum comment limit.",
+    "시간당 포럼 댓글 한도에 도달했습니다.",
+    "フォーラムの1時間あたりのコメント上限に達しました。"
+  ],
+  "两次评论至少间隔30秒": [
+    "兩次留言至少相隔 30 秒",
+    "Wait at least 30 seconds between comments.",
+    "댓글을 작성한 뒤 최소 30초 후에 다시 작성하세요.",
+    "コメントの間隔を30秒以上空けてください。"
+  ],
+  "每小时最多发表2篇文章": [
+    "每小時最多發表 2 篇論壇貼文",
+    "You can publish up to 2 forum posts per hour.",
+    "포럼 글은 시간당 최대 2개까지 게시할 수 있습니다.",
+    "フォーラムへの投稿は1時間に2件までです。"
+  ],
+  "24小时最多发表5篇文章": [
+    "每 24 小時最多發表 5 篇論壇貼文",
+    "You can publish up to 5 forum posts in 24 hours.",
+    "포럼 글은 24시간에 최대 5개까지 게시할 수 있습니다.",
+    "フォーラムへの投稿は24時間に5件までです。"
+  ],
+  "请勿重复发表相同内容": [
+    "請勿重複發表相同內容",
+    "Please do not post the same content again.",
+    "같은 내용을 반복해서 게시하지 마세요.",
+    "同じ内容を繰り返し投稿しないでください。"
+  ],
+  "评论发布失败：": [
+    "留言發佈失敗：",
+    "Could not post comment: ",
+    "댓글 게시 실패: ",
+    "コメントを投稿できませんでした："
+  ],
+  "网络异常": [
+    "網路發生異常",
+    "Network error",
+    "네트워크 오류",
+    "ネットワークエラー"
+  ],
+  "请先验证邮箱，并确认账号状态正常。": [
+    "請先驗證電子郵件地址，並確認帳號狀態正常。",
+    "Verify your email and make sure your account is in good standing.",
+    "이메일을 인증하고 계정 상태가 정상인지 확인해 주세요.",
+    "メールアドレスを認証し、アカウントが正常な状態であることを確認してください。"
+  ],
+  "文章不可删除。公开满 3 天的文章请提交删除申请。": [
+    "無法直接刪除文章。公開滿 3 天的文章請提交刪除申請。",
+    "This article cannot be deleted directly. For an article published 3 days ago or earlier, submit a deletion request.",
+    "이 글은 직접 삭제할 수 없습니다. 공개된 지 3일이 지난 글은 삭제를 신청해 주세요.",
+    "この記事は直接削除できません。公開から3日以上経過した記事には削除申請を送ってください。"
+  ],
+  "当前文章状态不支持此操作。": [
+    "目前的文章狀態不支援此操作。",
+    "This action is unavailable for the article's current status.",
+    "현재 글 상태에서는 이 작업을 할 수 없습니다.",
+    "現在の記事の状態ではこの操作を利用できません。"
+  ],
+  "已公开的网友文章无法改为草稿。": [
+    "已公開的網友文章無法改為草稿。",
+    "A published member article cannot be changed back to a draft.",
+    "공개된 회원 글은 초안으로 되돌릴 수 없습니다.",
+    "公開済みの会員記事を下書きに戻すことはできません。"
+  ],
+  "文章太短。发布需要至少 5 字的标题和 100 字的正文。": [
+    "文章太短。發佈需要至少 5 字的標題及 100 字的正文。",
+    "The article is too short. Publication requires a title of at least 5 characters and a body of at least 100 characters.",
+    "글이 너무 짧습니다. 제목은 5자 이상, 본문은 100자 이상이어야 게시할 수 있습니다.",
+    "記事が短すぎます。公開にはタイトル5文字以上、本文100文字以上が必要です。"
+  ],
+  "未知错误": [
+    "未知錯誤",
+    "Unknown error",
+    "알 수 없는 오류",
+    "不明なエラー"
+  ],
+  "文章标题需要5—30个字符。": [
+    "文章標題須為 5–30 個字元。",
+    "Use a title of 5–30 characters.",
+    "제목을 5~30자로 작성하세요.",
+    "タイトルは5～30文字で入力してください。"
+  ],
+  "文章正文需要20—20000个字符。": [
+    "文章正文須為 20–20,000 個字元。",
+    "Use a body of 20–20,000 characters.",
+    "본문을 20~20,000자로 작성하세요.",
+    "本文は20～20,000文字で入力してください。"
+  ],
+  "评论发布成功！": [
+    "留言已發佈！",
+    "Comment posted.",
+    "댓글을 게시했습니다.",
+    "コメントを投稿しました。"
+  ],
+  "评论最多1500字，请删减后再提交": [
+    "留言最多 1,500 字，請縮短後再提交。",
+    "Comments can contain up to 1,500 characters. Shorten yours and try again.",
+    "댓글은 최대 1,500자입니다. 줄인 후 다시 제출해 주세요.",
+    "コメントは最大1,500文字です。短くして再送信してください。"
+  ],
+  "文章已被管理员删除": [
+    "文章已由管理員刪除",
+    "Article removed by an administrator",
+    "관리자가 글을 삭제했습니다",
+    "管理者が記事を削除しました"
+  ],
+  "站点管理员": [
+    "站點管理員",
+    "Site administrator",
+    "사이트 관리자",
+    "サイト管理者"
+  ],
+  "内容管理员": [
+    "內容管理員",
+    "Content moderator",
+    "콘텐츠 관리자",
+    "コンテンツモデレーター"
+  ]
+});
+const issueAliases=new Map(Object.entries({
+ 'Active verified membership required':'请先验证邮箱，并确认账号状态正常。',
+ 'Verified active membership required':'请先验证邮箱，并确认账号状态正常。',
+ 'Article is too short':'文章太短。发布需要至少 5 字的标题和 100 字的正文。',
+ 'Article deletion not permitted':'文章不可删除。公开满 3 天的文章请提交删除申请。',
+ 'Invalid publication state':'当前文章状态不支持此操作。',
+ 'Invalid article state':'当前文章状态不支持此操作。',
+ 'Published article cannot be made draft':'已公开的网友文章无法改为草稿。'
+}));
+const messagePrefixes=['下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：','评论发布失败：','保存或发布失败：','删除失败：','申请失败：'];
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
+function translateIssue(value,index){
+ const key=normalize(value);
+ for(const prefix of messagePrefixes){
+  if(!key.startsWith(prefix)||key===prefix)continue;
+  const label=translations.get(normalize(prefix));
+  if(!label)continue;
+  const detail=key.slice(prefix.length);
+  const detailKey=issueAliases.get(normalize(detail))||normalize(detail);
+  const detailTranslation=translations.get(detailKey);
+  const localizedDetail=index<0?(issueAliases.get(normalize(detail))||detail):(detailTranslation?.[index]||detail);
+  return (index<0?prefix:label[index])+localizedDetail;
+ }
+ return undefined;
+}
 function apply(lang){
 if(!document.body||!langs.includes(lang))return;
 document.documentElement.lang=lang;const titleSource=document.documentElement.dataset.lyyTitleSource||(document.documentElement.dataset.lyyTitleSource=document.title);const titleTranslation=data[titleSource];if(titleTranslation)document.title=lang==='zh-CN'?titleSource:titleTranslation[langs.indexOf(lang)-1];
@@ -877,8 +1046,8 @@ const values=translations.get(key);
 if(values){const match=source.match(/^(\s*)([\s\S]*?)(\s*)$/);return match?match[1]+(idx<0?key:values[idx])+match[3]:(idx<0?key:values[idx]);}
 if(idx>=0){
 const count=key.match(/^共\s*(\d+)\s*篇$/);if(count)return ['共 '+count[1]+' 篇','共 '+count[1]+' 篇',count[1]+' articles','총 '+count[1]+'편','計'+count[1]+'件'][idx+1];
-for(const prefix of messagePrefixes)if(key.startsWith(prefix)){const translated=translations.get(prefix);if(translated)return translated[idx]+key.slice(prefix.length)}
 }
+const localizedIssue=translateIssue(key,idx);if(localizedIssue!==undefined)return localizedIssue;
 if(!partial||idx<0)return source;
 let output=source;
 for(const key of fragmentKeys)output=output.split(key).join(fragments[key][idx]);
@@ -961,7 +1130,12 @@ window.addEventListener('message',e=>{if(e.origin===location.origin&&e.data?.typ
 window.addEventListener('storage',e=>{if(e.key===storage)apply(current())});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 let pending=false;const observer=new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply(current())})});const startObserver=()=>{if(document.body)observer.observe(document.body,{childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','title','aria-label'],subtree:true})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver);else startObserver();
-function translateMessage(value){if(typeof value!=='string')return value;const index=langs.indexOf(current())-1;if(index<0)return value;const key=normalize(value),direct=translations.get(key);if(direct)return direct[index];for(const prefix of messagePrefixes){if(key.startsWith(prefix)){const item=translations.get(prefix);if(item)return item[index]+key.slice(prefix.length)}}return value;}
+function translateMessage(value){
+ if(typeof value!=='string')return value;
+ const index=langs.indexOf(current())-1;
+ const key=normalize(value);
+ return (index>=0?translations.get(key)?.[index]:undefined)??translateIssue(value,index)??value;
+}
 window.lyyLanguage={set,apply,current,translate:translateMessage};
 for(const method of ['alert','confirm','prompt']){const native=window[method];if(typeof native!=='function')continue;window[method]=function(message,...rest){return native.call(window,translateMessage(message),...rest)};}
 })();
