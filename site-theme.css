@@ -25,7 +25,7 @@ html[data-lyy-mode="light"],html[data-lyy-palette]:not([data-lyy-palette="navy"]
 }
 
 /* Keep photos and translucent surfaces behind a predictable text background. */
-.hero:not(.community-hero) .hero-inner {
+.hero .hero-inner {
   background-color: var(--lyy-theme-page);
   background-color: color-mix(in srgb, var(--lyy-theme-page) 90%, transparent);
   border-radius: 12px;
@@ -35,7 +35,7 @@ html :is(input, textarea):not(:disabled)::placeholder {
   opacity: 1;
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .hero:not(.community-hero) .hero-inner,
+  .hero .hero-inner,
   .sitebar {
     background-color: var(--lyy-theme-page);
     backdrop-filter: none;
@@ -43,5 +43,5 @@ html :is(input, textarea):not(:disabled)::placeholder {
   }
 }
 @media (forced-colors: active) {
-  .hero:not(.community-hero) .hero-inner { background-color: Canvas; }
+  .hero .hero-inner { background-color: Canvas; }
 }

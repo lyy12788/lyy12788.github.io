@@ -212,10 +212,25 @@
     const underneath = paint[3] === 1 ? [paint] : backdropOf(element.parentElement, styleOf, cache).map(bg => over(paint, bg));
     let surfaces = underneath;
     if (style.backgroundImage.includes('gradient(')) {
-      const colors = (style.backgroundImage.match(/rgba?\([^()]+\)|color\(srgb[^()]+\)/gi) || []).map(parsePaint).filter(Boolean);
-      if (colors.length) {
-        surfaces = colors.flatMap(color => underneath.map(bg => over(color, bg)));
-        if (style.backgroundImage.includes('url(')) surfaces.push(...underneath);
+      let depth = 0, start = 0;
+      const layers = [];
+      for (let index = 0; index < style.backgroundImage.length; index++) {
+        const token = style.backgroundImage[index];
+        if (token === '(') depth++;
+        else if (token === ')') depth--;
+        else if (token === ',' && !depth) {
+          layers.push(style.backgroundImage.slice(start, index));
+          start = index + 1;
+        }
+      }
+      layers.push(style.backgroundImage.slice(start));
+      for (const layer of layers.reverse()) {
+        if (!layer.includes('gradient(')) continue;
+        const colors = (layer.match(/rgba?\([^()]+\)|color\(srgb[^()]+\)/gi) || []).map(parsePaint).filter(Boolean);
+        if (!colors.length) continue;
+        const blended = colors.flatMap(color => surfaces.map(bg => over(color, bg)));
+        blended.sort((a, b) => luminance(a) - luminance(b));
+        surfaces = [blended[0], blended.at(-1)];
       }
     }
     surfaces.sort((a, b) => luminance(a) - luminance(b));
