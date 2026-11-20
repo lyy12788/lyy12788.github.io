@@ -1,6 +1,6 @@
 /* Cloudflare Turnstile public site key; CAPTCHA enforcement remains disabled until tested. */
 (function(){'use strict';
-const sitekey='0x4AAAAAAGGnVWmQ5iuhoCUb';let loading=false,loaded=false;
+const sitekey='0x4AAAAAAGKA06mSWBJnWgJD';let loading=false,loaded=false;
 const api={widgetId:undefined,widgets:{},tokenFor(id){try{const wid=this.widgets[id];return wid===undefined?'':window.turnstile?.getResponse(wid)||''}catch(_){return ''}},resetFor(id){try{const wid=this.widgets[id];if(wid!==undefined)window.turnstile?.reset(wid)}catch(_){}},token(){return this.tokenFor('lyy-auth-turnstile')},reset(){this.resetFor('lyy-auth-turnstile')}};window.lyyTurnstile=api;
 function visible(el){return !!(el&&el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden')}
 function mount(){if(!window.turnstile)return;document.querySelectorAll('[data-lyy-turnstile]').forEach(el=>{if(!visible(el)||el.dataset.mounted)return;try{const wid=window.turnstile.render(el,{sitekey,theme:'auto',appearance:'always'});api.widgets[el.id]=wid;if(el.id==='lyy-auth-turnstile')api.widgetId=wid;el.dataset.mounted='1'}catch(e){console.warn('Turnstile render failed',e)}})}
