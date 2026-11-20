@@ -31,6 +31,8 @@ button{border:1px solid #826d36;background:#24364b;color:#f4d17c;border-radius:9
 const allowed=/^\/(?:|index\.html|forum\.html|gospel\.html|aid\.html|suggestions\.html|rules\.html|privacy\.html|content-complaints\.html|post1\.html|audio-upload\.html|articles\.html|member-articles\.html|editor-column\.html)$/;
 const safe=raw=>{try{const u=new URL(raw,location.origin);return u.origin===location.origin&&allowed.test(u.pathname)?u:null}catch{return null}};
 const fmt=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00';
+// The wrapper owns navigation history; prevent browser restoration from fighting iframe routing.
+if ('scrollRestoration' in history) history.scrollRestoration='manual';
 const requested=()=>safe(new URLSearchParams(location.search).get('page')||'/gospel.html')||new URL('/gospel.html',location.origin);
 function navigate(u,push=true){if(!u)return;const dest=u.pathname+u.search+u.hash;frame.src=dest;if(push)history.pushState({},'', '/player.html?page='+encodeURIComponent(dest))}
 function syncFrameAddress(){
@@ -136,7 +138,26 @@ function resetHomeRefreshScroll() {
   });
  } catch(e) { doc.documentElement.style.removeProperty('scroll-behavior'); }
 }
-frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();resetHomeRefreshScroll();});window.addEventListener('popstate',()=>navigate(requested(),false));
+// Home is always entered at the top, including iframe reloads and history returns.
+// Explicit section/article hashes retain their own navigation behavior.
+function resetHomeEntryScroll() {
+ let doc,win;
+ try {doc=frame.contentDocument;win=frame.contentWindow;} catch(e){return;}
+ if(!doc||!win)return;
+ const path=win.location.pathname;
+ if((path!=='/'&&path!=='/index.html')||(win.location.hash&&win.location.hash!=='#home'))return;
+ const scroller=doc.scrollingElement;
+ if(!scroller)return;
+ scroller.style.scrollBehavior='auto';
+ win.scrollTo(0,0);
+ // Wait for the next layout pass, which may follow browser scroll restoration.
+ requestAnimationFrame(()=>{
+  if(frame.contentDocument!==doc)return;
+  win.scrollTo(0,0);
+  scroller.style.removeProperty('scroll-behavior');
+ });
+}
+frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();resetHomeRefreshScroll();resetHomeEntryScroll();});window.addEventListener('popstate',()=>navigate(requested(),false));
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-site-navigate'){const u=safe(e.data.url);if(u)navigate(u,e.data.push!==false);return}
 if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
 if(e.data.type==='lyy-audio-play'){document.body.classList.remove('landscape-reading');try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.toggleAttribute('data-user-content',Boolean(e.data.title));title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='播放失败：请检查R2音频地址';frame.contentWindow?.postMessage({type:'lyy-audio-error',title:title.textContent},location.origin)})}catch{return}}
