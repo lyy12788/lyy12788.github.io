@@ -554,13 +554,14 @@ forumAuthRetry.onclick=()=>{
   forumAuthStatus.textContent='验证已重置，请重新完成人机验证。';
   forumAuthRetry.classList.add('hide');
 };
+function signupErrorText(error){const code=String(error?.code||'').toLowerCase(),msg=String(error?.message||'').toLowerCase(),status=Number(error?.status||0);if(/already_registered|user_already_exists|email_exists/.test(code)||/already registered|already exists|user already/.test(msg))return '该邮箱可能已注册，请尝试登录或找回密码。';if(status===429||/over_email_send_rate_limit|over_request_rate_limit|rate_limit/.test(code)||/rate limit|too many requests|too many attempts/.test(msg))return '操作过于频繁，请稍后再试。';if(/captcha/.test(code+' '+msg))return '人机验证未通过，请重新验证。';if(/invalid_email|email_address_invalid/.test(code)||/invalid email|email address.*invalid/.test(msg))return '请输入有效的邮箱地址。';if(/weak_password|password_too_short/.test(code)||/password.*(weak|short|length)/.test(msg))return '密码至少10位，必须包含大写字母、小写字母和数字。';return '注册暂时失败，请检查网络后重试。';}
 async function submitForumAuth(register){
   const email=$('email').value.trim();
   const password=$('password').value;
   forumAuthRetry.classList.add('hide');
   if(!db){forumAuthStatus.textContent='登录服务尚未加载，请刷新页面后重试。';return}
   if(!email||!$('email').validity.valid||!password){
-    forumAuthStatus.textContent='请输入有效的邮箱地址和密码。';
+    forumAuthStatus.textContent=register&&email&&!$('email').validity.valid?'请输入有效的邮箱地址。':'请输入有效的邮箱地址和密码。';
     return;
   }
   if(register&&(password.length<10||!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/[0-9]/.test(password))){
@@ -587,9 +588,10 @@ async function submitForumAuth(register){
     if(!register){await refreshUser();route()}
   }catch(error){
     const message=error?.message;
-    forumAuthStatus.textContent=error?.code==='invalid_credentials'||message==='Invalid login credentials'
+    forumAuthStatus.textContent=register?signupErrorText(error):error?.code==='invalid_credentials'||message==='Invalid login credentials'
       ?'邮箱或密码不正确，请检查后重试。'
-      :(register?'注册失败':'登录失败')+(message?'：'+message+'。':'，请稍后重试。');
+      :'登录失败'+(message?'：'+message+'。':'，请稍后重试。');
+    if(register)$('password').value='';
   }finally{
     captcha.resetFor(forumCaptchaId);
     buttons.forEach(button=>button.disabled=false);
