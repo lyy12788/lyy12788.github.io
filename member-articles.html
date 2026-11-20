@@ -56,7 +56,7 @@ $('list').addEventListener('touchend',event=>{if(!swipeStart||!event.changedTouc
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&collapseExpandedArticle())event.preventDefault()});
 window.addEventListener('popstate',()=>{collapseExpandedArticle()});
 async function loadPublic(){
- const root=$('list');root.replaceChildren();const {data,error}=await db.from('member_articles').select('id,title,body,created_at').eq('status','published').order('created_at',{ascending:false}).limit(50);
+ const root=$('list');root.replaceChildren();const {data,error}=await db.from('member_articles').select('id,title,body,created_at').eq('status','published').order('created_at',{ascending:false}).limit(100);
  if(error){root.textContent='文章读取失败，请稍后再试。';return}
  if(!data?.length){root.textContent='暂无已发表的网友文章。';return}
  const manageable=new Set(contentModerator?(await db.rpc('moderation_member_article_ids')).data||[]:[]);
