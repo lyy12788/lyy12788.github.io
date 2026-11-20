@@ -136,7 +136,26 @@ function resetHomeRefreshScroll() {
   });
  } catch(e) { doc.documentElement.style.removeProperty('scroll-behavior'); }
 }
-frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();resetHomeRefreshScroll();});window.addEventListener('popstate',()=>navigate(requested(),false));
+// Home is always entered at the top, including iframe reloads and history returns.
+// Explicit section/article hashes retain their own navigation behavior.
+function resetHomeEntryScroll() {
+ let doc,win;
+ try {doc=frame.contentDocument;win=frame.contentWindow;} catch(e){return;}
+ if(!doc||!win)return;
+ const path=win.location.pathname;
+ if((path!=='/'&&path!=='/index.html')||win.location.hash)return;
+ const scroller=doc.scrollingElement;
+ if(!scroller)return;
+ scroller.style.scrollBehavior='auto';
+ win.scrollTo(0,0);
+ // Wait for the next layout pass, which may follow browser scroll restoration.
+ requestAnimationFrame(()=>{
+  if(frame.contentDocument!==doc)return;
+  win.scrollTo(0,0);
+  scroller.style.removeProperty('scroll-behavior');
+ });
+}
+frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();resetHomeRefreshScroll();resetHomeEntryScroll();});window.addEventListener('popstate',()=>navigate(requested(),false));
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-site-navigate'){const u=safe(e.data.url);if(u)navigate(u,e.data.push!==false);return}
 if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
 if(e.data.type==='lyy-audio-play'){document.body.classList.remove('landscape-reading');try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.toggleAttribute('data-user-content',Boolean(e.data.title));title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='播放失败：请检查R2音频地址';frame.contentWindow?.postMessage({type:'lyy-audio-error',title:title.textContent},location.origin)})}catch{return}}
