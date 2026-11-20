@@ -1767,6 +1767,8 @@ const issueAliases=new Map(Object.entries({
  'Published article cannot be made draft':'已公开的网友文章无法改为草稿。'
 }));
 const messagePrefixes=['暂时无法加载积分：','下次可修改日期：','提交失败：','操作失败：','保存失败：','昵称修改已锁定，解锁时间：','本轮还可修改 ','举报失败：','点赞操作失败：','文章举报读取失败：','上传失败：','登录失败：','注册失败：','点赞失败：','评论加载失败：','读取失败：','发表失败：','导出失败：','图片上传失败：','修改失败：','审核失败：','请复制链接：','评论发布失败：','保存或发布失败：','删除失败：','申请失败：','处理失败：','申诉已通过，但解除禁言失败：','评论读取失败：'];
+
+Object.assign(data,{"所有已登录且账户正常的会员均可提交文章。":["所有已登入且帳戶正常的會員均可投稿。","All signed-in members with active accounts may submit articles.","로그인한 정상 계정 회원은 모두 글을 제출할 수 있습니다.","ログイン済みで有効なアカウントの会員は全員記事を投稿できます。"],"请先登录，才能写作或保存私人草稿。":["請先登入，才能撰寫文章或儲存私人草稿。","Sign in to write or save a private draft.","글을 작성하거나 비공개 초안을 저장하려면 로그인하세요.","記事の作成や非公開下書きの保存にはログインしてください。"],"文章专栏 · 最新文章":["文章專欄 · 最新文章","Articles · Latest articles","기사 · 최신 글","記事 · 最新記事"],"会员文章":["會員文章","Member articles","회원 글","会員記事"],"会员文章 · ":["會員文章 · ","Member article · ","회원 글 · ","会員記事 · "]});
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
 function translateIssue(value,index){
  const key=normalize(value);
