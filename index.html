@@ -562,6 +562,10 @@ function guestbookIdentity(){
     return token&&/^[0-9a-f]{64}$/.test(token)?token:null;
   }catch{return null;}
 }
+function guestbookTokenIsValid(token){return typeof token==='string'&&/^[0-9a-f]{64}$/.test(token)}
+function clearStoredGuestbookIdentity(){
+  try{localStorage.removeItem(guestbookIdentityKey);sessionStorage.removeItem(guestbookIdentityKey);return true}catch{return false}
+}
 function createGuestbookIdentity(){
   // Generate only on a new-message submission, never on a page visit.
   if(!globalThis.crypto?.getRandomValues)throw new Error('Secure random generator unavailable');
@@ -667,7 +671,7 @@ $('guestbook-form').addEventListener('submit',async event=>{
     input.readOnly=false;
   }
 });
-$('guestbook-clear-identity').onclick=()=>{try{localStorage.removeItem('lyy_guestbook_identity_v2');sessionStorage.removeItem('lyy_guestbook_identity_v2');}catch(e){console.warn('Guestbook local identity storage unavailable',e);}showGuestbookNotice('identityCleared');clearGuestbookInbox();};
+$('guestbook-clear-identity').onclick=()=>{clearStoredGuestbookIdentity();showGuestbookNotice('identityCleared');clearGuestbookInbox();};
 translateGuestbook();
 new MutationObserver(translateGuestbook).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 function route(){if(location.hash==='#account'&&user){$('auth-modal').hidden=false;syncAuthUI();}else if(location.hash!=='#account'&&usesMobileAccountLayout()&&user){$('auth-modal').hidden=true;}const slug=getSlug(),guest=slug==='__site_guestbook_v1__',a=guest?null:articles.find(x=>x.slug===slug),social=location.hash==='#social'&&!$('social-entry').hidden;$('guestbook-view').hidden=!guest;$('home-view').hidden=guest||!!a||social;$('social-view').hidden=!social;$('reader-view').hidden=!a;if(guest){if(activeSlug!==slug){commentSeq++;loadGuestbook();window.scrollTo({top:0,behavior:'instant'});}activeSlug=slug;updateSermonPoster(null);return;}clearGuestbookInbox();if(a){$('reader-category').textContent=a.category||'其他';$('reader-title').toggleAttribute('data-user-content',Boolean(a.title));$('reader-title').textContent=a.title||'无标题';const category=document.createElement('span');category.textContent=a.category||'其他';$('reader-meta').replaceChildren(safeDate(a.date),' · ',category);updateSermonPoster(a.slug);const articleIndex=articles.findIndex(x=>x.slug===a.slug);const prev=$('article-prev'),next=$('article-next');prev.hidden=articleIndex<0||articleIndex>=articles.length-1;next.hidden=articleIndex<=0;if(!prev.hidden)prev.href='#post='+encodeURIComponent(articles[articleIndex+1].slug);if(!next.hidden)next.href='#post='+encodeURIComponent(articles[articleIndex-1].slug);const body=$('reader-body');body.replaceChildren();if(window.marked&&window.DOMPurify)body.innerHTML=DOMPurify.sanitize(marked.parse(a.body||''));else body.textContent=a.body||'';if(activeSlug!==a.slug){activeSlug=a.slug;commentLimit=20;loadComments();refreshArticleLikes();recordArticleView(a.slug);}updateSermonUpload();window.scrollTo({top:0,behavior:'instant'});}else{activeSlug=null;updateSermonPoster(null);commentSeq++;if(slug&&articles.length){location.hash='latest';return;}if(social)window.scrollTo({top:0,behavior:'instant'});else if(location.hash==='#latest'||location.hash==='#resources')requestAnimationFrame(()=>$(location.hash.slice(1))?.scrollIntoView());}}
