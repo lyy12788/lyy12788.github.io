@@ -25,21 +25,41 @@ Deno.serve(async (request) => {
     const { data: { user } } = await auth.auth.getUser(token);
     if (!user?.email) return reply(401, { error: "请重新登录" });
     const { action, code } = await request.json();
-    if (action === "send") {
-      const { error } = await auth.auth.signInWithOtp({
-        email: user.email, options: { shouldCreateUser: false },
-      });
-      return error ? reply(error.status === 429 ? 429 : 400, { error: "验证邮件暂时无法发送，请稍后重试" }) : reply(200, { sent: true });
-    }
-    if (action !== "verify" || typeof code !== "string" || !/^\d{6}$/.test(code)) {
-      return reply(400, { error: "请输入邮件中的六位验证码" });
-    }
-
-    const checked = await auth.auth.verifyOtp({ email: user.email, token: code, type: "email" });
-    if (checked.error || checked.data.user?.id !== user.id || checked.data.user?.email !== user.email) {
-      return reply(400, { error: "验证码无效或已过期" });
-    }
     const service = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, options);
+    const storageKey = "email-proof-pkce";
+    const storage = new Map<string, string>();
+    const pkce = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      auth: { flowType: "pkce", autoRefreshToken: false, storageKey,
+        storage: {
+          getItem: (key) => storage.get(key) ?? null,
+          setItem: (key, value) => { storage.set(key, value); },
+          removeItem: (key) => { storage.delete(key); },
+        },
+      },
+    });
+    const verifierKey = storageKey + "-code-verifier";
+    if (action === "send") {
+      const { error } = await pkce.auth.signInWithOtp({
+        email: user.email, options: { shouldCreateUser: false, emailRedirectTo: origin + "/" },
+      });
+      if (error) return reply(error.status === 429 ? 429 : 400, { error: "验证邮件暂时无法发送，请稍后重试" });
+      const verifier = storage.get(verifierKey);
+      if (!verifier) return reply(503, { error: "验证请求无法保存，请稍后重试" });
+      const saved = await service.rpc("save_member_email_attempt", {
+        p_user_id: user.id, p_email: user.email, p_verifier: verifier,
+      });
+      return saved.data === true ? reply(200, { sent: true }) : reply(503, { error: "验证请求无法保存" });
+    }
+    if (action !== "verify" || typeof code !== "string" || !/^[a-z0-9-]{20,128}$/i.test(code)) {
+      return reply(400, { error: "验证链接不完整" });
+    }
+    const attempt = await service.rpc("get_member_email_attempt", { p_user_id: user.id, p_email: user.email });
+    if (!attempt.data) return reply(400, { error: "验证链接已过期，请重新发送" });
+    storage.set(verifierKey, attempt.data);
+    const checked = await pkce.auth.exchangeCodeForSession(code);
+    if (checked.error || checked.data.user?.id !== user.id || checked.data.user?.email !== user.email) {
+      return reply(400, { error: "验证链接无效或已过期" });
+    }
     const { data, error } = await service.rpc("record_member_email_verification", {
       p_user_id: user.id, p_email: user.email,
     });
