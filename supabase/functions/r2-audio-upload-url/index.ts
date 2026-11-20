@@ -2,7 +2,7 @@
 // Configure secrets R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY.
 // Deploy with JWT verification enabled. Never expose these secrets in GitHub or browser.
 import { createClient } from "npm:@supabase/supabase-js@2.49.10";
-const origin = "https://lyy12788.com";
+const origin = "https://lyy12788-isolated-preview.pages.dev";
 const headers = { "Access-Control-Allow-Origin": origin, "Access-Control-Allow-Headers": "authorization, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS", "Vary": "Origin" };
 const enc = new TextEncoder();
 const hex = (b: ArrayBuffer | Uint8Array) => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2,"0")).join("");
@@ -25,7 +25,7 @@ Deno.serve(async req => {
   const {data:{user},error:authError}=await sb.auth.getUser(bearer.replace(/^Bearer\s+/,""));
   if(authError||!user) return response({error:"登录已过期"},401);
   // Use the same authenticated RPC as the website, rather than a separate table-read path.
-  const userClient=createClient(base,Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY")||"sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z",{global:{headers:{Authorization:bearer}},auth:{persistSession:false}});
+  const userClient=createClient(base,Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY")!,{global:{headers:{Authorization:bearer}},auth:{persistSession:false}});
   const {data:admin,error:adminError}=await userClient.rpc("is_site_admin");
   if(adminError){console.error("admin RPC failed",adminError.message);return response({error:"管理员身份验证暂时失败"},503);}
   if(admin!==true) return response({error:"当前登录账户不是站长管理员，请确认登录账号"},403);
@@ -39,7 +39,7 @@ Deno.serve(async req => {
   if(!account||!access||!secret||!/^[a-f0-9]{32}$/i.test(account)) return response({error:"R2 后端密钥尚未配置"},503);
   const key="audio/uploads/"+crypto.randomUUID()+"."+mime[type];
   const host=account+".r2.cloudflarestorage.com";
-  const bucket="lyy12788media";
+  const bucket="lyy12788-preview-media";
   const url=new URL("https://"+host+"/"+bucket+"/"+key);
   const now=new Date(),date=now.toISOString().replace(/[:-]|\.\d{3}/g,""),day=date.slice(0,8);
   const scope=day+"/auto/s3/aws4_request";
