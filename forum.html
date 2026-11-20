@@ -583,7 +583,7 @@ async function submitForumAuth(register){
       ?await db.auth.signUp({email,password,options:{emailRedirectTo:'https://lyy12788.com/forum.html',captchaToken}})
       :await db.auth.signInWithPassword({email,password,options:{captchaToken}});
     if(error)throw error;
-    if(register){const {data:{session}}=await db.auth.getSession();if(session){const out=await db.auth.signOut();if(out.error)throw out.error;}$('password').value='';forumAuthStatus.textContent='注册成功！请重新输入密码登录。';}else forumAuthStatus.textContent='登录成功。';
+    if(register){const {data:{session}}=await db.auth.getSession();if(session){const out=await db.auth.signOut();if(out.error)throw out.error;}$('password').value='';forumAuthStatus.textContent='注册成功！请妥善保存您的密码，本站不会保存或显示您的明文密码。请重新输入密码登录。';}else forumAuthStatus.textContent='登录成功。';
     if(!register){await refreshUser();route()}
   }catch(error){
     const message=error?.message;
