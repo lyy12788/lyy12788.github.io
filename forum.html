@@ -126,7 +126,7 @@ function renderArticle(body){
  const raw=window.marked.parse(body,{breaks:true,gfm:true});
  target.innerHTML=window.DOMPurify.sanitize(raw,{USE_PROFILES:{html:true},FORBID_TAGS:['style','iframe','form','video','audio','svg','math'],FORBID_ATTR:['data-lyy-forum-ui']});
  for(const a of target.querySelectorAll('a')){try{const u=new URL(a.href);if(!['http:','https:'].includes(u.protocol))a.removeAttribute('href');else{a.target='_blank';a.rel='noopener noreferrer nofollow'}}catch{a.removeAttribute('href')}}
- for(const img of target.querySelectorAll('img')){try{const u=new URL(img.src);if(u.protocol!=='https:'||u.hostname!=='mkchupvmervxkskvjyhz.supabase.co'||!u.pathname.includes('/storage/v1/object/public/forum-images/'))img.remove()}catch{img.remove()}}
+ for(const img of target.querySelectorAll('img')){try{const u=new URL(img.src);if(u.protocol!=='https:'||u.hostname!=='bjlzeqfpyynavvcwmyez.supabase.co'||!u.pathname.includes('/storage/v1/object/public/forum-images/'))img.remove()}catch{img.remove()}}
  for(const img of Array.from(target.querySelectorAll('img'))){
   if(img.alt!=='敏感图片')continue;
   img.loading='lazy';
@@ -536,7 +536,7 @@ $('password-form').onsubmit=async e=>{
  finally{btn.disabled=false}
 };
 $('login-btn').onclick=async()=>{await refreshUser();if(user){location.hash='#account';show('account');await Promise.all([refreshAvatar(),loadAccountDetails()])}else{show('auth')}};$('new-btn').onclick=async()=>{if(!db){say('登录服务未连接，请刷新重试');return}const {data,error}=await db.auth.getUser();if(error||!data?.user){user=null;show('auth');$('oauth-status').textContent='当前没有有效登录会话。请先选择 Google、Facebook 或邮箱登录；登录成功后再点击「发表文章」。';return}user=data.user;show('compose')};
-async function socialLogin(provider){const status=$('oauth-status');status.textContent='正在连接'+({google:'Google',facebook:'Facebook',apple:'Apple'}[provider]||provider)+'授权页面……';if(!db){status.textContent='登录服务尚未加载，请刷新后重试';return}const buttons=[$('oauth-google'),$('oauth-facebook'),$('oauth-apple')];buttons.forEach(b=>b.disabled=true);try{const {error}=await db.auth.signInWithOAuth({provider,options:{redirectTo:'https://lyy12788.com/forum.html'}});if(error)throw error}catch(e){status.textContent='第三方登录未能启动：'+(e?.message||'未知错误')+'。如提示提供商未启用，请联系网站管理员完成授权配置。'}finally{buttons.forEach(b=>b.disabled=false)}}
+async function socialLogin(provider){const status=$('oauth-status');status.textContent='正在连接'+({google:'Google',facebook:'Facebook',apple:'Apple'}[provider]||provider)+'授权页面……';if(!db){status.textContent='登录服务尚未加载，请刷新后重试';return}const buttons=[$('oauth-google'),$('oauth-facebook'),$('oauth-apple')];buttons.forEach(b=>b.disabled=true);try{const {error}=await db.auth.signInWithOAuth({provider,options:{redirectTo:new URL('/forum.html',location.origin).href}});if(error)throw error}catch(e){status.textContent='第三方登录未能启动：'+(e?.message||'未知错误')+'。如提示提供商未启用，请联系网站管理员完成授权配置。'}finally{buttons.forEach(b=>b.disabled=false)}}
 $('oauth-google').onclick=()=>socialLogin('google');
 $('oauth-facebook').onclick=()=>socialLogin('facebook');
 // Apple OAuth 尚未配置；暂不允许触发授权流程。
@@ -581,7 +581,7 @@ async function submitForumAuth(register){
   forumAuthStatus.textContent=register?'正在注册……':'正在登录……';
   try{
     const {error}=register
-      ?await db.auth.signUp({email,password,options:{emailRedirectTo:'https://lyy12788.com/forum.html',captchaToken}})
+      ?await db.auth.signUp({email,password,options:{emailRedirectTo:new URL('/forum.html',location.origin).href,captchaToken}})
       :await db.auth.signInWithPassword({email,password,options:{captchaToken}});
     if(error)throw error;
     if(register){const {data:{session}}=await db.auth.getSession();if(session){const out=await db.auth.signOut();if(out.error)throw out.error;}$('password').value='';forumAuthStatus.textContent='注册成功！请妥善保存您的密码，本站不会保存或显示您的明文密码。请重新输入密码登录。';}else forumAuthStatus.textContent='登录成功。';
@@ -631,7 +631,7 @@ window.addEventListener('hashchange',route);
 </style>
 <script>
 (function(){
- const root='https://lyy12788.com/';
+ const root=location.origin+'/';
  function makeTools(target,title,url){if(!target||target.nextElementSibling?.classList.contains('site-save-tools'))return;const wrap=document.createElement('div');wrap.className='site-save-tools';const save=document.createElement('button');save.type='button';save.textContent='☆ 收藏'+title;save.setAttribute('aria-label','收藏'+title);const copy=document.createElement('button');copy.type='button';copy.textContent='复制链接';copy.setAttribute('aria-label','复制'+title+'链接');save.addEventListener('click',()=>{const ua=navigator.userAgent;alert(/iPhone|iPad|iPod/.test(ua)?'请点击浏览器分享按钮，选择“添加书签”或“添加到主屏幕”。':/Android/i.test(ua)?'请打开浏览器菜单，选择“添加书签”或“添加到主屏幕”。':'请按 Ctrl+D；Mac 请按 Command+D，将当前板块加入收藏夹。');});copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(url);copy.textContent='✓ 已复制';setTimeout(()=>{copy.textContent='复制链接'},1800)}catch(e){window.prompt('请复制链接：',url)}});wrap.append(save,copy);target.insertAdjacentElement('afterend',wrap)}
  const path=location.pathname;
  if(path==='/forum.html'){makeTools(document.querySelector('main>h1'),'公共论坛',root+'forum.html')}
