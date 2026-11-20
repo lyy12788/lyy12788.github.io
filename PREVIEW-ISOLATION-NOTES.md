@@ -19,3 +19,11 @@
 - 已替换 index.html、forum.html、member-articles.html、gospel.html 的 Supabase URL 和公开密钥；其他页面需通过全仓检查确认。
 - scripts/check-preview-isolation.py 和 .github/workflows/preview-isolation.yml 用于检测预览分支是否意外引用正式 Supabase，另执行 JS 语法检查。CI 结果未确认之前，不得公开测试站。
 - staging/auth-guestbook-20261120 是未来正式发布候选分支；本预览分支包含测试数据库连接，**不得合并到 main**。
+
+## 2026-11-20 additional database work
+- 测试库已复制全部 38 张表、43 个业务触发器、120 条 public RLS 策略、17 条 storage.objects RLS 策略、6 个空存储桶、全部 9 个 identity 自增列，以及相关约束、索引、默认值。
+- 测试库已部署 3 个非 R2 Edge Functions：forum-link-preview、forum-publish-reviewed、forum-confirm-account-deletion。r2-audio-upload-url 依赖 Cloudflare R2 密钥，**未部署**，也没有复制生产密钥。
+- 测试库 public 业务函数为 71 个；正式库为 72 个，故意没有复制 rls_auto_enable 事件触发相关函数。正式与测试函数行为还有一处差异：forum_is_active_member 在测试库移除了邮箱验证限制。
+- 修复了最初未复制列级授权的问题。测试库会员文章公开字段可由 anon 查询，私有 reviewer_access 字段被拒绝。访客留言 anon INSERT 已在事务中测试成功，超长留言被 CHECK 约束拒绝；匿名用户无 SELECT 权限。
+- 测试库与正式库 public RLS 策略均为 120 条；**业务实际运行、账号邮件配置、R2 密钥、全仓扫描 CI 及浏览器兼容性尚未验证**。
+- 正式发布候选分支新增 staging-migrations/20261120_guestbook_submit_only.sql，仅作为候选迁移，**未应用生产**。
