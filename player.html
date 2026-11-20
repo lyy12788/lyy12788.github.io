@@ -32,7 +32,29 @@ const allowed=/^\/(?:|index\.html|forum\.html|gospel\.html|aid\.html|suggestions
 const safe=raw=>{try{const u=new URL(raw,location.origin);return u.origin===location.origin&&allowed.test(u.pathname)?u:null}catch{return null}};
 const fmt=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00';
 const requested=()=>safe(new URLSearchParams(location.search).get('page')||'/gospel.html')||new URL('/gospel.html',location.origin);
-function navigate(u,push=true){if(!u)return;const dest=u.pathname+u.search+u.hash;frame.src=dest;if(push)history.pushState({},'', '/player.html?page='+encodeURIComponent(dest))}
+function navigate(u,push=true){
+ if(!u)return;
+ const dest=u.pathname+u.search+u.hash;
+ // Do not reuse an iframe's previous scroll offset when navigating between pages.
+ // Native browser history remains available for back/forward navigation.
+ if(push)history.pushState({},'', '/player.html?page='+encodeURIComponent(dest));
+ frame.src=dest;
+}
+function resetFrameNavigationScroll(){
+ try {
+  const doc=frame.contentDocument;
+  if(!doc)return;
+  // A new document should start at its top unless a section/article hash is requested.
+  if(frame.contentWindow.location.hash)return;
+  const scroller=doc.scrollingElement;
+  if(!scroller)return;
+  scroller.style.scrollBehavior='auto';
+  scroller.scrollTop=0;
+  requestAnimationFrame(()=>{
+   if(frame.contentDocument===doc){scroller.scrollTop=0;scroller.style.removeProperty('scroll-behavior');}
+  });
+ }catch(e){}
+}
 function syncFrameAddress(){
  let doc,u;try{doc=frame.contentDocument;u=safe(frame.contentWindow.location.href)}catch{return}
  if(!u)return;
@@ -136,7 +158,7 @@ function resetHomeRefreshScroll() {
   });
  } catch(e) { doc.documentElement.style.removeProperty('scroll-behavior'); }
 }
-frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();resetHomeRefreshScroll();});window.addEventListener('popstate',()=>navigate(requested(),false));
+frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();resetFrameNavigationScroll();resetHomeRefreshScroll();});window.addEventListener('popstate',()=>navigate(requested(),false));
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-site-navigate'){const u=safe(e.data.url);if(u)navigate(u,e.data.push!==false);return}
 if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
 if(e.data.type==='lyy-audio-play'){document.body.classList.remove('landscape-reading');try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.toggleAttribute('data-user-content',Boolean(e.data.title));title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='播放失败：请检查R2音频地址';frame.contentWindow?.postMessage({type:'lyy-audio-error',title:title.textContent},location.origin)})}catch{return}}
