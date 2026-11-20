@@ -555,6 +555,23 @@ guestbookText.identityUnavailable=["留言身份验证功能尚未启用。","�
 guestbookText.identityCleared=["本机留言身份已清除。","本機留言身分已清除。","Guest identity cleared on this device.","이 기기의 방문자 신원을 지웠습니다.","この端末のゲスト識別情報を削除しました。"];
 let guestbookNotice='',guestbookSequence=0,guestbookOffset=0;
 const guestbookPageSize=30;
+const guestbookIdentityKey='lyy_guestbook_identity_v2';
+function guestbookIdentity(){
+  try{
+    const token=localStorage.getItem(guestbookIdentityKey);
+    return token&&/^[0-9a-f]{64}$/.test(token)?token:null;
+  }catch{return null;}
+}
+function createGuestbookIdentity(){
+  // Generate only on a new-message submission, never on a page visit.
+  if(!globalThis.crypto?.getRandomValues)throw new Error('Secure random generator unavailable');
+  const bytes=new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  const token=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+  try{localStorage.setItem(guestbookIdentityKey,token)}catch{throw new Error('Guest identity storage unavailable')}
+  return token;
+}
+
 function guestText(key) {
   const index=['zh-CN','zh-TW','en','ko','ja'].indexOf(window.lyyLanguage?.current() || document.documentElement.lang);
   return guestbookText[key][Math.max(0,index)];
