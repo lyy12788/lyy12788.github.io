@@ -145,7 +145,7 @@ function resetHomeEntryScroll() {
  try {doc=frame.contentDocument;win=frame.contentWindow;} catch(e){return;}
  if(!doc||!win)return;
  const path=win.location.pathname;
- if((path!=='/'&&path!=='/index.html')||win.location.hash)return;
+ if((path!=='/'&&path!=='/index.html')||(win.location.hash&&win.location.hash!=='#home'))return;
  const scroller=doc.scrollingElement;
  if(!scroller)return;
  scroller.style.scrollBehavior='auto';
