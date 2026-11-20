@@ -1,0 +1,22 @@
+name: Preview isolation and syntax checks
+on:
+  push:
+    branches:
+      - preview/isolated-supabase-20261120
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Block production Supabase references in preview
+        run: python3 scripts/check-preview-isolation.py
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -e
+          find . -type f \( -name '*.js' -o -name '*.mjs' \) -not -path './node_modules/*' -print0 | while IFS= read -r -d '' file; do
+            node --check "$file"
+          done
