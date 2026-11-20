@@ -114,7 +114,29 @@ function bindLandscapeReading() {
  doc.defaultView.addEventListener('hashchange', showTools, {signal});
 }
 phoneLandscape.addEventListener('change', bindLandscapeReading);
-frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();});window.addEventListener('popstate',()=>navigate(requested(),false));
+// On a full reload of the home page, discard WebKit's stale iframe scroll position.
+// Do not alter normal in-site navigation, article hashes or back/forward history.
+const homeRefresh = (() => {
+ const nav = performance.getEntriesByType('navigation')[0];
+ const u = requested();
+ return nav?.type === 'reload' && (u.pathname === '/' || u.pathname === '/index.html') && !u.hash;
+})();
+let homeRefreshPending = homeRefresh;
+function resetHomeRefreshScroll() {
+ if (!homeRefreshPending) return;
+ const win = frame.contentWindow, doc = frame.contentDocument;
+ if (!win || !doc) return;
+ homeRefreshPending = false;
+ try {
+  doc.documentElement.style.scrollBehavior = 'auto';
+  win.scrollTo(0, 0);
+  requestAnimationFrame(() => {
+   win.scrollTo(0, 0);
+   doc.documentElement.style.removeProperty('scroll-behavior');
+  });
+ } catch(e) { doc.documentElement.style.removeProperty('scroll-behavior'); }
+}
+frame.addEventListener('load',()=>{wire();syncIframeLanguage();bindLandscapeReading();resetHomeRefreshScroll();});window.addEventListener('popstate',()=>navigate(requested(),false));
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||!e.data)return;if(e.data.type==='lyy-site-navigate'){const u=safe(e.data.url);if(u)navigate(u,e.data.push!==false);return}
 if(e.data.type==='lyy-page-url'){const u=safe(e.data.url);if(u)history.replaceState({},'', '/player.html?page='+encodeURIComponent(u.pathname+u.search+u.hash));return}
 if(e.data.type==='lyy-audio-play'){document.body.classList.remove('landscape-reading');try{const u=new URL(e.data.src);if(u.protocol!=='https:'||!(u.hostname==='media.lyy12788.com'||u.hostname==='lyy12788.com'||u.hostname.endsWith('.lyy12788.com')||u.hostname==='mkchupvmervxkskvjyhz.supabase.co'))return;stopDrive();if(current!==u.href){current=u.href;audio.src=u.href;title.toggleAttribute('data-user-content',Boolean(e.data.title));title.textContent=String(e.data.title||'讲道录音');title.title=title.textContent}document.body.classList.add('has-audio');audio.play().catch(()=>{time.textContent='播放失败：请检查R2音频地址';frame.contentWindow?.postMessage({type:'lyy-audio-error',title:title.textContent},location.origin)})}catch{return}}
