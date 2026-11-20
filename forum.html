@@ -605,7 +605,7 @@ $('publish').onclick=async()=>{
  const title=$('post-title').value.trim(),body=$('post-body').value.trim();
  if(!db)return feedback('论坛服务未连接，请刷新页面重试。');
  if(!user)return feedback('请先注册或登录账户。');
- if(!user)return feedback('邮箱尚未验证。请打开注册邮件完成验证，再重新登录。');
+ 
 
  
  if(title.length<5||title.length>30)return feedback('文章标题需要5—30个字符。');
