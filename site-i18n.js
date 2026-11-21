@@ -2618,6 +2618,8 @@ Object.assign(data,{
     "初期化に失敗："
   ]
 });
+/* Screenshot audit: full-string and parameterized UI translations. */
+Object.assign(data,{"汇集所有作者的公开文章，分享真实经历、独立观点、时事评论和生活观察。每位作者为自己的内容负责。":["匯集所有作者的公開文章，分享真實經歷、獨立觀點、時事評論與生活觀察。每位作者對自己的內容負責。","Articles from all authors, sharing real experiences, independent views, current affairs commentary and everyday observations. Each author is responsible for their own content.","모든 작성자의 공개 글을 모아 실제 경험, 독립적인 견해, 시사 논평과 일상 이야기를 나눕니다. 각 작성자는 자신의 글에 책임을 집니다.","すべての著者の公開記事を集め、実体験、独立した意見、時事評論、日常の観察を共有します。内容の責任は各著者にあります。"],"进入文章专区 · 查看全部文章 →":["進入文章專區 · 查看全部文章 →","Browse all articles →","전체 글 보기 →","すべての記事を見る →"],"写文章":["寫文章","Write an article","글 작성","記事を書く"],"最新 {count} 篇":["最新 {count} 篇","Latest {count} articles","최신 글 {count}편","最新の記事 {count}件"],"共显示 {count} 条最新举报":["共顯示 {count} 筆最新檢舉","Showing {count} recent reports","최근 신고 {count}건 표시","最近の通報 {count}件を表示"]});
 const translations=new Map(Object.entries(data).map(([k,v])=>[normalize(k),v]));
 function translateIssue(value,index){
  const key=normalize(value);
@@ -2713,6 +2715,10 @@ if(values){const match=source.match(/^(\s*)([\s\S]*?)(\s*)$/);return match?match
 if(idx>=0){
 const count=key.match(/^共\s*(\d+)\s*篇$/);if(count)return ['共 '+count[1]+' 篇','共 '+count[1]+' 篇',count[1]+' articles','총 '+count[1]+'편','計'+count[1]+'件'][idx+1];
 }
+const recentArticles=key.match(/^最新\\s*(\\d+)\\s*篇$/);
+if(recentArticles){const n=recentArticles[1];const forms=['最新 '+n+' 篇','最新 '+n+' 篇','Latest '+n+' articles','최신 글 '+n+'편','最新の記事 '+n+'件'];return forms[idx+1];}
+const recentReports=key.match(/^共显示\\s*(\\d+)\\s*条最新举报$/);
+if(recentReports){const n=recentReports[1];const forms=['共显示 '+n+' 条最新举报','共顯示 '+n+' 筆最新檢舉','Showing '+n+' recent reports','최근 신고 '+n+'건 표시','最近の通報 '+n+'件を表示'];return forms[idx+1];}
 const localizedIssue=translateIssue(key,idx);if(localizedIssue!==undefined)return localizedIssue;
 if(!partial||idx<0)return source;
 let output=source;
