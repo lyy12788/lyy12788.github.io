@@ -316,7 +316,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
   #home-view .hero-cta :is([href="/forum.html"],[href="/articles.html"]),
   #home-view .dual-panel :is(.eyebrow,p,.dual-link),
   #home-view .section-heading .eyebrow,
-  #home-view #community-feed-list > .discussion-item:nth-of-type(n+4) {display:none}
+  #home-view #community-feed-list > .discussion-item:nth-of-type(n+3) {display:none}
   #home-view .dual-panel {display:flex;flex-direction:row;align-items:center;gap:8px;min-height:44px;padding:7px 10px}
   #home-view .dual-panel .dual-symbol {font-size:18px;line-height:1}
   #home-view .dual-panel h2 {font-size:clamp(14px,4vw,17px);margin:0}
@@ -519,7 +519,7 @@ const SUPABASE_URL='https://mkchupvmervxkskvjyhz.supabase.co';
 const SUPABASE_KEY='sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z';
 const db=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY)||null;
 const $=id=>document.getElementById(id);
-async function loadCommunityFeed(){const root=document.getElementById('community-feed-list');if(!root)return;try{if(!db)throw Error('服务暂不可用');const {data,error}=await db.from('forum_posts').select('id,title,category,created_at').eq('status','published').order('created_at',{ascending:false}).limit(6);if(error)throw error;root.replaceChildren();if(!data?.length){const d=document.createElement('div');d.className='sidebox muted';d.textContent='目前还没有公开的会员讨论。欢迎发表第一篇文章。';root.append(d);return}for(const p of data){const a=document.createElement('a');a.className='discussion-item';a.href='/forum.html#post='+encodeURIComponent(p.id);const title=document.createElement('strong');title.textContent=p.title;const meta=document.createElement('small');meta.textContent=p.category+' · '+new Date(p.created_at).toLocaleDateString('zh-CN');a.append(title,meta);root.append(a)}}catch(e){root.textContent='最新讨论暂时无法加载，请前往讨论广场查看。'}}
+async function loadCommunityFeed(){const root=document.getElementById('community-feed-list');if(!root)return;try{if(!db)throw Error('服务暂不可用');const {data,error}=await db.from('forum_posts').select('id,title,category,created_at').eq('status','published').order('created_at',{ascending:false}).limit(2);if(error)throw error;root.replaceChildren();if(!data?.length){const d=document.createElement('div');d.className='sidebox muted';d.textContent='目前还没有公开的会员讨论。欢迎发表第一篇文章。';root.append(d);return}for(const p of data){const a=document.createElement('a');a.className='discussion-item';a.href='/forum.html#post='+encodeURIComponent(p.id);const title=document.createElement('strong');title.textContent=p.title;const meta=document.createElement('small');meta.textContent=p.category+' · '+new Date(p.created_at).toLocaleDateString('zh-CN');a.append(title,meta);root.append(a)}}catch(e){root.textContent='最新讨论暂时无法加载，请前往讨论广场查看。'}}
 loadCommunityFeed();
 
 let articles=[],category='全部',activeSlug=null,user=null,commentSeq=0,authMode='login',recovery=false,admin=false,contentModerator=false,articleLimit=12,commentLimit=20;
