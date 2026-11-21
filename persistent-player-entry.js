@@ -1,6 +1,6 @@
 /* Keep the site inside one persistent audio shell, without a mode button. */
 (()=>{'use strict';
-const allowed=/^\/(?:(?:index|forum|gospel|aid|suggestions|rules|privacy|content-complaints|post1|audio-upload|articles|member-articles|editor-column|member-blog-preview|member-space)(?:\.html)?)?$/;
+const allowed=/^\/(?:(?:index|forum|gospel|aid|suggestions|rules|privacy|content-complaints|post1|audio-upload|articles|member-articles|editor-column|member-space)(?:\.html)?)?$/;
 const route=location.pathname+location.search+location.hash;
 if(!allowed.test(location.pathname)||location.pathname==='/player.html')return;
 if(window.parent===window){location.replace('/player.html?page='+encodeURIComponent(route));return;}

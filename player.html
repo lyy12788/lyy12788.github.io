@@ -28,7 +28,7 @@ button{border:1px solid #826d36;background:#24364b;color:#f4d17c;border-radius:9
 <div id="drive-box"><button id="drive-close" style="float:right">关闭</button><div id="drive-title">Google Drive 备用录音</div><iframe id="drive" title="Google Drive 音频" allow="autoplay"></iframe></div>
 <script>
 (()=>{'use strict';const frame=document.getElementById('page'),dock=document.getElementById('dock'),audio=new Audio(),toggle=document.getElementById('toggle'),seek=document.getElementById('seek'),time=document.getElementById('time'),volume=document.getElementById('volume'),title=document.getElementById('title'),driveBox=document.getElementById('drive-box'),drive=document.getElementById('drive');audio.preload='metadata';let current='',driveActive=false;
-const allowed=/^\/(?:(?:index|forum|gospel|aid|suggestions|rules|privacy|content-complaints|post1|audio-upload|articles|member-articles|editor-column|member-blog-preview|member-space)(?:\.html)?)?$/;
+const allowed=/^\/(?:(?:index|forum|gospel|aid|suggestions|rules|privacy|content-complaints|post1|audio-upload|articles|member-articles|editor-column|member-space)(?:\.html)?)?$/;
 const safe=raw=>{try{const u=new URL(raw,location.origin);return u.origin===location.origin&&allowed.test(u.pathname)?u:null}catch{return null}};
 const fmt=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00';
 // The wrapper owns navigation history; prevent browser restoration from fighting iframe routing.
