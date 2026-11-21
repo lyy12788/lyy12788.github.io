@@ -1,1 +1,91 @@
-<!doctype html><html lang="zh-CN" data-lyy-page="library"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>资料库 · 真实之声</title><link rel="stylesheet" href="/site-theme.css?v=4"><script src="/site-theme.js?v=5"></script><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#081321;color:#eaf0f7;font:16px/1.7 system-ui,sans-serif}a{color:inherit;text-decoration:none}a:hover,a:focus-visible{color:#f5c84b}header,main,footer{max-width:1080px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid #304154}header a{color:#f5c84b}h1{font-size:clamp(30px,5vw,46px);margin:30px 0 10px}h2{font-size:22px;margin:0 0 10px}p{color:#b9c7d7;margin:0}.intro{margin-bottom:30px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.item{display:block;background:#132337;border:1px solid #304154;border-radius:12px;padding:24px}.item:hover{border-color:#c6a45d}.item span{display:inline-block;margin-top:18px;color:#f5c84b}footer{border-top:1px solid #304154;margin-top:40px;color:#b9c7d7}@media(max-width:560px){header,main,footer{padding:18px}.grid{grid-template-columns:1fr}}</style></head><body><header><a href="/#home">← 返回首页</a><a href="/articles.html">文章专区</a></header><main><h1>资料库</h1><p class="intro">按类别浏览网站已公开的资料与内容。</p><div class="grid" aria-label="资料分类"><a class="item" href="/articles.html"><h2>文章资料</h2><p>浏览已公开的文章与主题。</p><span>浏览文章 →</span></a><a class="item" href="/articles.html?category=%E5%85%AC%E5%BC%80%E5%A3%B0%E6%98%8E"><h2>公开声明</h2><p>查看文章专区的公开声明分类。</p><span>查看分类 →</span></a><a class="item" href="/forum.html"><h2>论坛讨论</h2><p>浏览公共论坛的主题与讨论。</p><span>进入论坛 →</span></a><a class="item" href="/gospel.html"><h2>福音录音</h2><p>浏览已公开的福音录音。</p><span>收听录音 →</span></a></div></main><footer>真实之声 · 资料库</footer><script src="/site-i18n.js"></script></body></html>
+<!doctype html>
+<html lang="zh-CN" data-lyy-page="library">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>资料库 · 真实之声</title>
+  <link rel="stylesheet" href="/site-theme.css?v=4">
+  <script src="/site-theme.js?v=5"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--lyy-theme-page, #081321);
+      color: var(--lyy-theme-ink, #eaf0f7);
+      font: 1rem/1.65 system-ui, sans-serif;
+    }
+    header, main {
+      max-width: 1120px;
+      margin-inline: auto;
+      padding-inline: clamp(1rem, 4vw, 2.5rem);
+    }
+    header { border-bottom: 1px solid var(--lyy-theme-edge, #304154); }
+    nav { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; padding-block: .75rem; }
+    nav a { display: inline-flex; align-items: center; min-height: 44px; }
+    a { color: var(--lyy-theme-accent, #f5c84b); text-underline-offset: .2em; }
+    a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+    main { padding-block: clamp(1.5rem, 5vw, 3rem); }
+    h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin: 0 0 .65rem; }
+    .intro { color: var(--lyy-theme-muted, #b9c7d7); margin: 0 0 1.5rem; }
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      gap: 1rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .categories a {
+      display: block;
+      height: 100%;
+      padding: 1.2rem;
+      border: 1px solid var(--lyy-theme-edge, #304154);
+      border-radius: .75rem;
+      background: var(--lyy-theme-panel, #132337);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .categories a:hover { border-color: currentColor; }
+    h2 { color: var(--lyy-theme-ink, #eaf0f7); font-size: 1.25rem; margin: 0 0 .4rem; }
+    .categories p { color: var(--lyy-theme-muted, #b9c7d7); margin: 0 0 .85rem; }
+    .categories a:hover span { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="网站导航">
+      <a href="/#home">← 返回首页</a>
+      <a href="/articles.html">文章专区</a>
+    </nav>
+  </header>
+  <main>
+    <h1>资料库</h1>
+    <p class="intro" data-no-translate data-library-copy="intro">按类别浏览网站已公开的资料与内容。</p>
+    <ul class="categories">
+      <li><a href="/articles.html">
+        <h2>文章专区</h2>
+        <p data-no-translate data-library-copy="articles">浏览已公开的文章与主题。</p>
+        <span data-no-translate data-library-copy="browseArticles">浏览文章 →</span>
+      </a></li>
+      <li><a href="/articles.html?category=%E5%85%AC%E5%BC%80%E5%A3%B0%E6%98%8E">
+        <h2>公开声明</h2>
+        <p data-no-translate data-library-copy="statements">查看文章专区的公开声明分类。</p>
+        <span data-no-translate data-library-copy="browseStatements">查看分类 →</span>
+      </a></li>
+      <li><a href="/forum.html">
+        <h2>公共论坛</h2>
+        <p data-no-translate data-library-copy="forum">浏览公共论坛的主题与讨论。</p>
+        <span>进入公共论坛 →</span>
+      </a></li>
+      <li><a href="/gospel.html">
+        <h2>福音园地</h2>
+        <p data-no-translate data-library-copy="gospel">浏览已公开的福音录音。</p>
+        <span data-no-translate data-library-copy="listen">收听录音 →</span>
+      </a></li>
+    </ul>
+  </main>
+  <script src="/site-i18n.js?v=20261122-library"></script>
+  <script src="/library-i18n.js?v=1" defer></script>
+  <script src="/persistent-player-entry.js?v=20261118-3" defer></script>
+</body>
+</html>
