@@ -272,7 +272,7 @@ const forumListStats=new Map();
 const link=(post)=>{
  const card=document.createElement('article');card.className='forum-list-card';
  const body=document.createElement('div');body.className='forum-list-main';
- const heading=document.createElement('a');heading.className='forum-list-title';heading.href='/forum.html#post='+encodeURIComponent(post.id);heading.target='_blank';heading.rel='noopener';heading.textContent=post.title;heading.title=post.title;body.append(heading);
+ const heading=document.createElement('a');heading.className='forum-list-title';heading.href='/forum.html#post='+encodeURIComponent(post.id);heading.textContent=post.title;heading.title=post.title;body.append(heading);
  const info=document.createElement('div');info.className='forum-list-info';
  const when=document.createElement('span');when.className='forum-list-date';when.textContent=post.category+' · '+date(post.created_at);
  const author=document.createElement(post.author_id?'a':'span');author.className='forum-list-author';author.textContent='会员';if(post.author_id){author.href='#member='+encodeURIComponent(post.author_id);author.title='查看会员公开资料'}
