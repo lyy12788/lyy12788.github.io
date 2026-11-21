@@ -1,6 +1,6 @@
 {
   "accent_light": "#ffe18a",
-  "hero_caption": "个人网站 · 博客 · 资料库",
+  "hero_caption": "个人网站 · 博客",
   "meta_description": "杨利伟的个人网站，记录独立观点、个人经历、国际局势与社会观察。",
   "site_name": "YANGLIWEI",
   "contact_heading": "联系我",
@@ -12,7 +12,7 @@
   "accent": "#e0b112",
   "latest_heading": "最新文章",
   "about_description": "我是一名坚持独立表达的人。这个网站用于长期保存个人文字、经历与资料，关注中国政治、人权、言论自由、社会制度以及国际局势。",
-  "footer_tagline": "个人网站 · 博客 · 资料库",
+  "footer_tagline": "个人网站 · 博客",
   "muted": "#f1ad63",
   "show_about": true,
   "border": "#f3f5f7",
