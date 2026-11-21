@@ -1,24 +1,41 @@
-<!doctype html><html data-lyy-page="member-articles" lang="zh-CN"><head><link rel="stylesheet" href="/site-theme.css?v=4"><script src="/site-theme.js?v=5"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网友文章 · 真实之声</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#081321;color:#edf3f9;font:16px/1.7 system-ui,sans-serif}main{max-width:960px;margin:auto;padding:26px 18px 90px}h1,h2{color:#f5c84b}a{color:#f5c84b}p{color:#bac8d7}.card{background:#12263a;border:1px solid #344b60;border-radius:13px;padding:18px;margin:16px 0}input,textarea{display:block;width:100%;margin:8px 0 15px;padding:12px;border:1px solid #5b6b80;border-radius:8px;background:#09192b;color:white;font:inherit}textarea{min-height:230px;resize:vertical}button{border:0;border-radius:8px;padding:10px 17px;background:#e8bd40;color:#0a192a;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.5}small{color:#aebfd0}article h3{margin:0}article p{white-space:pre-wrap;overflow-wrap:anywhere}#editor[hidden]{display:none}</style><link rel="stylesheet" href="/tablet-touch.css?v=1"><link rel="stylesheet" href="/wide-layout.css?v=1"></head><body><main><nav style="display:flex;flex-wrap:wrap;gap:16px"><a href="/index.html#home">← 返回主页</a><a href="/articles.html">文章列表 →</a></nav><h1>网友文章</h1><nav id="writing-entry" style="margin:12px 0 20px"><a href="/member-articles.html?write=1" style="display:inline-block;background:#e8bd40;color:#081321;border-radius:8px;padding:9px 16px;font-weight:700;text-decoration:none">✍ 写文章 / 管理草稿</a></nav><p>发布后立即公开；涉嫌违规内容可举报并依法处理。</p><section class="card" id="writing-panel" hidden><h2>文章创作与发布</h2><p id="eligibility">正在检查会员权限……</p><div id="editor" hidden><label>文章标题<input id="title" maxlength="30" placeholder="5—30个字符"></label><label>文章正文<textarea id="body" maxlength="50000" placeholder="100—50000个字符"></textarea></label><p id="publication-info" style="font-size:13px">文章发布后立即公开；请遵守社区规则。</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="save" type="button">保存私人草稿</button><button id="submit" type="button">发布文章</button><button id="clear" type="button">新建文章</button></div></div><p id="result" role="status"></p><a href="/forum.html">前往公共论坛发帖 →</a></section><section class="card" id="mine" hidden><h2>我的文章与草稿</h2><p>网友文章公开后，作者可在发布未满 3 天时自行删除。满 3 天后须通过「我的文章与草稿」提交删除申请，由站点管理员处理。</p><div id="mine-list"></div></section><section class="card" id="delete-review" hidden><h2>文章删除申请</h2><div id="delete-request-list"></div></section><section><h2>已发表的网友文章</h2><div id="list">正在加载文章……</div></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
+<!doctype html><html data-lyy-page="member-articles" lang="zh-CN"><head><link rel="stylesheet" href="/site-theme.css?v=4"><script src="/site-theme.js?v=5"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网友文章 · 真实之声</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#081321;color:#edf3f9;font:16px/1.7 system-ui,sans-serif}main{max-width:960px;margin:auto;padding:26px 18px 90px}h1,h2{color:#f5c84b}a{color:#f5c84b}p{color:#bac8d7}.card{background:#12263a;border:1px solid #344b60;border-radius:13px;padding:18px;margin:16px 0}input,textarea{display:block;width:100%;margin:8px 0 15px;padding:12px;border:1px solid #5b6b80;border-radius:8px;background:#09192b;color:white;font:inherit}textarea{min-height:230px;resize:vertical}button{border:0;border-radius:8px;padding:10px 17px;background:#e8bd40;color:#0a192a;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.5}small{color:#aebfd0}article h3{margin:0}article p{white-space:pre-wrap;overflow-wrap:anywhere}#editor[hidden]{display:none}#article-neighbors{display:flex;flex-wrap:wrap;gap:1rem}summary a{display:block;min-height:44px;align-content:center;touch-action:manipulation}</style><link rel="stylesheet" href="/tablet-touch.css?v=1"><link rel="stylesheet" href="/wide-layout.css?v=1"></head><body><main><nav style="display:flex;flex-wrap:wrap;gap:16px"><a href="/index.html#home">← 返回主页</a><a href="/articles.html">文章列表 →</a></nav><h1>网友文章</h1><nav id="writing-entry" style="margin:12px 0 20px"><a href="/member-articles.html?write=1" style="display:inline-block;background:#e8bd40;color:#081321;border-radius:8px;padding:9px 16px;font-weight:700;text-decoration:none">✍ 写文章 / 管理草稿</a></nav><p>您可以保存私人草稿，或直接提交文章进入审核队列。审核通过前文章不会对外展示。</p><section class="card" id="writing-panel" hidden><h2>文章创作与发布</h2><p id="eligibility">正在检查会员权限……</p><div id="editor" hidden><label>文章标题<input id="title" maxlength="30" placeholder="5—30个字符"></label><label>文章正文<textarea id="body" maxlength="50000" placeholder="100—50000个字符"></textarea></label><p id="publication-info" style="font-size:13px">提交发布即授权站长和管理员审核此篇文章，审核通过前不对外展示。</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="save" type="button">保存私人草稿</button><button id="submit" type="button">提交发布</button><button id="clear" type="button">新建文章</button></div></div><p id="result" role="status"></p><a href="/forum.html">前往公共论坛发帖 →</a></section><section class="card" id="mine" hidden><h2>我的文章与草稿</h2><p>网友文章公开后，作者可在发布未满 3 天时自行删除。满 3 天后须通过「我的文章与草稿」提交删除申请，由站点管理员处理。</p><div id="mine-list"></div></section><section class="card" id="publication-review" hidden><h2>待审核文章</h2><div id="submission-list"></div><h2>待审核文章修改</h2><div id="revision-list"></div></section><section class="card" id="delete-review" hidden><h2>文章删除申请</h2><div id="delete-request-list"></div></section><section><h2>已发表的网友文章</h2><div id="list">正在加载文章……</div></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script>
 (async()=>{'use strict';
 const $=id=>document.getElementById(id),db=window.supabase?.createClient('https://mkchupvmervxkskvjyhz.supabase.co','sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z');
 if(!db){$('eligibility').textContent='服务暂不可用';return}
 const {data:{user}}=await db.auth.getUser();const writingMode=new URLSearchParams(location.search).get('write')==='1';$('writing-panel').hidden=!writingMode;$('writing-entry').hidden=writingMode;const readingArticleId=location.hash.startsWith('#article=')?decodeURIComponent(location.hash.slice(9)):null;if(readingArticleId){document.getElementById('editor').hidden=true;$('writing-panel').hidden=true;document.getElementById('mine').hidden=true;document.getElementById('delete-review').hidden=true;document.querySelector('main>p').hidden=true;}let selected=null,editingPublished=false,admin=false,contentModerator=false;
 const msg=t=>$('result').textContent=t;
+const statusText=()=>editingPublished?'请修改后点击申请审核发表；审核期间仍显示原文。':'提交发布即授权站长和管理员审核此篇文章，审核通过前不对外展示。';
+function syncEditor(){
+ $('save').disabled=editingPublished;
+ $('submit').textContent=editingPublished?'申请审核发表':'提交发布';
+ $('publication-info').textContent=statusText();
+}
 const valid=(title,body)=>title.length>=5&&title.length<=30&&body.length>=100&&body.length<=50000;
 const safeText=(tag,value,userContent=false)=>{const el=document.createElement(tag);el.textContent=value;if(userContent)el.setAttribute('data-user-content','');return el};
-function reset() {selected=null;editingPublished=false;$('title').value='';$('body').value='';msg('已新建空白文章。')}
+function reset() {selected=null;editingPublished=false;$('title').value='';$('body').value='';syncEditor();msg('已新建空白文章。')}
 $('clear').onclick=reset;
 async function save(submit){
+ if(editingPublished&&!submit)return;
  const title=$('title').value.trim(),body=$('body').value.trim();
  if(submit&&!valid(title,body)){msg('发布文章需要标题5—30字、正文100—50000字。');return}
  if(title.length>30||body.length>50000){msg('标题最多30字，正文最多50000字。');return}
  for(const id of ['save','submit'])$(id).disabled=true;
- let error;
- if(selected){({error}=await db.from('member_articles').update({title,body,status:(submit||editingPublished)?'published':'draft'}).eq('id',selected));}
- else {const created=await db.from('member_articles').insert({author_id:user.id,title,body,status:submit?'published':'draft'}).select('id').single();error=created.error;if(!error)selected=created.data.id;}
- for(const id of ['save','submit'])$(id).disabled=false;
- if(!error){const feedback=submit?'文章发布成功，已对外公开。':'草稿已保存，仅您本人可见。';reset();msg(feedback);await loadMine();await loadPublic();}
- else msg('保存或发布失败：'+error.message);
+ try{
+   const status=submit?'pending':'draft';
+   const result=editingPublished
+     ? await db.rpc('member_article_request_revision',{p_article_id:selected,p_title:title,p_body:body})
+     : selected
+       ? await db.from('member_articles').update({title,body,status}).eq('id',selected).select('id').single()
+       : await db.from('member_articles').insert({author_id:user.id,title,body,status}).select('id').single();
+   if(result.error){
+     msg('操作失败，请稍后重试。');
+     return;
+   }
+   const feedback=editingPublished?'修改申请已提交。审核期间继续显示原文。':submit?'投稿已提交，等待审核后公开。':'草稿已保存，仅您本人可见。';
+   reset();msg(feedback);await loadMine();
+ }finally{
+   $('submit').disabled=false;syncEditor();
+ }
 }
 $('save').onclick=()=>save(false);$('submit').onclick=()=>save(true);
 async function loadMine(){
@@ -26,18 +43,55 @@ async function loadMine(){
  const {data,error}=await db.from('member_articles').select('id,title,body,status,updated_at,published_at,created_at').eq('author_id',user.id).order('updated_at',{ascending:false}).limit(100);
  if(error){root.textContent='我的文章加载失败';return}
  if(!data?.length){root.textContent='还没有草稿或文章。';return}
- for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('h3',item.title||'未命名草稿',Boolean(item.title)),safeText('small',({draft:'私人草稿',pending:'旧待审核文章',published:'已公开发表',rejected:'旧未通过文章'})[item.status]||item.status));
+ for(const item of data){const card=document.createElement('div');card.className='card';card.append(safeText('h3',item.title||'未命名草稿',Boolean(item.title)),safeText('small',({draft:'私人草稿',pending:'等待审核',published:'已公开发表',rejected:'审核未通过'})[item.status]||item.status));
  
- if(['draft','rejected','pending','published'].includes(item.status)){const b=document.createElement('button');b.textContent=item.status==='published'?'修改文章':'继续编辑';b.onclick=()=>{selected=item.id;editingPublished=item.status==='published';$('title').value=item.title;$('body').value=item.body;window.scrollTo({top:0,behavior:'smooth'});msg('正在编辑文章。')};card.append(b)}
+ if(['draft','rejected','published'].includes(item.status)){const b=document.createElement('button');b.textContent=item.status==='published'?'修改文章':'继续编辑';b.onclick=()=>{selected=item.id;editingPublished=item.status==='published';$('title').value=item.title;$('body').value=item.body;syncEditor();window.scrollTo({top:0,behavior:'smooth'});msg('正在编辑文章。')};card.append(b)}
  if(item.status==='draft'||item.status==='rejected'||(item.status==='published'&&Date.now()-new Date(item.published_at||item.created_at).getTime()<259200000)){
  const del=document.createElement('button');del.textContent='删除文章';del.onclick=async()=>{if(!confirm('确定永久删除这篇文章？此操作不可撤销。'))return;const {error}=await db.from('member_articles').delete().eq('id',item.id);if(error)alert('删除失败：'+error.message);else{reset();await loadMine();await loadPublic()}};card.append(del);
- }else if(item.status==='pending'){
-   card.append(safeText('p','旧待审核文章可继续编辑或联系站点管理员处理。'));
  }else if(item.status==='published'){
  const req=document.createElement('button');req.textContent='申请删除文章';req.onclick=async()=>{const reason=prompt('请填写删除原因（5—1000字）：');if(reason===null)return;if(reason.trim().length<5||reason.trim().length>1000){alert('删除原因须为5—1000字。');return}
  const {error}=await db.from('member_article_delete_requests').insert({article_id:item.id,author_id:user.id,reason:reason.trim()});alert(error?'申请失败：'+error.message:'删除申请已提交，等待管理员审核。');if(!error)await loadMine()};card.append(req);
  }
  root.append(card)}
+}
+async function loadPublicationReviews(){
+ if(!(admin||contentModerator))return;
+ $('publication-review').hidden=false;
+ const queues=[
+   {revision:false,table:'member_articles',root:'submission-list',empty:'暂无待审核文章'},
+   {revision:true,table:'member_article_revisions',root:'revision-list',empty:'暂无待审核修改'}
+ ];
+ await Promise.all(queues.map(async queue=>{
+   const root=$(queue.root);
+   const query=await db.from(queue.table).select('id,author_id,title,body').eq('status','pending').neq('author_id',user.id).limit(100);
+   root.replaceChildren();
+   if(query.error){root.textContent='操作失败，请稍后重试。';return;}
+   if(!query.data.length){root.textContent=queue.empty;return;}
+   for(const item of query.data){
+     const card=safeText('article','');card.className='card';
+     const note=document.createElement('textarea');
+     note.maxLength=1000;
+     const label=safeText('label','审核意见（拒绝时建议填写原因）');
+     label.append(note);
+     const feedback=safeText('p','');feedback.setAttribute('role','status');
+     const approve=safeText('button',queue.revision?'批准修改':'通过审核');
+     const reject=safeText('button',queue.revision?'拒绝修改':'拒绝投稿');
+     const review=async decision=>{
+       approve.disabled=reject.disabled=true;
+       try{
+         const args=queue.revision?{p_revision_id:item.id}:{p_article_id:item.id};
+         const {error}=await db.rpc(queue.revision?'member_article_review_revision':'member_article_review_submission',{
+           ...args,p_approve:decision,p_note:note.value.trim()
+         });
+         if(error){feedback.textContent='操作失败，请稍后重试。';return;}
+         await Promise.all([loadPublicationReviews(),loadPublic()]);
+       }finally{approve.disabled=reject.disabled=false;}
+     };
+     approve.onclick=()=>review(true);reject.onclick=()=>review(false);
+     card.append(safeText('h3',item.title,true),safeText('p',item.body,true),label,approve,reject,feedback);
+     root.append(card);
+   }
+ }));
 }
 async function loadDeleteRequests(){
  if(!admin)return;$('delete-review').hidden=false;const root=$('delete-request-list');root.replaceChildren();
@@ -52,25 +106,43 @@ async function loadDeleteRequests(){
 function collapseExpandedArticle(){const opened=$('list').querySelector('details[open]');if(!opened)return false;opened.open=false;return true}
 let swipeStart=null;
 $('list').addEventListener('touchstart',event=>{if(event.touches.length!==1){swipeStart=null;return}const t=event.touches[0];swipeStart={x:t.clientX,y:t.clientY}},{passive:true});
-$('list').addEventListener('touchend',event=>{if(!swipeStart||!event.changedTouches.length)return;const t=event.changedTouches[0],dx=t.clientX-swipeStart.x,dy=t.clientY-swipeStart.y;swipeStart=null;if(dx>85&&Math.abs(dy)<Math.abs(dx)*0.65)collapseExpandedArticle()},{passive:true});
+$('list').addEventListener('touchend',event=>{if(!swipeStart||!event.changedTouches.length)return;const t=event.changedTouches[0],dx=t.clientX-swipeStart.x,dy=t.clientY-swipeStart.y;swipeStart=null;if(dx>85&&Math.abs(dy)<Math.abs(dx)*0.65&&!readingArticleId)collapseExpandedArticle()},{passive:true});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&collapseExpandedArticle())event.preventDefault()});
-window.addEventListener('popstate',()=>{collapseExpandedArticle()});
+window.addEventListener('popstate',()=>{if(!readingArticleId)collapseExpandedArticle()});
+window.addEventListener('hashchange',()=>{if(location.hash.startsWith('#article='))location.reload()});
 async function loadPublic(){
- const root=$('list');root.replaceChildren();const {data,error}=await db.from('member_articles').select('id,title,body,created_at').eq('status','published').order('created_at',{ascending:false}).limit(100);
+ const root=$('list');root.replaceChildren();const query=db.from('member_articles').select('id,title,body,created_at').eq('status','published');
+ const {data,error}=await (readingArticleId?query.eq('id',readingArticleId):query.order('created_at',{ascending:false}).limit(100));
  if(error){root.textContent='文章读取失败，请稍后再试。';return}
  if(!data?.length){root.textContent='暂无已发表的网友文章。';return}if(readingArticleId&&!data.some(item=>String(item.id)===readingArticleId)){root.textContent='文章不存在或尚未公开。';return}
- const readingIndex=data.findIndex(item=>String(item.id)===readingArticleId);if(readingArticleId){const nav=document.createElement('nav');nav.style.cssText='display:flex;gap:18px;flex-wrap:wrap;margin:16px 0';for(const [label,item] of [['← 上一篇',data[readingIndex-1]],['下一篇 →',data[readingIndex+1]]]){if(item){const link=document.createElement('a');link.href='/member-articles.html#article='+encodeURIComponent(item.id);link.textContent=label;nav.append(link)}}root.before(nav)}const manageable=new Set(contentModerator?(await db.rpc('moderation_member_article_ids')).data||[]:[]);
- for(const item of data){if(readingArticleId&&String(item.id)!==readingArticleId)continue;const card=document.createElement('article');card.className='card';const details=document.createElement('details');details.id='article-'+item.id;const target=location.hash.startsWith('#article=')?decodeURIComponent(location.hash.slice(9)):null;if(target===String(item.id)){details.open=true;requestAnimationFrame(()=>card.scrollIntoView({block:'start',behavior:'instant'}));}const summary=document.createElement('summary');summary.append(safeText('span',item.title,true));summary.style.cssText='cursor:pointer;font-weight:700;color:#f5c84b;overflow-wrap:anywhere';if(!readingArticleId){const link=document.createElement('a');link.href='/member-articles.html#article='+encodeURIComponent(item.id);link.textContent=item.title;link.setAttribute('data-user-content','');summary.replaceChildren(link);summary.addEventListener('click',e=>{if(e.target===summary){e.preventDefault();link.click()}})}details.append(summary);details.addEventListener('toggle',()=>{if(details.open){for(const other of $('list').querySelectorAll('details[open]'))if(other!==details)other.open=false}});const body=safeText('p',item.body,true);body.style.marginTop='12px';details.append(safeText('small',new Date(item.created_at).toLocaleDateString(document.documentElement.lang)),body);card.append(details);if(admin||manageable.has(item.id)){const del=document.createElement('button');del.textContent='管理员删除';del.onclick=async()=>{const reason=prompt('请输入管理员删除原因：');if(reason===null)return;if(!confirm('确认删除此公开文章？'))return;const {error}=await db.rpc('member_article_admin_remove',{p_article_id:item.id,p_reason:reason});if(error)alert('删除失败：'+error.message);else{await loadPublic();await loadMine();await loadDeleteRequests()}};card.append(del)}root.append(card)}
+ if(readingArticleId){
+   $('article-neighbors')?.remove();
+   const current=data[0];
+   const neighbors=()=>db.from('member_articles').select('id').eq('status','published');
+   const [previous,next]=await Promise.all([
+     neighbors().gt('created_at',current.created_at).order('created_at').limit(1),
+     neighbors().lt('created_at',current.created_at).order('created_at',{ascending:false}).limit(1)
+   ]);
+   const nav=document.createElement('nav');nav.id='article-neighbors';
+   for(const [label,item] of [['← 上一篇',previous.data?.[0]],['下一篇 →',next.data?.[0]]]){
+     if(!item)continue;
+     const link=safeText('a',label);
+     link.href='/member-articles.html#article='+encodeURIComponent(item.id);
+     nav.append(link);
+   }
+   if(nav.childElementCount)root.before(nav);
+ }
+ const manageable=new Set(contentModerator?(await db.rpc('moderation_member_article_ids')).data||[]:[]);
+ for(const item of data){if(readingArticleId&&String(item.id)!==readingArticleId)continue;const card=document.createElement('article');card.className='card';const details=document.createElement('details');details.id='article-'+item.id;const target=location.hash.startsWith('#article=')?decodeURIComponent(location.hash.slice(9)):null;if(target===String(item.id))details.open=true;const summary=document.createElement('summary');summary.append(safeText('span',item.title,true));summary.style.cssText='cursor:pointer;font-weight:700;color:#f5c84b;overflow-wrap:anywhere';if(!readingArticleId){const link=document.createElement('a');link.href='/member-articles.html#article='+encodeURIComponent(item.id);link.textContent=item.title;link.setAttribute('data-user-content','');summary.replaceChildren(link);summary.addEventListener('click',e=>{if(e.target===summary){e.preventDefault();link.click()}})}details.append(summary);details.addEventListener('toggle',()=>{if(details.open){for(const other of $('list').querySelectorAll('details[open]'))if(other!==details)other.open=false}});const body=safeText('p',item.body,true);body.style.marginTop='12px';details.append(safeText('small',new Date(item.created_at).toLocaleDateString(document.documentElement.lang)),body);card.append(details);if(admin||manageable.has(item.id)){const del=document.createElement('button');del.textContent='管理员删除';del.onclick=async()=>{const reason=prompt('请输入管理员删除原因：');if(reason===null)return;if(!confirm('确认删除此公开文章？'))return;const {error}=await db.rpc('member_article_admin_remove',{p_article_id:item.id,p_reason:reason});if(error)alert('删除失败：'+error.message);else{await loadPublic();await loadMine();await loadDeleteRequests()}};card.append(del)}root.append(card)}
 }
 if(readingArticleId){$('editor').hidden=true;}if(!user){$('eligibility').textContent='请先登录，才能写作或保存私人草稿。'}
-else if(!user.email_confirmed_at){$('eligibility').textContent='请先完成邮箱验证。'}
 else{
- const [ownerRole,moderatorRole]=await Promise.all([db.rpc('is_site_admin'),db.rpc('is_content_moderator')]);
+ const [ownerRole,moderatorRole,active]=await Promise.all([db.rpc('is_site_admin'),db.rpc('is_content_moderator'),db.rpc('forum_is_active_member',{p_uid:user.id})]);
  admin=ownerRole.data===true;contentModerator=moderatorRole.data===true;
- $('eligibility').textContent='您可以保存私人草稿，或直接发布公开文章。';
- if(writingMode&&!readingArticleId){$('editor').hidden=false;$('mine').hidden=false;await loadMine();if(admin)await loadDeleteRequests();}
+ $('eligibility').textContent=active.data===true?'您可以保存私人草稿，或直接提交文章进入审核队列。审核通过前文章不会对外展示。':'您的账号目前无法发布文章。如对限制有异议，可以提交账号申诉。';
+ if(writingMode&&!readingArticleId){$('editor').hidden=active.data!==true;await loadMine();await loadPublicationReviews();if(admin)await loadDeleteRequests();}
 }
 await loadPublic();if(writingMode&&!readingArticleId){document.querySelector('main>section:last-of-type').hidden=true;document.querySelector('main>p').hidden=true;}if(readingArticleId){$('editor').hidden=true;$('mine').hidden=true;$('delete-review').hidden=true;}
 })();
-</script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261121-magazine-qa" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/notification-bell.js?v=5" defer></script><script defer src="/swipe-navigation.js?v=1"></script>
+</script><script src="/section-tabs.js?v=2" defer></script><script src="/site-i18n.js?v=20261121-magazine-qa" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/notification-bell.js?v=5" defer></script><script defer src="/swipe-navigation.js?v=2"></script>
 </body></html>

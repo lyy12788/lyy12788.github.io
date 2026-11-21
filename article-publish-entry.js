@@ -4,8 +4,8 @@
   if (!button) return;
 
   const messages = {
-    guest: '发布文章前，请先登录并验证邮箱。邮箱已验证且账号正常的会员可保存私人草稿或直接发布。',
-    allowed: '您可以保存私人草稿，或直接发布公开文章。',
+    guest: '请先登录，才能写作或保存私人草稿。',
+    allowed: '您可以保存私人草稿，或直接提交文章进入审核队列。审核通过前文章不会对外展示。',
     restricted: '您的账号目前无法发布文章。如对限制有异议，可以提交账号申诉。',
     unavailable: '暂时无法确认发布权限，请稍后再试。'
   };
@@ -44,7 +44,7 @@
     } else if (state === 'allowed' || state === 'restricted') {
       const link = document.createElement('a');
       link.textContent = state === 'allowed' ? '前往发布' : '账号申诉';
-      link.href = state === 'allowed' ? '/member-articles.html#submit' : '/forum.html#appeal';
+      link.href = state === 'allowed' ? '/member-articles.html?write=1' : '/forum.html#appeal';
       link.style.cssText = 'display:inline-block;background:#e5b832;color:#101b2a;border-radius:8px;padding:10px 14px;font-weight:bold';
       actions.append(link);
     }
@@ -66,7 +66,7 @@
       const { data, error } = await client.auth.getUser();
       if (error && error.name !== 'AuthSessionMissingError') { showMessage('unavailable'); return; }
       const user = data?.user;
-      if (!user?.email_confirmed_at) { showMessage('guest'); return; }
+      if (!user) { showMessage('guest'); return; }
       const eligibility = await client.rpc('forum_is_active_member', { p_uid: user.id });
       showMessage(eligibility.error ? 'unavailable' : eligibility.data === true ? 'allowed' : 'restricted');
     } catch {
