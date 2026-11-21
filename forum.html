@@ -71,7 +71,7 @@
 <section id="member-public" class="card hide"><button type="button" id="member-public-back" class="secondary">返回</button><div id="member-public-header"></div><div id="member-public-stats" class="muted"></div><div class="tools" id="member-public-actions"><button type="button" id="member-follow">关注</button><button type="button" id="member-like">♡ 点赞</button><button type="button" id="member-message-toggle">私信</button></div><div id="member-message-panel" hidden><h3>发送私信</h3><textarea id="member-message-body" maxlength="1500" placeholder="输入私信，最多1500字"></textarea><button type="button" id="member-message-send">发送私信</button><p id="member-message-status" class="status" role="status"></p><h3>与该会员的私信记录</h3><div id="member-message-history"></div></div><h3>该会员公开发表的帖子</h3><div id="member-public-posts"></div><p id="member-public-status" class="status"></p></section>
 <section id="mine" class="card hide"><h2><a href="#mine" class="forum-heading-link">我的文章</a></h2><div id="my-posts"></div></section>
 <section id="appeal" class="card hide"><h2>账号申诉</h2><p class="muted">如果账号被误禁言或限制，可以在这里提交申诉。申诉内容仅本人和站长可查看。</p><div id="account-status" class="status"></div><label>申诉理由<textarea id="appeal-reason" maxlength="2000" placeholder="请说明账号受到的限制、相关事实和申诉理由（10—2000字）"></textarea></label><button id="appeal-submit">提交申诉</button><p id="appeal-feedback" class="status" role="status"></p><h3>我的申诉记录</h3><div id="my-appeals"></div></section><section id="moderation" class="card hide"><h2 id="moderation-title">举报与账号管理</h2><h3>待处理举报</h3><div id="mod-reports"></div><div id="owner-moderation" hidden><p class="muted">仅站长可管理账号限制、申诉和数据备份。</p><div class="card"><h3>数据备份</h3><p class="muted">管理员手动导出公开讨论及管理数据为 JSON 文件。下载后请保存在加密的私人存储中，不要上传到公开 GitHub 仓库。此备份不包含账号密码、Supabase Auth 用户、图片文件或完整数据库结构。</p><button type="button" id="export-forum-data">导出论坛数据</button><p id="export-feedback" class="status" role="status"></p></div><h3>待处理图片审核</h3><p class="muted">仅管理员可查看私有审核图片；图片不会自动公开。审核通过仅更新审核状态，发布仍需独立安全流程。</p><div id="mod-images"></div><button type="button" id="refresh-image-reviews">刷新图片审核</button><h3>账号限制</h3><label>搜索昵称或邮箱<input id="mod-account-search" type="search"></label><button type="button" id="mod-account-find">搜索</button><div id="mod-members"></div><h3>待处理申诉</h3><div id="mod-appeals"></div></div></section>
-</main>
+<dialog id="forum-report-dialog" aria-labelledby="forum-report-title" style="width:min(480px,calc(100% - 32px));box-sizing:border-box"><form id="forum-report-form"><h2 id="forum-report-title">举报文章</h2><label for="forum-report-reason">请说明举报原因（10—1000字）：如刷屏、骚扰、威胁、泄露隐私或侵犯版权。</label><textarea id="forum-report-reason" rows="5" minlength="10" maxlength="1000" required style="width:100%;box-sizing:border-box"></textarea><p id="forum-report-status" role="status"></p><div class="tools"><button type="button" id="forum-report-cancel" class="secondary">取消</button><button type="submit" id="forum-report-send">提交举报</button></div></form></dialog></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script><script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 <script>
 'use strict';
@@ -328,7 +328,39 @@ async function listComments(id){
 }
 async function mine(){if(!user){show('auth');return}const {data,error}=await db.rpc('forum_my_posts');const root=$('my-posts');root.replaceChildren();if(error)root.textContent=error.message;else if(!data?.length)root.textContent='尚未投稿';else data.forEach(p=>root.append(link(p)));show('mine')}
 function renderReportPost(p){const root=$('report-post-actions');root.replaceChildren();if(!user?.email_confirmed_at)return;const b=el('button','举报文章');b.className='secondary';b.onclick=()=>submitReport({post_id:p.id});root.append(b)}
-async function submitReport(target){if(!user?.email_confirmed_at)return say('请先登录并验证邮箱');const reason=prompt('请说明举报原因（10—1000字）：如刷屏、骚扰、威胁、泄露隐私或侵犯版权。');if(reason===null)return;if(reason.trim().length<10||reason.trim().length>1000)return alert('请填写10—1000字的具体原因');const {error}=await db.from('forum_reports').insert({...target,reporter_id:user.id,reason:reason.trim()});alert(error?'举报失败：'+error.message:'举报已提交，由管理员人工处理。')}
+let pendingReportTarget = null;
+function submitReport(target) {
+  if (!user?.email_confirmed_at) return say('请先登录并验证邮箱');
+  pendingReportTarget = target;
+  $('forum-report-form').reset();
+  $('forum-report-status').textContent = '';
+  $('forum-report-dialog').showModal();
+  $('forum-report-reason').focus();
+}
+$('forum-report-cancel').onclick = () => $('forum-report-dialog').close();
+$('forum-report-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const reason = $('forum-report-reason').value.trim();
+  const status = $('forum-report-status');
+  const send = $('forum-report-send');
+  const target = pendingReportTarget;
+  if (!user?.email_confirmed_at || !target || send.disabled) return;
+  if (reason.length < 10 || reason.length > 1000) {
+    status.textContent = '请填写10—1000字的具体原因';
+    return;
+  }
+  send.disabled = true;
+  try {
+    const {error} = await db.from('forum_reports').insert({...target, reporter_id:user.id, reason});
+    if (error) throw error;
+    $('forum-report-dialog').close();
+    say('举报已提交，由管理员人工处理。');
+  } catch (error) {
+    status.textContent = '举报失败：' + error.message;
+  } finally {
+    send.disabled = false;
+  }
+});
 async function appeals(){if(!user){show('auth');say('请登录后提交账号申诉');return}show('appeal');const {data:p}=await db.from('forum_profiles').select('suspended,suspended_until,suspension_reason').eq('user_id',user.id).maybeSingle();$('account-status').textContent=p?.suspended?'账号已暂停发言。'+(p.suspension_reason||''):p?.suspended_until&&new Date(p.suspended_until)>new Date()?'账号禁言至 '+date(p.suspended_until)+'。'+(p.suspension_reason||''):'当前没有生效的账号禁言';const {data,error}=await db.from('forum_appeals').select('reason,status,admin_note,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(10);const root=$('my-appeals');root.replaceChildren();if(error)root.textContent=error.message;else if(!data?.length)root.textContent='暂无申诉';else for(const a of data){const d=el('div',date(a.created_at)+' · '+a.status+'\n'+a.reason+(a.admin_note?'\n管理员回复：'+a.admin_note:''));d.className='comment';root.append(d)}}
 $('appeal-submit').onclick=async()=>{if(!user)return;const reason=$('appeal-reason').value.trim(),msg=$('appeal-feedback');if(reason.length<10||reason.length>2000){msg.textContent='请输入10—2000字';return}const btn=$('appeal-submit');btn.disabled=true;const {error}=await db.from('forum_appeals').insert({user_id:user.id,reason});btn.disabled=false;msg.textContent=error?'提交失败：'+error.message:'申诉已提交';if(!error){$('appeal-reason').value='';appeals()}};
 async function exportForumData(){if(!admin||!user)return;const btn=$('export-forum-data'),status=$('export-feedback');btn.disabled=true;status.textContent='正在整理数据……';try{const tables=['forum_posts','forum_comments','comments'];const payload={format:'real-voice-forum-json-v1',exported_at:new Date().toISOString(),tables:{},limitations:'仅导出帖子和评论，不包含会员资料、举报、申诉、意见反馈、点赞、Supabase Auth、Storage 文件和数据库结构。此文件仍可能含作者编号及发帖内容，必须妥善保管。'};for(const table of tables){let rows=[],offset=0;while(true){const {data,error}=table==='forum_posts'
