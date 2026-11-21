@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>我的第一篇文章</title>
 <style>
 body{
   font-family:-apple-system,Arial;
   background:#0b0f1a;
   color:#eee;
-  padding:40px;
+  padding:clamp(18px,5vw,40px);
   max-width:800px;
   margin:auto;
 }
@@ -18,13 +19,15 @@ h1{color:#facc15}
 
 <body>
 
-<h1>我的第一篇文章</h1>
+<nav><a href="/#home" style="color:#facc15">← 返回主页</a></nav>
+<h1 data-user-content>我的第一篇文章</h1>
 <p>2026-05-17</p>
 
-<p>
+<p data-user-content>
 这里是正文内容。你可以写你的经历、观点、文章。
 </p>
 
 <script src="/persistent-player-entry.js" defer></script><script defer src="/swipe-navigation.js?v=1"></script>
+<script src="/site-i18n.js?v=20261121-regression" defer></script>
 </body>
 </html>
