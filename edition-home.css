@@ -253,3 +253,14 @@ html[data-lyy-mode="dark"] .edition .edition-shortcut-grid>*,html[data-lyy-mode=
   #home-view.edition :is(.edition-slide h1,.edition-slide h2,.edition-values h2) {font-weight:600!important}
   #home-view.edition :is(.edition-panel p,.edition-article-list .meta,.edition-article-list .article-stats,.edition-slide p) {font-weight:400!important}
 }
+
+
+/* Mobile: member center belongs to the second navigation row, not the top-right corner. */
+.edition-nav .edition-phone-member{display:none}
+@media (max-width:760px), (orientation:landscape) and (max-height:500px) and (max-width:1000px){
+ #home-view.edition .edition-top>.edition-account{display:none!important}
+ #home-view.edition .edition-nav{gap:0!important;justify-content:space-between!important}
+ #home-view.edition .edition-nav .edition-phone-member{display:flex;align-items:center;justify-content:center;gap:3px;flex:0 1 auto;min-width:0;min-height:36px;padding:0 2px;border:0;border-bottom:3px solid transparent;background:transparent;color:#fff;font:inherit;font-size:clamp(9px,2.6vw,13px);font-weight:650;white-space:nowrap;cursor:pointer}
+ #home-view.edition .edition-nav .edition-phone-member [data-edition-icon]{font-size:1.18em}
+ #home-view.edition .edition-nav a{font-size:clamp(9px,2.65vw,14px);gap:3px}
+}
