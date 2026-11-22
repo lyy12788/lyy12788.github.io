@@ -43,7 +43,7 @@
       type.textContent = a.source === 'member' ? '会员文章' : '站长文章';
       meta.append(type, ' · ', (a.date || '').slice(0, 10));
       const flag=curation.get(key(a));if(flag?.is_pinned||flag?.is_featured){const badge=document.createElement('strong');badge.textContent=[flag.is_pinned?'置顶':'',flag.is_featured?'精选':''].filter(Boolean).join(' · ');badge.style.cssText='color:#d6ad4a;margin-right:8px';row.prepend(badge)}
-      if(owner){for(const [field,on,off] of [['is_pinned','置顶','取消置顶'],['is_featured','设为精选','取消精选']]){const btn=document.createElement('button');btn.type='button';btn.textContent=flag?.[field]?off:on;btn.style.cssText='margin-left:8px;font-size:12px';btn.onclick=async()=>{btn.disabled=true;const [kind,id]=key(a).split(':');const next={source:kind,content_id:id,is_pinned:!!flag?.is_pinned,is_featured:!!flag?.is_featured};next[field]=!next[field];const {data:{user}}=await db.auth.getUser();const {error}=await db.from('content_curation').upsert({...next,updated_by:user.id},{onConflict:'source,content_id'});if(error){alert('操作失败：'+error.message);btn.disabled=false;return}curation.set(key(a),next);render()};row.append(btn)}}
+      if(owner){for(const [field,on,off] of [['is_pinned','置顶','取消置顶'],['is_featured','设为精选','取消精选']]){const btn=document.createElement('button');btn.type='button';btn.textContent=flag?.[field]?off:on;btn.style.cssText='margin-left:8px;font-size:12px';btn.onclick=async()=>{const action=flag?.[field]?off:on;const confirmation=window.lyyLanguage?.format?.('请再次确认：确定要对《{title}》执行“{action}”操作吗？',{title:a.title,action:window.lyyLanguage.translate(action)})||('请再次确认：确定要对《'+a.title+'》执行“'+action+'”操作吗？');if(!confirm(confirmation))return;btn.disabled=true;const [kind,id]=key(a).split(':');const next={source:kind,content_id:id,is_pinned:!!flag?.is_pinned,is_featured:!!flag?.is_featured};next[field]=!next[field];const {data:{user}}=await db.auth.getUser();const {error}=await db.from('content_curation').upsert({...next,updated_by:user.id},{onConflict:'source,content_id'});if(error){alert('操作失败：'+error.message);btn.disabled=false;return}curation.set(key(a),next);render()};row.append(btn)}}
       row.append(link, meta);
       directory.append(row);
     }
@@ -79,7 +79,41 @@
       error.textContent = '部分文章暂时无法加载，请稍后再试。';
       error.hidden = false;
     }
-    if(db){const [{data:flags},{data:{user}}]=await Promise.all([db.from('content_curation').select('source,content_id,is_pinned,is_featured'),db.auth.getUser()]);for(const flag of flags||[])curation.set(flag.source+':'+flag.content_id,flag);if(user){const role=await db.rpc('is_site_admin');owner=role.data===true}}
+    if (db) {
+      const {data: flags, error: flagsError} = await db.from('content_curation').select('source,content_id,is_pinned,is_featured');
+      for (const flag of flags || []) curation.set(flag.source + ':' + flag.content_id, flag);
+      if (flagsError) console.warn('Article curation could not be loaded:', flagsError.message);
+    }
     render();
   });
+  // Auth state can finish restoring after the article list has rendered.
+  // Re-check the server-side role when a session is restored or changed.
+  let roleCheckVersion = 0;
+  async function refreshOwnerControls() {
+    const version = ++roleCheckVersion;
+    if (!db) return;
+    try {
+      const {data: {user}, error: authError} = await db.auth.getUser();
+      if (authError) throw authError;
+      let allowed = false;
+      if (user) {
+        const {data, error: roleError} = await db.rpc('is_site_admin');
+        if (roleError) throw roleError;
+        allowed = data === true;
+      }
+      if (version !== roleCheckVersion) return;
+      if (owner !== allowed) { owner = allowed; render(); }
+    } catch (e) {
+      if (version !== roleCheckVersion) return;
+      owner = false;
+      render();
+      console.warn('Article management permission check failed:', e.message);
+      error.textContent = '文章管理权限检查失败，请刷新页面或重新登录。';
+      error.hidden = false;
+    }
+  }
+  if (db) {
+    db.auth.onAuthStateChange(() => { setTimeout(refreshOwnerControls, 0); });
+    refreshOwnerControls();
+  }
 })();</script></body></html>
