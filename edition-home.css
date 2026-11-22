@@ -237,3 +237,19 @@ html[data-lyy-mode="dark"] .edition .edition-shortcut-grid>*,html[data-lyy-mode=
  #home-view.edition #latest #article-list .article-stats {grid-column:2!important;grid-row:2!important}
 }
 .edition-discussion-count {display:inline-flex;align-items:center;gap:3px}
+
+
+/* Desktop-only typography refinement, 2026-11-22.
+   Preserve the approved mobile layout and weights. */
+@media (min-width:1001px) and (min-height:501px) {
+  #home-view.edition .edition-brand {font-weight:700!important;letter-spacing:-.025em}
+  #home-view.edition .edition-motto {font-weight:400!important}
+  #home-view.edition .edition-nav a {font-weight:500!important}
+  #home-view.edition .edition-account,
+  #home-view.edition .edition-language select,
+  #home-view.edition .edition-icon {font-weight:500!important}
+  #home-view.edition :is(.edition-panel-heading h2,.edition-panel h2,.edition-topics h2,.edition-shortcuts h2,.edition-library h2,.edition-announcements h2) {font-weight:600!important}
+  #home-view.edition :is(.edition-article-list h3,.edition-discussion-list a,.edition-topics a,.edition-shortcut-grid a,.edition-shortcut-grid button,.edition-interactions button) {font-weight:500!important}
+  #home-view.edition :is(.edition-slide h1,.edition-slide h2,.edition-values h2) {font-weight:600!important}
+  #home-view.edition :is(.edition-panel p,.edition-article-list .meta,.edition-article-list .article-stats,.edition-slide p) {font-weight:400!important}
+}
