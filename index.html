@@ -627,7 +627,7 @@ const authStorage={
 const db=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storageKey:AUTH_STORAGE_KEY,storage:authStorage,persistSession:true,autoRefreshToken:true}})||null;
 function clearRememberSession(){try{localStorage.removeItem(REMEMBER_KEY);sessionStorage.removeItem(REMEMBER_KEY);sessionStorage.removeItem(MODE_KEY)}catch(e){}}
 function rememberLogin(email){try{localStorage.setItem(ACCOUNT_KEY,email);const persistent=$('remember-login').checked;const until=String(Date.now()+30*86400000);sessionStorage.setItem(MODE_KEY,persistent?'persistent':'session');if(persistent){localStorage.setItem(REMEMBER_KEY,until);sessionStorage.removeItem(REMEMBER_KEY)}else{sessionStorage.setItem(REMEMBER_KEY,until);localStorage.removeItem(REMEMBER_KEY)}const key=AUTH_STORAGE_KEY;const value=authStorage.getItem(key);if(value)authStorage.setItem(key,value);}catch(e){console.warn('登录偏好未保存',e)}}
-async function enforceRememberExpiry(){try{const raw=localStorage.getItem(REMEMBER_KEY)??sessionStorage.getItem(REMEMBER_KEY);if(raw!==null&&Date.now()>=Number(raw)){clearRememberSession();await db.auth.signOut({scope:'local'});return;}if(raw===null){/* Existing sessions are retained during migration; do not unexpectedly sign members out. */}}catch(e){console.warn('登录期限检查失败',e)}}
+async function enforceRememberExpiry(){try{const raw=localStorage.getItem(REMEMBER_KEY)??sessionStorage.getItem(REMEMBER_KEY);if(raw!==null&&(!Number.isFinite(Number(raw))||Number(raw)<=0||Date.now()>=Number(raw))){clearRememberSession();await db.auth.signOut({scope:'local'});return;}if(raw===null){/* Existing sessions are retained during migration; do not unexpectedly sign members out. */}}catch(e){console.warn('登录期限检查失败',e)}}
 
 const $=id=>document.getElementById(id);
 async function loadCommunityFeed(){
@@ -950,7 +950,7 @@ $('article-search').addEventListener('input',()=>{articleLimit=12;renderArticles
  }
 })();
 </script>
-<script src="/article-publish-entry.js?v=6" defer></script><script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/edition-i18n.js?v=1" defer></script><script src="/site-i18n.js?v=20261122-edition" defer></script><script src="/edition-home.js?v=1" defer></script><script src="/notification-bell.js?v=3" defer></script><script src="/turnstile-auth.js?v=4" defer></script>
+<script src="/article-publish-entry.js?v=6" defer></script><script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/edition-i18n.js?v=1" defer></script><script src="/site-i18n.js?v=20261122-remember-login" defer></script><script src="/edition-home.js?v=1" defer></script><script src="/notification-bell.js?v=3" defer></script><script src="/turnstile-auth.js?v=4" defer></script>
 <script defer src="/swipe-navigation.js?v=2"></script>
 <style>
 /* Accessible password visibility controls */
