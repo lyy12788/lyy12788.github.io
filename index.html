@@ -618,11 +618,16 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 'use strict';
 const SUPABASE_URL='https://mkchupvmervxkskvjyhz.supabase.co';
 const SUPABASE_KEY='sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z';
-const db=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY)||null;
-const REMEMBER_KEY='lyy-remember-login-until',ACCOUNT_KEY='lyy-remembered-email';
-function clearRememberSession(){localStorage.removeItem(REMEMBER_KEY);sessionStorage.removeItem(REMEMBER_KEY);}
-function rememberLogin(email){try{localStorage.setItem(ACCOUNT_KEY,email);clearRememberSession();const persistent=$('remember-login').checked;const until=String(Date.now()+(persistent?30*86400000:12*3600000));(persistent?localStorage:sessionStorage).setItem(REMEMBER_KEY,until);}catch(e){console.warn('登录偏好未保存',e);}}
-async function enforceRememberExpiry(){try{const expiry=Number(localStorage.getItem(REMEMBER_KEY)||sessionStorage.getItem(REMEMBER_KEY));const {data}=await db.auth.getSession();if(data?.session&&(!expiry||Date.now()>=expiry)){clearRememberSession();await db.auth.signOut({scope:'local'});}}catch(e){console.warn('登录期限检查失败',e);}}
+const AUTH_STORAGE_KEY='lyy-auth-session-v2', REMEMBER_KEY='lyy-remember-login-until', ACCOUNT_KEY='lyy-remembered-email', MODE_KEY='lyy-login-persistence';
+const authStorage={
+ getItem(key){try{return sessionStorage.getItem(key)??localStorage.getItem(key)}catch(e){return null}},
+ setItem(key,value){try{if(sessionStorage.getItem(MODE_KEY)==='session'){sessionStorage.setItem(key,value);localStorage.removeItem(key)}else{localStorage.setItem(key,value);sessionStorage.removeItem(key)}}catch(e){console.warn('会话存储失败',e)}},
+ removeItem(key){try{localStorage.removeItem(key);sessionStorage.removeItem(key)}catch(e){}}
+};
+const db=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storageKey:AUTH_STORAGE_KEY,storage:authStorage,persistSession:true,autoRefreshToken:true}})||null;
+function clearRememberSession(){try{localStorage.removeItem(REMEMBER_KEY);sessionStorage.removeItem(REMEMBER_KEY);sessionStorage.removeItem(MODE_KEY)}catch(e){}}
+function rememberLogin(email){try{localStorage.setItem(ACCOUNT_KEY,email);const persistent=$('remember-login').checked;const until=String(Date.now()+30*86400000);sessionStorage.setItem(MODE_KEY,persistent?'persistent':'session');if(persistent){localStorage.setItem(REMEMBER_KEY,until);sessionStorage.removeItem(REMEMBER_KEY)}else{sessionStorage.setItem(REMEMBER_KEY,until);localStorage.removeItem(REMEMBER_KEY)}const key=AUTH_STORAGE_KEY;const value=authStorage.getItem(key);if(value)authStorage.setItem(key,value);}catch(e){console.warn('登录偏好未保存',e)}}
+async function enforceRememberExpiry(){try{const raw=localStorage.getItem(REMEMBER_KEY)??sessionStorage.getItem(REMEMBER_KEY);if(raw!==null&&Date.now()>=Number(raw)){clearRememberSession();await db.auth.signOut({scope:'local'});return;}if(raw===null){/* Existing sessions are retained during migration; do not unexpectedly sign members out. */}}catch(e){console.warn('登录期限检查失败',e)}}
 
 const $=id=>document.getElementById(id);
 async function loadCommunityFeed(){
