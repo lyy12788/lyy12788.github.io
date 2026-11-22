@@ -21,11 +21,14 @@
   let source = 'all';
   let limit = pageSize;
   let entries = [];
+  let owner = false;
+  const curation = new Map();
+  const key = a => (a.source === 'member' ? 'member:' + a.id : 'site:' + a.slug);
   function render() {
     const term = query.value.trim().toLocaleLowerCase();
     const results = entries.filter(a => (source === 'all' || a.source === source) &&
       (!category || (a.category || '其他') === category) &&
-      (!term || [a.title, a.body].some(value => String(value || '').toLocaleLowerCase().includes(term))));
+      (!term || [a.title, a.body].some(value => String(value || '').toLocaleLowerCase().includes(term)))).sort((a,b)=>Number(!!curation.get(key(b))?.is_pinned)-Number(!!curation.get(key(a))?.is_pinned));
     directory.replaceChildren();
     status.textContent = results.length ? '' : '没有符合条件的文章。';
     more.hidden = results.length <= limit;
@@ -39,6 +42,8 @@
       link.setAttribute('data-user-content', '');
       type.textContent = a.source === 'member' ? '会员文章' : '站长文章';
       meta.append(type, ' · ', (a.date || '').slice(0, 10));
+      const flag=curation.get(key(a));if(flag?.is_pinned||flag?.is_featured){const badge=document.createElement('strong');badge.textContent=[flag.is_pinned?'置顶':'',flag.is_featured?'精选':''].filter(Boolean).join(' · ');badge.style.cssText='color:#d6ad4a;margin-right:8px';row.prepend(badge)}
+      if(owner){for(const [field,on,off] of [['is_pinned','置顶','取消置顶'],['is_featured','设为精选','取消精选']]){const btn=document.createElement('button');btn.type='button';btn.textContent=flag?.[field]?off:on;btn.style.cssText='margin-left:8px;font-size:12px';btn.onclick=async()=>{btn.disabled=true;const [kind,id]=key(a).split(':');const next={source:kind,content_id:id,is_pinned:!!flag?.is_pinned,is_featured:!!flag?.is_featured};next[field]=!next[field];const {data:{user}}=await db.auth.getUser();const {error}=await db.from('content_curation').upsert({...next,updated_by:user.id},{onConflict:'source,content_id'});if(error){alert('操作失败：'+error.message);btn.disabled=false;return}curation.set(key(a),next);render()};row.append(btn)}}
       row.append(link, meta);
       directory.append(row);
     }
@@ -67,13 +72,14 @@
       render();
     });
   }
-  Promise.allSettled(category ? [siteArticles()] : [siteArticles(), memberArticles()]).then(results => {
+  Promise.allSettled(category ? [siteArticles()] : [siteArticles(), memberArticles()]).then(async results => {
     entries = results.flatMap(result => result.status === 'fulfilled' ? result.value : [])
       .sort((a,b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0));
     if (results.some(result => result.status === 'rejected')) {
       error.textContent = '部分文章暂时无法加载，请稍后再试。';
       error.hidden = false;
     }
+    if(db){const [{data:flags},{data:{user}}]=await Promise.all([db.from('content_curation').select('source,content_id,is_pinned,is_featured'),db.auth.getUser()]);for(const flag of flags||[])curation.set(flag.source+':'+flag.content_id,flag);if(user){const role=await db.rpc('is_site_admin');owner=role.data===true}}
     render();
   });
 })();</script></body></html>
