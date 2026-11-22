@@ -121,6 +121,19 @@
       window.location.reload();
     });
 
+    if (client.auth.signUp) {
+      const originalSignUp = client.auth.signUp.bind(client.auth);
+      client.auth.signUp = async (credentials) => {
+        // Registration immediately signs out any returned session.
+        pendingMode = false;
+        try {
+          return await originalSignUp(credentials);
+        } finally {
+          pendingMode = undefined;
+        }
+      };
+    }
+
     const originalSignIn = client.auth.signInWithPassword.bind(client.auth);
     policies.set(client, async (credentials, remember) => {
       pendingMode = remember ?? (currentStore() !== tab);
