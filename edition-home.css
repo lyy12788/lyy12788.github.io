@@ -242,7 +242,7 @@ html[data-lyy-mode="dark"] .edition .edition-shortcut-grid>*,html[data-lyy-mode=
 /* Desktop-only typography refinement, 2026-11-22.
    Preserve the approved mobile layout and weights. */
 @media (min-width:1001px) and (min-height:501px) {
-  #home-view.edition .edition-brand {font-weight:700!important;letter-spacing:-.025em}
+  #home-view.edition .edition-brand {font-weight:450!important;letter-spacing:0;font-size:clamp(17px,1.55vw,24px)!important}
   #home-view.edition .edition-motto {font-weight:400!important}
   #home-view.edition .edition-nav a {font-weight:500!important}
   #home-view.edition .edition-account,
@@ -271,4 +271,9 @@ html[data-lyy-mode="dark"] .edition .edition-shortcut-grid>*,html[data-lyy-mode=
   #home-view.edition .edition-top > .edition-search {order:2}
   #home-view.edition .edition-top > .edition-search-button {order:3}
   #home-view.edition .edition-top > .edition-language {order:4}
+}
+
+/* Final brand typography: smaller, lighter wordmark on both screen sizes. */
+@media (max-width:1000px) {
+ #home-view.edition .edition-brand {font-size:clamp(15px,3.9vw,20px)!important;font-weight:450!important;letter-spacing:0!important}
 }
