@@ -11,7 +11,7 @@ body #home-view.edition {--ink:#0b203c;--nav:#052644;--gold:#ffc400;--edge:#d7e4
 .edition-header {position:sticky;top:0;z-index:50;background:linear-gradient(110deg,#052747,#03192f);color:#fff;box-shadow:0 2px 4px #001c3680}
 .edition-top,.edition-nav,.edition-menu {width:min(100% - 34px,1500px);margin:auto}
 .edition-top {position:relative;min-height:63px;display:flex;align-items:center;gap:clamp(10px,1.7vw,26px)}
-.edition-brand {display:inline-flex;align-items:center;gap:9px;font-size:clamp(20px,2.15vw,33px);font-weight:850;white-space:nowrap;letter-spacing:-.045em}
+.edition-brand {display:inline-flex;align-items:center;gap:9px;font-size:clamp(20px,2.15vw,33px);font-weight:600;white-space:nowrap;letter-spacing:-.045em}
 .edition-brand [data-edition-icon] {font-size:1.45em}
 .edition-motto {margin-right:auto;border-left:1px solid #7390aa;padding-left:clamp(10px,1.8vw,28px);white-space:nowrap;font-size:clamp(12px,1.2vw,19px);font-weight:650}
 .edition :is(.edition-icon,.edition-account) {display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;background:transparent;color:inherit;padding:0;min-height:40px;font-weight:700}
