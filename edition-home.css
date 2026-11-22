@@ -264,3 +264,11 @@ html[data-lyy-mode="dark"] .edition .edition-shortcut-grid>*,html[data-lyy-mode=
  #home-view.edition .edition-nav .edition-phone-member [data-edition-icon]{font-size:1.18em}
  #home-view.edition .edition-nav a{font-size:clamp(9px,2.65vw,14px);gap:3px}
 }
+
+/* Desktop header: account on the left of search, language selector on the right. Mobile unchanged. */
+@media (min-width:1001px) {
+  #home-view.edition .edition-top > .edition-account {order:1}
+  #home-view.edition .edition-top > .edition-search {order:2}
+  #home-view.edition .edition-top > .edition-search-button {order:3}
+  #home-view.edition .edition-top > .edition-language {order:4}
+}
