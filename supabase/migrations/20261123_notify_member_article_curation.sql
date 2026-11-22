@@ -31,16 +31,16 @@ begin
       values(author_uuid,actor_uuid,'moderation','文章已设为精选','你的文章《'||left(article_title,80)||'》已被设为精选。','/member-articles.html#article='||new.content_id);
     end if;
   else
-    if old.is_pinned is distinct from new.is_pinned then
+    if old.is_pinned is distinct from new.is_pinned and new.is_pinned then
       insert into public.member_notifications(recipient_id,actor_id,category,title,body,target_url)
-      values(author_uuid,actor_uuid,'moderation',case when new.is_pinned then '文章已置顶' else '文章已取消置顶' end,
-      '你的文章《'||left(article_title,80)||'》'||case when new.is_pinned then '已被置顶。' else '已取消置顶。' end,
+      values(author_uuid,actor_uuid,'moderation','文章已置顶',
+      '你的文章《'||left(article_title,80)||'》已被置顶。',
       '/member-articles.html#article='||new.content_id);
     end if;
-    if old.is_featured is distinct from new.is_featured then
+    if old.is_featured is distinct from new.is_featured and new.is_featured then
       insert into public.member_notifications(recipient_id,actor_id,category,title,body,target_url)
-      values(author_uuid,actor_uuid,'moderation',case when new.is_featured then '文章已设为精选' else '文章已取消精选' end,
-      '你的文章《'||left(article_title,80)||'》'||case when new.is_featured then '已被设为精选。' else '已取消精选。' end,
+      values(author_uuid,actor_uuid,'moderation','文章已设为精选',
+      '你的文章《'||left(article_title,80)||'》已被设为精选。',
       '/member-articles.html#article='||new.content_id);
     end if;
   end if;
