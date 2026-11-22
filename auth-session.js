@@ -11,21 +11,31 @@
 
     const tokenKey = 'sb-' + new URL(url).hostname.split('.')[0] + '-auth-token';
     const deadlineKey = tokenKey + '-deadline';
-    const logoutKey = tokenKey + '-logout';
+    const logoutPrefix = tokenKey + '-logout:';
+    const startedKey = tokenKey + '-started';
+    const tabModeKey = tokenKey + '-tab-only';
     const local = window.localStorage;
     const tab = window.sessionStorage;
-    let pendingMode;
+    let pendingLogin;
+    let signingOut;
     let expiryObserved = false;
     let lastReadStore;
 
     function currentStore() {
-      if (tab.getItem(tokenKey) !== null) return tab;
+      if (tab.getItem(tokenKey) !== null || tab.getItem(tabModeKey) !== null) {
+        return tab.getItem(tokenKey) === null ? null : tab;
+      }
       return local.getItem(tokenKey) !== null ? local : null;
+    }
+
+    function parseSession(value) {
+      try { return JSON.parse(value); } catch { return null; }
     }
 
     function clear(store) {
       store.removeItem(tokenKey);
       store.removeItem(deadlineKey);
+      store.removeItem(startedKey);
     }
 
     function discardIfExpired(store) {
@@ -42,6 +52,13 @@
       const store = currentStore();
       if (!store || discardIfExpired(store)) return null;
       const value = store.getItem(tokenKey);
+      const accountId = parseSession(value)?.user?.id;
+      const signedOutAt = accountId && Number(local.getItem(logoutPrefix + accountId));
+      if (signedOutAt && signedOutAt >= Number(store.getItem(startedKey))) {
+        clear(store);
+        expiryObserved = true;
+        return null;
+      }
       lastReadStore = store;
       if (store.getItem(deadlineKey) === null) {
         // Existing sessions receive a fixed browser migration window.
@@ -57,22 +74,32 @@
       setItem(name, value) {
         if (name !== tokenKey) return local.setItem(name, value);
         const existing = currentStore();
-        if (pendingMode === undefined && (expiryObserved || (!existing && lastReadStore) ||
-            (existing && discardIfExpired(existing)))) return;
+        const prior = pendingLogin ? null : readSession();
+        if (!pendingLogin && (expiryObserved || (!prior && lastReadStore))) return;
+        if (prior && parseSession(prior)?.user?.id !== parseSession(value)?.user?.id) return;
 
-        const destination = pendingMode === undefined ? existing || local : pendingMode ? local : tab;
-        if (pendingMode !== undefined || destination.getItem(deadlineKey) === null) {
-          destination.setItem(deadlineKey, String(Date.now() + duration));
+        const destination = pendingLogin ? (pendingLogin.remember ? local : tab) : existing || local;
+        if (pendingLogin || destination.getItem(deadlineKey) === null) {
+          const signedInAt = pendingLogin?.started ?? Date.now();
+          destination.setItem(deadlineKey, String(signedInAt + duration));
+          destination.setItem(startedKey, String(signedInAt));
+        }
+        if (destination === tab) {
+          tab.setItem(tabModeKey, '1');
+        } else if (pendingLogin) {
+          clear(tab);
+          tab.removeItem(tabModeKey);
         }
         destination.setItem(tokenKey, value);
-        clear(destination === local ? tab : local);
         expiryObserved = false;
         lastReadStore = destination;
       },
       removeItem(name) {
         if (name !== tokenKey) return local.removeItem(name);
-        clear(tab);
-        clear(local);
+        const store = currentStore();
+        if (store && (!signingOut || (store === signingOut.store &&
+            parseSession(store.getItem(tokenKey))?.user?.id === signingOut.accountId &&
+            store.getItem(startedKey) === signingOut.started))) clear(store);
       }
     };
 
@@ -81,11 +108,18 @@
 
     const originalSignOut = client.auth.signOut.bind(client.auth);
     client.auth.signOut = async (options) => {
-      const result = await originalSignOut(options);
-      if (!result.error && options?.scope !== 'others') {
-        local.setItem(logoutKey, String(Date.now()) + ':' + Math.random());
+      const accountId = parseSession(readSession())?.user?.id;
+      const store = currentStore();
+      signingOut = { accountId, store, started: store?.getItem(startedKey) };
+      try {
+        const result = await originalSignOut(options);
+        if (!result.error && accountId && (!options?.scope || options.scope === 'global')) {
+          local.setItem(logoutPrefix + accountId, String(Date.now()));
+        }
+        return result;
+      } finally {
+        signingOut = undefined;
       }
-      return result;
     };
 
     // GoTrue broadcasts session events across tabs even for tab-only sign-ins.
@@ -93,9 +127,7 @@
     client.auth.onAuthStateChange = (callback) => originalSubscribe((event, session) => {
       const stored = readSession();
       if (session) {
-        let accessToken;
-        try { accessToken = JSON.parse(stored)?.access_token; } catch { return; }
-        if (accessToken !== session.access_token) return;
+        if (parseSession(stored)?.access_token !== session.access_token) return;
       }
       if (event === 'SIGNED_OUT' && stored) return;
       return callback(event, session);
@@ -115,32 +147,31 @@
         window.location.reload();
         return;
       }
-      if (event.key !== logoutKey) return;
-      if (tab.getItem(tokenKey) === null) return;
-      clear(tab);
-      window.location.reload();
+      const store = currentStore();
+      const accountId = store && parseSession(store.getItem(tokenKey))?.user?.id;
+      if (accountId && event.key === logoutPrefix + accountId) checkExpiry();
     });
 
     if (client.auth.signUp) {
       const originalSignUp = client.auth.signUp.bind(client.auth);
       client.auth.signUp = async (credentials) => {
         // Registration immediately signs out any returned session.
-        pendingMode = false;
+        pendingLogin = { remember: false, started: Date.now() };
         try {
           return await originalSignUp(credentials);
         } finally {
-          pendingMode = undefined;
+          pendingLogin = undefined;
         }
       };
     }
 
     const originalSignIn = client.auth.signInWithPassword.bind(client.auth);
     policies.set(client, async (credentials, remember) => {
-      pendingMode = remember ?? (currentStore() !== tab);
+      pendingLogin = { remember, started: Date.now() };
       try {
         return await originalSignIn(credentials);
       } finally {
-        pendingMode = undefined;
+        pendingLogin = undefined;
       }
     });
     client.auth.signInWithPassword = (credentials) => {
