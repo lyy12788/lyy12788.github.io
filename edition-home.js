@@ -184,6 +184,7 @@
   locale.onchange=()=>window.lyyLanguage?.set(locale.value);
   function updateLanguage() {
     locale.value=document.documentElement.lang;
+    updateAccount();
     showSlide(slideIndex);
   }
   let lastLanguage='';
@@ -216,7 +217,9 @@
   function updateAccount() {
     const label=byId('edition-account-label');
     const text=user?'我的账户':'登录 / 注册';
-    if(label.textContent!==text)label.textContent=text;
+    const translated=word(text);
+    if(label.textContent!==translated)label.textContent=translated;
+    label.closest('button').setAttribute('aria-label',translated);
     home.querySelector('[data-edition-action="admin"]').hidden=byId('nav-admin').hidden;
   }
   for(const id of ['nav-login','nav-user','nav-admin'])new MutationObserver(updateAccount).observe(byId(id),{attributes:true,attributeFilter:['hidden']});
