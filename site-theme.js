@@ -138,6 +138,8 @@
   }
 
   function adaptSheet(sheet) {
+    // The magazine has a fixed navy masthead and explicit light/night tokens.
+    if (sheet.href && /\/edition-home\.css(?:\?|$)/.test(sheet.href)) return;
     let rules;
     try { rules = sheet.cssRules; } catch { return; }
     for (const rule of rules || []) {
