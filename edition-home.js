@@ -74,6 +74,7 @@
   function showSlide(index) {
     const slides=Array.from(home.querySelectorAll('.edition-slide')).filter(e=>mobile.matches||!e.hasAttribute('data-edition-phone-slide'));
     if(!slides.length)slides.push(home.querySelector('[data-edition-phone-slide]'));
+    if(mobile.matches)slides.splice(3);
     slideIndex=(index+slides.length)%slides.length;
     home.querySelectorAll('.edition-slide').forEach(s=>s.hidden=s!==slides[slideIndex]);
     byId('edition-dots').replaceChildren(...(slides.length>1?slides.map((_,i)=>{
@@ -87,7 +88,8 @@
     home.querySelectorAll('[data-edition-step]').forEach(b=>b.hidden=slides.length<2);
   }
   function renderSlides() {
-    const active=entries().slice(0,4);
+    const available=entries();
+    const active=[...available.filter(e=>e.item.featured||e.item.recommended),...available.filter(e=>e.kind==='site'),...available.filter(e=>e.kind==='member')].filter((e,i,all)=>all.indexOf(e)===i).slice(0,4);
     const signature=active.map(x=>articleLink(x)).join('|');
     if(signature===slideSignature)return;
     slideSignature=signature;
@@ -124,7 +126,9 @@
       link.href=topicLink(item.id);
       const title=node('strong',item.title);title.setAttribute('data-user-content','');
       const topicGraphic=icon('chat');topicGraphic.setAttribute('width','19');topicGraphic.setAttribute('height','19');
-      const count=node('span','♧ '+(comments(item)??'—'),'edition-discussion-count');
+      const count=node('span','','edition-discussion-count');
+      const mark=icon('chat');mark.setAttribute('width','12');mark.setAttribute('height','12');
+      count.append(mark,document.createTextNode(' '+(comments(item)??'—')));
       count.setAttribute('aria-label',word('评论')+' '+(comments(item)??'—'));
       link.append(topicGraphic,title,count,node('small',item.category+' · '+fmt(item.created_at)));
       return link;
