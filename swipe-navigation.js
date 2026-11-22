@@ -12,6 +12,7 @@ if(s.target.closest('input,textarea,select,[contenteditable="true"],[role="slide
 if(s.dialog){if(visible(s.dialog))closeOverlay(s.dialog);return;}
 if(overlay())return;
 const h=location.hash;if((location.pathname==='/'||location.pathname.endsWith('/index.html'))&&h&&h!=='#home'){location.hash='home';return;}
+if(/^\/member-articles(?:\.html)?$/.test(location.pathname)&&h.startsWith('#article=')){location.assign('/#home');return;}
 if(history.length>1&&document.referrer&&new URL(document.referrer).origin===location.origin){history.back();return;}parentPage();
 },{passive:true});
 })();

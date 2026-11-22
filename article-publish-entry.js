@@ -44,7 +44,7 @@
     } else if (state === 'allowed' || state === 'restricted') {
       const link = document.createElement('a');
       link.textContent = state === 'allowed' ? '前往发布' : '账号申诉';
-      link.href = state === 'allowed' ? '/member-articles.html#submit' : '/forum.html#appeal';
+      link.href = state === 'allowed' ? '/member-articles.html?write=1' : '/forum.html#appeal';
       link.style.cssText = 'display:inline-block;background:#e5b832;color:#101b2a;border-radius:8px;padding:10px 14px;font-weight:bold';
       actions.append(link);
     }
