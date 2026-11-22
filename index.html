@@ -618,7 +618,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 'use strict';
 const SUPABASE_URL='https://mkchupvmervxkskvjyhz.supabase.co';
 const SUPABASE_KEY='sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z';
-const AUTH_STORAGE_KEY='lyy-auth-session-v2', REMEMBER_KEY='lyy-remember-login-until', ACCOUNT_KEY='lyy-remembered-email', MODE_KEY='lyy-login-persistence';
+const AUTH_STORAGE_KEY='sb-mkchupvmervxkskvjyhz-auth-token', REMEMBER_KEY='lyy-remember-login-until', ACCOUNT_KEY='lyy-remembered-email', MODE_KEY='lyy-login-persistence';
 const authStorage={
  getItem(key){try{return sessionStorage.getItem(key)??localStorage.getItem(key)}catch(e){return null}},
  setItem(key,value){try{if(sessionStorage.getItem(MODE_KEY)==='session'){sessionStorage.setItem(key,value);localStorage.removeItem(key)}else{localStorage.setItem(key,value);sessionStorage.removeItem(key)}}catch(e){console.warn('会话存储失败',e)}},
