@@ -56,6 +56,8 @@ $('list').addEventListener('touchstart',event=>{if(event.touches.length!==1){swi
 $('list').addEventListener('touchend',event=>{if(!swipeStart||!event.changedTouches.length)return;const t=event.changedTouches[0],dx=t.clientX-swipeStart.x,dy=t.clientY-swipeStart.y;swipeStart=null;if(dx>85&&Math.abs(dy)<Math.abs(dx)*0.65)collapseExpandedArticle()},{passive:true});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&collapseExpandedArticle())event.preventDefault()});
 window.addEventListener('popstate',()=>{collapseExpandedArticle()});
+// Rebuild the standalone reader when a title changes the hash on this same page.
+window.addEventListener('hashchange',()=>{window.location.reload()});
 async function loadPublic(){
  const root=$('list');root.replaceChildren();const {data,error}=await db.from('member_articles').select('id,title,body,created_at').eq('status','published').order('created_at',{ascending:false}).limit(100);
  if(error){root.textContent='文章读取失败，请稍后再试。';return}
