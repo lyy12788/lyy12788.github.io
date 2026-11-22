@@ -128,3 +128,24 @@ html[data-lyy-page="index"] .community-guidelines {font-size:11px!important;line
  html[data-lyy-page="index"] #home-view .article-card {min-height:0!important;padding:9px 12px!important}
  html[data-lyy-page="index"] #home-view .article-card h3 {margin:4px 0!important}
 }
+
+
+/* Mobile editorial rhythm polish: remove blank gaps, keep controls readable. */
+@media(max-width:740px){
+ html[data-lyy-page="index"] #home-view #latest .section-heading,
+ html[data-lyy-page="index"] #home-view #community-feed .section-heading {margin-bottom:5px!important;gap:6px!important}
+ html[data-lyy-page="index"] #home-view #latest .section-heading p {font-size:10px!important;line-height:1.35!important;text-align:right!important;max-width:53%!important}
+ html[data-lyy-page="index"] #home-view #latest .browse-tools {display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:7px!important;margin:2px 0 5px!important;min-height:0!important}
+ html[data-lyy-page="index"] #home-view #latest #article-search {min-height:0!important;padding:0!important;border:0!important;background:transparent!important;flex:0 1 auto!important;font-size:12px!important}
+ html[data-lyy-page="index"] #home-view #latest #article-count {font-size:11px!important;margin:0!important;line-height:1.35!important}
+ html[data-lyy-page="index"] #home-view #latest .filters {margin:0 0 5px!important}
+ html[data-lyy-page="index"] #home-view #latest #all-articles-entry {margin:4px 0 5px!important}
+ html[data-lyy-page="index"] #home-view #latest .article-grid {margin:0!important}
+ html[data-lyy-page="index"] #home-view #latest .article-card {gap:1px!important;padding:8px 10px!important;margin:0!important;border-radius:6px!important;min-height:0!important}
+ html[data-lyy-page="index"] #home-view #latest .article-card .category {font-size:10px!important;line-height:1.3!important}
+ html[data-lyy-page="index"] #home-view #latest .article-card h3 {font-size:15px!important;line-height:1.35!important;margin:3px 0!important}
+ html[data-lyy-page="index"] #home-view #latest .article-card .meta {font-size:10px!important;line-height:1.4!important}
+ html[data-lyy-page="index"] #home-view #community-feed {margin-top:0!important}
+ html[data-lyy-page="index"] #home-view #community-feed .discussion-feed {gap:6px!important}
+ html[data-lyy-page="index"] #home-view #community-feed .discussion-feed>* {padding:11px!important}
+}
