@@ -827,8 +827,7 @@ $('article-search').addEventListener('input',()=>{articleLimit=12;renderArticles
  else if(path==='/gospel.html'){makeTools(document.querySelector('main>h1'),'福音园地',root+'gospel.html')}
  else if(path==='/'||path==='/index.html'){
  makeTools(document.querySelector('.community-hero .hero-cta'),'本站',root);
- const sections=[['latest','最新文章'],['community-feed','最新讨论'],['about','关于平台']];
- sections.forEach(([id,title])=>{const section=document.getElementById(id);if(section){const heading=section.querySelector('h2')||section.querySelector('.section-heading')||section;makeTools(heading,title,root+'#'+id)}});
+ // Homepage section bookmark/copy controls removed: keep one site-level pair only.
  }
 })();
 </script>
