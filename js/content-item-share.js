@@ -43,6 +43,13 @@ function render(){
   });
  }
  if(forumPage){
+  document.querySelectorAll('a.forum-list-title[href*="#post="]').forEach(link=>{
+   const match=link.getAttribute('href')?.match(/#post=([^&]+)/);
+   if(!match)return;
+   let id;try{id=decodeURIComponent(match[1])}catch{return}
+   const container=link.closest('.forum-list-main')||link.parentElement;
+   if(container)add(container,id,'forum',link.textContent.trim());
+  });
   const match=location.hash.match(/^#post=([^&]+)/);
   if(!match)return;
   let id;try{id=decodeURIComponent(match[1])}catch{return}
