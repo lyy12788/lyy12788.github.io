@@ -64,20 +64,20 @@ jobs:
           assert "storage_path" not in js
           print('Article and forum share UI integration verified')
           PY
-      - name: Default-off sharing gates and source integrity
+      - name: Enabled sharing gates and source integrity
         run: |
           node --check js/share-feature-flags.js
           python3 - <<'PY'
           from pathlib import Path
           flags=Path('js/share-feature-flags.js').read_text()
           for name in ('article','forum','audio'):
-              assert name+':false' in flags, name
+              assert name+':true' in flags, name
           for page,script in (('member-articles.html','content-item-share.js'),('forum.html','content-item-share.js'),('gospel.html','gospel-item-share.js')):
               html=Path(page).read_text()
               assert html.index('/js/share-feature-flags.js') < html.index('/js/'+script)
           assert 'LYY_SHARE_FLAGS' in Path('js/content-item-share.js').read_text()
           assert 'LYY_SHARE_FLAGS' in Path('js/gospel-item-share.js').read_text()
-          print('All sharing controls gated off by default')
+          print('All public sharing controls enabled')
           PY
       - name: Five-language share UI regression
         run: |
@@ -90,7 +90,7 @@ jobs:
               assert "MutationObserver" in source
               assert "attributeFilter:['lang']" in source
               assert 'LYY_SHARE_FLAGS' in source
-          print('All five site languages, live language changes and disabled-by-default release flags covered')
+          print('All five site languages, live language changes and share release flags covered')
           PY
       - name: Clean-route sharing regression
         run: node --test tests/share-clean-routes.test.mjs
