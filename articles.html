@@ -58,7 +58,7 @@
       link.setAttribute('data-user-content', '');
       type.textContent = a.source === 'member' ? '会员文章' : '站长文章';
       meta.append(type, ' · ', (a.date || '').slice(0, 10));
-      const flag=curation.get(key(a));if(flag?.is_pinned||flag?.is_featured){const badge=document.createElement('strong');badge.textContent=[flag.is_pinned?'置顶':'',flag.is_featured?'精选':''].filter(Boolean).join(' · ');badge.style.cssText='color:#d6ad4a;margin-right:8px';row.prepend(badge)}
+      const flag=curation.get(key(a));if(flag?.is_pinned||flag?.is_featured){const badge=document.createElement('strong');badge.dataset.lyyCurationBadge=[flag.is_pinned?'pinned':'',flag.is_featured?'featured':''].filter(Boolean).join(',');badge.textContent=[flag.is_pinned?'置顶':'',flag.is_featured?'精选':''].filter(Boolean).join(' · ');badge.style.cssText='color:#d6ad4a;margin-right:8px';row.prepend(badge)}
       if(owner){for(const [field,on,off] of [['is_pinned','置顶','取消置顶'],['is_featured','设为精选','取消精选']]){const btn=document.createElement('button');btn.type='button';btn.textContent=flag?.[field]?off:on;btn.style.cssText='margin-left:8px;font-size:12px';btn.onclick=async()=>{btn.disabled=true;const [kind,id]=key(a).split(':');const next={source:kind,content_id:id,is_pinned:!!flag?.is_pinned,is_featured:!!flag?.is_featured};next[field]=!next[field];const {data:{user}}=await db.auth.getUser();const {error}=await db.from('content_curation').upsert({...next,updated_by:user.id},{onConflict:'source,content_id'});if(error){alert('操作失败：'+error.message);btn.disabled=false;return}curation.set(key(a),next);render()};row.append(btn)}}
       row.append(link, meta);
       directory.append(row);
@@ -98,4 +98,4 @@
     if(db){const [{data:flags},{data:{user}}]=await Promise.all([db.from('content_curation').select('source,content_id,is_pinned,is_featured'),db.auth.getUser()]);for(const flag of flags||[])curation.set(flag.source+':'+flag.content_id,flag);if(user){const role=await db.rpc('is_site_admin');owner=role.data===true}}
     render();
   });
-})();</script><script defer src="/js/article-list-engagement.js?v=20261123"></script></body></html>
+})();</script><script defer src="/js/article-list-engagement.js?v=20261123"></script><script defer src="/js/curation-footer-i18n.js?v=20261123"></script></body></html>
