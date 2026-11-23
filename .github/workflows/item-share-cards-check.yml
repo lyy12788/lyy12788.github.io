@@ -75,3 +75,16 @@ jobs:
           assert 'LYY_SHARE_FLAGS' in Path('js/gospel-item-share.js').read_text()
           print('All sharing controls gated off by default')
           PY
+      - name: Five-language share UI regression
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for path in ('js/content-item-share.js','js/gospel-item-share.js'):
+              source=Path(path).read_text()
+              for key in ("'zh-tw'",'zh:', 'en:', 'ko:', 'ja:'):
+                  assert key in source, (path,key)
+              assert "MutationObserver" in source
+              assert "attributeFilter:['lang']" in source
+              assert 'LYY_SHARE_FLAGS' in source
+          print('All five site languages, live language changes and disabled-by-default release flags covered')
+          PY
