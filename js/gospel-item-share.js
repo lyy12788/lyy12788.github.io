@@ -17,7 +17,7 @@
         const btn=document.createElement('button');
         btn.type='button';btn.className='lyy-audio-share';btn.dataset.lyyMediaUi='';
         btn.style.cssText='font:inherit;font-size:12px;padding:5px 8px;border:1px solid currentColor;border-radius:6px;background:transparent;color:inherit;cursor:pointer';
-        btn.textContent='↗ '+lang().share;
+        btn.dataset.shareLabel='true';btn.textContent='↗ '+lang().share;
         btn.addEventListener('click',async()=>{
           const title=row.querySelector('.sermon-play-label strong')?.textContent?.trim()||document.title;
           const url=getUrl(id);
@@ -41,4 +41,5 @@
   const schedule=()=>{if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;decorate()})};
   new MutationObserver(schedule).observe(list,{childList:true});
   decorate();
+  new MutationObserver(()=>{list.querySelectorAll('.lyy-audio-share[data-share-label]').forEach(btn=>btn.textContent='↗ '+lang().share)}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
