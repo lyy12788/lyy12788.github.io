@@ -4,6 +4,7 @@
 const articlePage=location.pathname==='/member-articles.html';
 const forumPage=location.pathname==='/forum.html';
 if(!articlePage&&!forumPage)return;
+if(window.LYY_SHARE_FLAGS?.[articlePage?'article':'forum']!==true)return;
 const dictionary={zh:['分享','链接已复制','无法复制链接'],en:['Share','Link copied','Copy failed'],ko:['공유','링크 복사됨','복사 실패'],ja:['共有','リンクをコピーしました','コピーできません']};
 const strings=()=>dictionary[document.documentElement.lang.toLowerCase().split('-')[0]]||dictionary.zh;
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
