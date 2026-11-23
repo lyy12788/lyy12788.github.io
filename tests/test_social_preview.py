@@ -43,8 +43,8 @@ def jpeg_dimensions(data):
         if marker in (0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf):
             if length < 7:
                 raise ValueError('Invalid JPEG frame')
-            return (int.from_bytes(data[i+3:i+5], 'big'),
-                    int.from_bytes(data[i+5:i+7], 'big'))
+            return (int.from_bytes(data[i+5:i+7], 'big'),
+                    int.from_bytes(data[i+3:i+5], 'big'))
         i += length
     raise ValueError('Missing JPEG dimensions')
 
