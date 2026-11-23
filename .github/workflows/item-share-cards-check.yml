@@ -8,6 +8,7 @@ on:
     branches:
       - feature/item-share-cards-20261123
       - fix/share-clean-routes-20261123
+      - feature/share-worker-link-gate-20261123
   workflow_dispatch:
 jobs:
   test:
@@ -92,3 +93,19 @@ jobs:
           PY
       - name: Clean-route sharing regression
         run: node --test tests/share-clean-routes.test.mjs
+      - name: Worker link origin gate and five-language integration
+        run: |
+          node --check js/content-item-share.js
+          node --check js/share-worker-config.js
+          python3 - <<'PY'
+          from pathlib import Path
+          config=Path('js/share-worker-config.js').read_text()
+          assert "LYY_SHARE_WORKER_ORIGIN=''" in config
+          source=Path('js/content-item-share.js').read_text()
+          assert "shareOrigin?" in source and "url.href" in source
+          assert "value.protocol!=='https:'" in source
+          for page in ('member-articles.html','forum.html'):
+              html=Path(page).read_text()
+              assert html.index('/js/share-worker-config.js') < html.index('/js/content-item-share.js')
+          print('Worker link origin disabled by default; reader link fallback preserved')
+          PY

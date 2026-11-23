@@ -1,4 +1,4 @@
-/* Shared public-content share UI; reader URLs remain the default until the preview Worker is deployed. */
+/* Share reader URLs by default. A separately approved HTTPS share Worker may be enabled per deployment. */
 (()=>{
 'use strict';
 const articlePage=/^\/member-articles(?:\.html)?\/?$/.test(location.pathname);
@@ -7,6 +7,15 @@ if(!articlePage&&!forumPage)return;
 if(window.LYY_SHARE_FLAGS?.[articlePage?'article':'forum']!==true)return;
 const dictionary={'zh-tw':['分享','連結已複製','無法複製連結'],zh:['分享','链接已复制','无法复制链接'],en:['Share','Link copied','Copy failed'],ko:['공유','링크 복사됨','복사 실패'],ja:['共有','リンクをコピーしました','コピーできません']};
 const strings=()=>dictionary[document.documentElement.lang.toLowerCase()]||dictionary[document.documentElement.lang.toLowerCase().split('-')[0]]||dictionary.zh;
+const shareOrigin=(()=>{
+ try{
+  const configured=window.LYY_SHARE_WORKER_ORIGIN;
+  if(typeof configured!=='string'||!configured)return null;
+  const value=new URL(configured);
+  if(value.protocol!=='https:'||value.username||value.password||value.pathname!=='/'||value.search||value.hash)return null;
+  return value.origin;
+ }catch{return null}
+})();
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const share=async(btn,title,url)=>{
  try{if(navigator.share){await navigator.share({title,url});return}
@@ -21,7 +30,8 @@ function add(target,id,type,title){
  btn.dataset.itemId=id;btn.dataset.shareLabel='true';btn.textContent='↗ '+strings()[0];
  const url=new URL(type==='article'?'/member-articles.html':'/forum.html',location.origin);
  url.hash=(type==='article'?'article=':'post=')+encodeURIComponent(id);
- btn.addEventListener('click',()=>share(btn,title,url.href));
+ const finalUrl=shareOrigin?shareOrigin+'/share/'+type+'/'+encodeURIComponent(id):url.href;
+ btn.addEventListener('click',()=>share(btn,title,finalUrl));
  target.append(btn);
 }
 function render(){
