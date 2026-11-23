@@ -106,7 +106,8 @@
     showSlide(0);
   }
   home.querySelectorAll('[data-edition-step]').forEach(b=>b.onclick=()=>showSlide(slideIndex+Number(b.dataset.editionStep)));
-  new MutationObserver(renderSlides).observe(byId('article-list'),{childList:true});
+  const articleList=byId('article-list');
+  if(articleList)new MutationObserver(renderSlides).observe(articleList,{childList:true});
   window.editionStatsLoaded=()=>{if(articleMode!=='latest')renderArticles();};
 
   let discussionMode='latest';
@@ -222,7 +223,10 @@
     label.closest('button').setAttribute('aria-label',translated);
     home.querySelector('[data-edition-action="admin"]').hidden=byId('nav-admin').hidden;
   }
-  for(const id of ['nav-login','nav-user','nav-admin'])new MutationObserver(updateAccount).observe(byId(id),{attributes:true,attributeFilter:['hidden']});
+  for(const id of ['nav-login','nav-user','nav-admin']){
+    const target=byId(id);
+    if(target)new MutationObserver(updateAccount).observe(target,{attributes:true,attributeFilter:['hidden']});
+  }
   try {
     const source=window.parent.document.getElementById('lyy-notification-count');
     const badge=home.querySelector('.edition-unread');
