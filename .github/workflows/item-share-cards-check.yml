@@ -9,6 +9,7 @@ on:
       - feature/item-share-cards-20261123
       - fix/share-clean-routes-20261123
       - feature/share-worker-link-gate-20261123
+      - fix/share-worker-edge-20261123
   workflow_dispatch:
 jobs:
   test:
