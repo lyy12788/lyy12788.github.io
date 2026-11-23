@@ -60,3 +60,18 @@ jobs:
           assert "storage_path" not in js
           print('Article and forum share UI integration verified')
           PY
+      - name: Default-off sharing gates and source integrity
+        run: |
+          node --check js/share-feature-flags.js
+          python3 - <<'PY'
+          from pathlib import Path
+          flags=Path('js/share-feature-flags.js').read_text()
+          for name in ('article','forum','audio'):
+              assert name+':false' in flags, name
+          for page,script in (('member-articles.html','content-item-share.js'),('forum.html','content-item-share.js'),('gospel.html','gospel-item-share.js')):
+              html=Path(page).read_text()
+              assert html.index('/js/share-feature-flags.js') < html.index('/js/'+script)
+          assert 'LYY_SHARE_FLAGS' in Path('js/content-item-share.js').read_text()
+          assert 'LYY_SHARE_FLAGS' in Path('js/gospel-item-share.js').read_text()
+          print('All sharing controls gated off by default')
+          PY
