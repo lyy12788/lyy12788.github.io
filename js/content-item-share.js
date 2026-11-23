@@ -13,10 +13,11 @@ const share=async(btn,title,url)=>{
  }catch(e){if(e?.name!=='AbortError')btn.textContent=strings()[2]}
 };
 function add(target,id,type,title){
- if(!target||!uuid.test(id)||target.querySelector('.lyy-item-share'))return;
+ if(!target||!uuid.test(id))return;
+ const old=target.querySelector('.lyy-item-share');if(old){if(old.dataset.itemId===id)return;old.remove()}
  const btn=document.createElement('button');btn.type='button';btn.className='lyy-item-share';
  btn.style.cssText='margin:6px 8px 6px 0;padding:6px 10px;font:inherit;font-size:13px;background:transparent;color:inherit;border:1px solid currentColor;border-radius:7px;cursor:pointer';
- btn.textContent='↗ '+strings()[0];
+ btn.dataset.itemId=id;btn.textContent='↗ '+strings()[0];
  const url=new URL(type==='article'?'/member-articles.html':'/forum.html',location.origin);
  url.hash=(type==='article'?'article=':'post=')+encodeURIComponent(id);
  btn.addEventListener('click',()=>share(btn,title,url.href));
