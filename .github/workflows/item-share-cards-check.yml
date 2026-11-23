@@ -46,3 +46,17 @@ jobs:
           assert "storage_path" not in js and "mediaBase" not in js
           print('Gospel share script linked; no media file URL included')
           PY
+      - name: Article and forum share integration checks
+        run: |
+          node --check js/content-item-share.js
+          python3 - <<'PY'
+          from pathlib import Path
+          for page in ('member-articles.html','forum.html'):
+              assert '<script defer src="/js/content-item-share.js"></script>' in Path(page).read_text()
+          js=Path('js/content-item-share.js').read_text()
+          assert "navigator.share" in js and "navigator.clipboard.writeText" in js
+          assert "uuid.test(id)" in js
+          assert "dataset.itemId===id" in js
+          assert "storage_path" not in js
+          print('Article and forum share UI integration verified')
+          PY
