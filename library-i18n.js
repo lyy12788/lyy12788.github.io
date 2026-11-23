@@ -11,6 +11,9 @@
     forum: ['瀏覽公共論壇的主題與討論。', 'Browse public forum topics and discussions.', '공개 포럼의 주제와 토론을 살펴보세요.', '公開フォーラムのトピックや議論を閲覧できます。'],
     gospel: ['瀏覽已公開的福音錄音。', 'Browse publicly available Gospel recordings.', '공개된 복음 녹음을 살펴보세요.', '公開されている福音の音声を閲覧できます。'],
     listen: ['收聽錄音 →', 'Listen to recordings →', '녹음 듣기 →', '音声を聴く →'],
+    liveTitle: ['全球直播', 'Global Live TV', '글로벌 라이브 TV', '世界のライブTV'],
+    liveDescription: ['觀看全球電視直播、網絡廣播與即時攝影機。', 'Watch live TV, radio and webcams from around the world.', '전 세계 실시간 TV, 라디오 및 웹캠을 시청하세요.', '世界中のライブテレビ、ラジオ、ウェブカメラを楽しめます。'],
+    liveOpen: ['開啟全球直播 →', 'Open live TV →', '글로벌 라이브 TV 열기 →', 'ライブTVを開く →'],
     title: ['資料庫 · 真實之聲', 'Resources · Voice of Truth', '자료실 · 진실의 목소리', '資料室 · 真実の声'],
   };
 
