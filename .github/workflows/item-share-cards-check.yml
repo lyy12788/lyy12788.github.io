@@ -43,6 +43,6 @@ jobs:
           assert "new URL('/gospel.html',location.origin)" in js
           assert "row.dataset.sermonId" in js
           assert "navigator.share" in js and "navigator.clipboard.writeText" in js
-          assert "audio:" not in js and "storage_path" not in js
+          assert "storage_path" not in js and "mediaBase" not in js
           print('Gospel share script linked; no media file URL included')
           PY
