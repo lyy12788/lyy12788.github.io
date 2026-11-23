@@ -1,5 +1,8 @@
 name: Item share cards isolated checks
 on:
+  pull_request:
+    branches:
+      - feature/social-share-preview-20261123
   push:
     branches:
       - feature/item-share-cards-20261123
