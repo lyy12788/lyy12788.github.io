@@ -3,9 +3,11 @@ on:
   pull_request:
     branches:
       - feature/social-share-preview-20261123
+      - main
   push:
     branches:
       - feature/item-share-cards-20261123
+      - fix/share-clean-routes-20261123
   workflow_dispatch:
 jobs:
   test:
