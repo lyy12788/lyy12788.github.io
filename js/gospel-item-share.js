@@ -26,7 +26,7 @@
             await navigator.clipboard.writeText(url);btn.textContent=lang().copied;
           }catch(error){if(error?.name!=='AbortError')btn.textContent=lang().failed;}
         });
-        row.append(btn);
+        (row.querySelector('.sermon-mobile-info')||row).append(btn);
       }
       if(target===id&&!focused){
         focused=true;
