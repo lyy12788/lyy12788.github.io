@@ -23,9 +23,9 @@ function controls(node,d){
  const like=document.createElement('button');like.type='button';like.className='lyy-engagement-like';like.style.cssText='border:0;background:transparent;color:inherit;font:inherit;padding:3px;cursor:pointer';like.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();if(!client)return;const {data:{user}}=await client.auth.getUser();if(!user){alert(words()[6]);return}const id=bar.dataset.articleId;like.disabled=true;try{const {data:existing,error:checkError}=await client.from('article_likes').select('article_id').eq('article_id',id).eq('user_id',user.id).maybeSingle();if(checkError)throw checkError;const q=existing?client.from('article_likes').delete().eq('article_id',id).eq('user_id',user.id):client.from('article_likes').insert({article_id:id,user_id:user.id});const {error}=await q;if(error)throw error;await load()}catch(err){alert(words()[7]+': '+err.message)}finally{like.disabled=false}});bar.append(like);
  const btn=document.createElement('button');btn.type='button';btn.className='lyy-engagement-share';btn.style.cssText='border:0;border-radius:0;background:transparent;color:inherit;font:inherit;padding:3px;cursor:pointer';
  btn.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();const u=bar.dataset.shareUrl,t=bar.dataset.shareTitle;try{if(navigator.share){await navigator.share({title:t,url:u});return;}await navigator.clipboard.writeText(u);btn.textContent=words()[4];}catch(err){if(err?.name!=='AbortError')prompt(words()[5],u)}});
- bar.append(btn);host.append(bar);}
+ if(!members)bar.append(btn);host.append(bar);}
  bar.dataset.shareUrl=d.url;bar.dataset.shareTitle=d.title;bar.dataset.articleId=d.id;
- const w=words();bar.querySelector('.lyy-engagement-share').textContent=w[3];
+ const w=words();const shareButton=bar.querySelector('.lyy-engagement-share');if(shareButton)shareButton.textContent=w[3];
  const x=stats.get(d.id),v=bar.querySelector('.lyy-engagement-values');
  v.textContent=`${w[0]} ${x?x.views:ready?0:'—'}`;bar.querySelector('.lyy-engagement-comment').textContent=`${w[1]} ${x?x.comments:ready?0:'—'}`;bar.querySelector('.lyy-engagement-like').textContent=`${w[2]} ${x?x.likes:ready?0:'—'}`;
  // Replace the homepage legacy placeholder with this single reliable display.
