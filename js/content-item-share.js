@@ -1,8 +1,8 @@
 /* Shared public-content share UI; reader URLs remain the default until the preview Worker is deployed. */
 (()=>{
 'use strict';
-const articlePage=location.pathname==='/member-articles.html';
-const forumPage=location.pathname==='/forum.html';
+const articlePage=/^\/member-articles(?:\.html)?\/?$/.test(location.pathname);
+const forumPage=/^\/forum(?:\.html)?\/?$/.test(location.pathname);
 if(!articlePage&&!forumPage)return;
 if(window.LYY_SHARE_FLAGS?.[articlePage?'article':'forum']!==true)return;
 const dictionary={'zh-tw':['分享','連結已複製','無法複製連結'],zh:['分享','链接已复制','无法复制链接'],en:['Share','Link copied','Copy failed'],ko:['공유','링크 복사됨','복사 실패'],ja:['共有','リンクをコピーしました','コピーできません']};
