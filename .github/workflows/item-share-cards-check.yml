@@ -43,7 +43,7 @@ jobs:
           from pathlib import Path
           html=Path('gospel.html').read_text()
           js=Path('js/gospel-item-share.js').read_text()
-          assert '<script defer src="/js/gospel-item-share.js"></script>' in html
+          assert '<script defer src="/js/gospel-item-share.js?v=20261123-visible"></script>' in html
           assert "new URL('/gospel.html',location.origin)" in js
           assert "row.dataset.sermonId" in js
           assert "navigator.share" in js and "navigator.clipboard.writeText" in js
@@ -56,7 +56,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           for page in ('member-articles.html','forum.html'):
-              assert '<script defer src="/js/content-item-share.js"></script>' in Path(page).read_text()
+              assert '<script defer src="/js/content-item-share.js?v=20261123-visible"></script>' in Path(page).read_text()
           js=Path('js/content-item-share.js').read_text()
           assert "navigator.share" in js and "navigator.clipboard.writeText" in js
           assert "uuid.test(id)" in js
