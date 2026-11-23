@@ -25,7 +25,7 @@ test('unpublished or missing rows are never previewed',async()=>{
 });
 test('forum uses published forum posts and forum reader route',async()=>{
  const {response,requested}=await call({path:url.replace('/article/','/forum/'),row:{id,title:'Forum',body:'Forum body',status:'published'}});
- assert.match(requested.request,/forum_posts/);const html=await response.text();assert.match(html,/forum[.]html#post=/);assert.match(html,/share-forum.jpg);
+ assert.match(requested.request,/forum_posts/);const html=await response.text();assert.ok(html.includes('forum.html#post='));assert.match(html,/share-forum.jpg);
 });
 test('invalid ids, origins, and methods do not query database',async()=>{
  for(const path of ['https://share-preview.example.com/share/article/bad','https://evil.example/share/article/'+id]){
