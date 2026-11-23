@@ -196,7 +196,7 @@ function insertAtCursor(value){
  t.focus();t.selectionStart=t.selectionEnd=a+value.length;
 }
 $('insert-link').onclick=()=>{const url=prompt('请输入链接地址（https:// 开头）');if(url===null)return;try{const u=new URL(url.trim());if(!['https:','http:'].includes(u.protocol))throw Error('protocol');const label=prompt('链接显示文字','查看链接');if(label===null)return;insertAtCursor('['+(label.trim()||'查看链接').replace(/[\\\[\]]/g,'')+']('+u.href.replace(/[()]/g,encodeURIComponent)+')')}catch{$('upload-status').textContent='链接必须是有效的 http:// 或 https:// 地址'}};
-const forumImageCount=()=>($('post-body').value.match(/\\[private-forum-image:[^\\]]+\\]/g)||[]).length;
+const forumImageCount=()=>($('post-body').value.match(/\[private-forum-image:[^\]]+\]/g)||[]).length;
 const singleImageWarning='每篇文章只能添加一张图片，请先删除原图片再添加。';
 $('insert-image').onclick=()=>{if(!user?.email_confirmed_at){$('upload-status').textContent='请先登录并验证邮箱后上传图片';return}if(forumImageCount()>=1){$('upload-status').textContent=singleImageWarning;return}$('image-file').click()};
 $('insert-video').onclick=()=>{
@@ -652,7 +652,7 @@ $('publish').onclick=async()=>{
 
  
  if(title.length<5||title.length>30)return feedback('文章标题需要5—30个字符。');
- if(body.length<20||body.length>20000)return feedback('文章正文需要20—20000个字符。');if((body.match(/\\[private-forum-image:[^\\]]+\\]/g)||[]).length>1)return feedback(singleImageWarning);
+ if(body.length<20||body.length>20000)return feedback('文章正文需要20—20000个字符。');if((body.match(/\[private-forum-image:[^\]]+\]/g)||[]).length>1)return feedback(singleImageWarning);
  const btn=$('publish');btn.disabled=true;btn.textContent='正在提交……';feedback('正在提交文章，请稍候。');
  try{
   const {error}=await db.from('forum_posts').insert({author_id:user.id,category:$('post-category').value,title,body});
