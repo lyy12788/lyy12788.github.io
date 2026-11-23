@@ -21,3 +21,14 @@ jobs:
         run: node --test tests/item-share-worker.test.mjs
       - name: Existing share metadata regression
         run: python3 tests/test_social_preview.py
+      - name: Preview deployment isolation guard
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('wrangler.item-share-preview.toml').read_text()
+          assert 'workers_dev = true' in text
+          assert 'main = "cloudflare/item-share-worker.mjs"' in text
+          assert not any(line.strip().startswith(('route =', 'routes =', 'account_id =', 'zone_id =')) for line in text.splitlines())
+          assert 'SUPABASE_PUBLISHABLE_KEY = ' not in text
+          print('Preview worker config is isolated; no production route or key embedded')
+          PY
