@@ -5,8 +5,8 @@
   if(!list||window.LYY_SHARE_FLAGS?.audio!==true)return;
   const params=new URLSearchParams(location.hash.replace(/^#/,''));
   const target=params.get('audio');
-  const labels={zh:{share:'分享',copied:'链接已复制',failed:'无法复制链接'},en:{share:'Share',copied:'Link copied',failed:'Could not copy link'},ko:{share:'공유',copied:'링크 복사됨',failed:'링크 복사 실패'},ja:{share:'共有',copied:'リンクをコピーしました',failed:'リンクをコピーできません'}};
-  const lang=()=>{const v=document.documentElement.lang.toLowerCase().split('-')[0];return labels[v]||labels.zh};
+  const labels={'zh-tw':{share:'分享',copied:'連結已複製',failed:'無法複製連結'},zh:{share:'分享',copied:'链接已复制',failed:'无法复制链接'},en:{share:'Share',copied:'Link copied',failed:'Could not copy link'},ko:{share:'공유',copied:'링크 복사됨',failed:'링크 복사 실패'},ja:{share:'共有',copied:'リンクをコピーしました',failed:'リンクをコピーできません'}};
+  const lang=()=>{const v=document.documentElement.lang.toLowerCase();return labels[v]||labels[v.split('-')[0]]||labels.zh};
   const getUrl=id=>{const url=new URL('/gospel.html',location.origin);url.hash=new URLSearchParams({audio:id}).toString();return url.href};
   let focused=false;
   const decorate=()=>{
