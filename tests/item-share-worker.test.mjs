@@ -34,3 +34,25 @@ test('invalid ids, origins, and methods do not query database',async()=>{
  const {response}=await call({method:'POST'});assert.equal(response.status,405);
 });
 test('HEAD has headers but no body',async()=>{const {response}=await call({method:'HEAD'});assert.equal(response.status,200);assert.equal(await response.text(),'')});
+
+test('script injection in public title and body remains inert',async()=>{
+ const payload='</script><script>alert(1)</script>';
+ const {response}=await call({row:{id,title:payload,body:payload,status:'published'}});
+ const html=await response.text();
+ assert.equal(response.status,200);
+ assert.ok(html.includes('&lt;/script&gt;'));
+ assert.ok(!html.includes(payload));
+ assert.ok(html.includes('location.replace('));
+});
+test('no private preview if backend returns a nonpublished row',async()=>{
+ for(const status of ['draft','pending','rejected','deleted']){
+  const {response}=await call({row:{id,title:'Secret title',body:'Secret body',status}});
+  assert.equal(response.status,404);
+  assert.ok(!(await response.text()).includes('Secret'));
+ }
+});
+test('public preview response disables shared caching',async()=>{
+ const {response}=await call();
+ assert.equal(response.headers.get('Cache-Control'),'no-store');
+ assert.equal(response.headers.get('X-Content-Type-Options'),'nosniff');
+});
