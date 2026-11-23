@@ -16,7 +16,7 @@
       if(!row.querySelector('.lyy-audio-share')){
         const btn=document.createElement('button');
         btn.type='button';btn.className='lyy-audio-share';btn.dataset.lyyMediaUi='';
-        btn.style.cssText='font:inherit;font-size:12px;padding:5px 8px;border:1px solid currentColor;border-radius:6px;background:transparent;color:inherit;cursor:pointer';
+        btn.style.cssText='font:inherit;font-size:12px;padding:5px 8px;border:0;border-radius:0;background:transparent;color:inherit;cursor:pointer';
         btn.dataset.shareLabel='true';btn.textContent='↗ '+lang().share;
         btn.addEventListener('click',async()=>{
           const title=row.querySelector('.sermon-play-label strong')?.textContent?.trim()||document.title;
