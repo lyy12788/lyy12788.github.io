@@ -1,0 +1,20 @@
+name: Item share cards isolated checks
+on:
+  push:
+    branches:
+      - feature/item-share-cards-20261123
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run isolated public share endpoint tests
+        run: node --test tests/item-share-worker.test.mjs
+      - name: Existing share metadata regression
+        run: python3 tests/test_social_preview.py
