@@ -68,8 +68,8 @@ class SocialPreviewTests(unittest.TestCase):
                 path = ROOT / 'images' / filename
                 self.assertTrue(path.is_file(), str(path))
                 data = path.read_bytes()
-                self.assertTrue(data.startswith(b'\\xff\\xd8\\xff'), filename)
-                self.assertTrue(data.endswith(b'\\xff\\xd9'), filename)
+                self.assertTrue(data.startswith(bytes.fromhex('ffd8ff')), filename)
+                self.assertTrue(data.endswith(bytes.fromhex('ffd9')), filename)
                 self.assertLess(len(data), 1024 * 1024, filename)
 
 if __name__ == '__main__':
