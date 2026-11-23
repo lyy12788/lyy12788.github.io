@@ -32,12 +32,12 @@ def build(output: Path):
             source = page.read_text(encoding="utf-8")
             # Only metadata URL attributes are changed. Navigation, scripts, CSS and API endpoints remain untouched.
             for attr in ("og:url", "og:image", "twitter:image"):
-                pattern = r'(<meta\\s+(?:property|name)="' + re.escape(attr) + r'"\\s+content=")([^"]+)(")'
+                pattern = r'(<meta\s+(?:property|name)="' + re.escape(attr) + r'"\s+content=")([^"]+)(")'
                 source, count = re.subn(pattern, lambda m: m.group(1) + m.group(2).replace(PRODUCTION, PREVIEW, 1) + m.group(3), source)
                 if count != 1:
                     raise ValueError(f"{name}: expected exactly one {attr} tag, found {count}")
             source, count = re.subn(
-                r'(<link\\s+rel="canonical"\\s+href=")([^"]+)(")',
+                r'(<link\s+rel="canonical"\s+href=")([^"]+)(")',
                 lambda m: m.group(1) + m.group(2).replace(PRODUCTION, PREVIEW, 1) + m.group(3),
                 source,
             )
@@ -45,7 +45,7 @@ def build(output: Path):
                 raise ValueError(f"{name}: expected exactly one canonical URL")
             page.write_text(source, encoding="utf-8")
             for attr in ("og:url", "og:image", "twitter:image"):
-                match = re.search(r'<meta\\s+(?:property|name)="' + re.escape(attr) + r'"\\s+content="([^"]+)"', source)
+                match = re.search(r'<meta\s+(?:property|name)="' + re.escape(attr) + r'"\s+content="([^"]+)"', source)
                 if not match or not match.group(1).startswith(PREVIEW):
                     raise ValueError(f"{name}: {attr} must point to isolated preview")
             if 'href="' + PREVIEW not in source:
