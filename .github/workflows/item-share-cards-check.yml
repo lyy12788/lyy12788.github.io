@@ -88,3 +88,5 @@ jobs:
               assert 'LYY_SHARE_FLAGS' in source
           print('All five site languages, live language changes and disabled-by-default release flags covered')
           PY
+      - name: Clean-route sharing regression
+        run: node --test tests/share-clean-routes.test.mjs
