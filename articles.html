@@ -98,4 +98,4 @@
     if(db){const [{data:flags},{data:{user}}]=await Promise.all([db.from('content_curation').select('source,content_id,is_pinned,is_featured'),db.auth.getUser()]);for(const flag of flags||[])curation.set(flag.source+':'+flag.content_id,flag);if(user){const role=await db.rpc('is_site_admin');owner=role.data===true}}
     render();
   });
-})();</script></body></html>
+})();</script><script defer src="/js/article-list-engagement.js?v=20261123"></script></body></html>

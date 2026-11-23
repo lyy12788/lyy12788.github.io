@@ -1,0 +1,38 @@
+/* Shared article list engagement and share controls; no database writes. */
+(()=>{'use strict';
+const page=document.documentElement.dataset.lyyPage;
+const home=page==='index',directory=page==='articles',members=page==='member-articles';
+if(!home&&!directory&&!members)return;
+const root=()=>document.querySelector(home?'#article-list':directory?'#article-directory-list':'#list');
+const lang=()=>document.documentElement.lang.toLowerCase();
+const words=()=>{const l=lang();return l.startsWith('ko')?['조회','댓글','좋아요','공유','링크 복사됨','링크 복사']:l.startsWith('ja')?['閲覧','コメント','いいね','共有','リンクをコピーしました','リンクをコピー']:l.startsWith('en')?['Views','Comments','Likes','Share','Link copied','Copy link']:l==='zh-tw'?['閱讀','評論','讚','分享','連結已複製','複製連結']:['阅读','评论','点赞','分享','链接已复制','复制链接']};
+const stats=new Map();
+let ready=false;
+const url='https://mkchupvmervxkskvjyhz.supabase.co';
+const key='sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z';
+function details(node){
+ if(home){const a=node.matches?.('a.article-card')?node:null;if(!a)return null;const link=a.getAttribute('href')||'';const match=link.match(/(?:#post=|#article=)([^&]+)/);if(!match)return null;return {id:decodeURIComponent(match[1]),url:new URL(link,location.origin).href,title:a.querySelector('h3')?.textContent||document.title};}
+ if(directory){if(!node.matches?.('li'))return null;const a=node.querySelector('a[href*="#post="],a[href*="#article="]');if(!a)return null;const match=a.getAttribute('href').match(/#(?:post|article)=([^&]+)/);return match?{id:decodeURIComponent(match[1]),url:a.href,title:a.textContent}:null;}
+ if(members){const d=node.querySelector?.('details[id^="article-"]');if(!d)return null;const id=d.id.slice(8);return {id,url:new URL('/member-articles.html#article='+encodeURIComponent(id),location.origin).href,title:d.querySelector('summary')?.textContent||document.title};}
+ return null;
+}
+function controls(node,d){
+ let bar=node.querySelector(':scope > .lyy-article-engagement');if(!bar){bar=document.createElement('div');bar.className='lyy-article-engagement';bar.style.cssText='display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12px;color:#c9d2dd;margin:5px 0 8px;position:relative;z-index:1';
+ const metrics=document.createElement('span');metrics.className='lyy-engagement-values';bar.append(metrics);
+ const btn=document.createElement('button');btn.type='button';btn.className='lyy-engagement-share';btn.style.cssText='border:1px solid #64778b;border-radius:6px;background:transparent;color:inherit;font:inherit;padding:3px 9px;cursor:pointer';
+ btn.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();const u=bar.dataset.shareUrl,t=bar.dataset.shareTitle;try{if(navigator.share){await navigator.share({title:t,url:u});return;}await navigator.clipboard.writeText(u);btn.textContent=words()[4];}catch(err){if(err?.name!=='AbortError')prompt(words()[5],u)}});
+ bar.append(btn);node.append(bar);}
+ bar.dataset.shareUrl=d.url;bar.dataset.shareTitle=d.title;
+ const w=words();bar.querySelector('button').textContent=w[3];
+ const x=stats.get(d.id),v=bar.querySelector('.lyy-engagement-values');
+ v.textContent=x?`${w[0]} ${x.views} · ${w[1]} ${x.comments} · ${w[2]} ${x.likes}`:`${w[0]} — · ${w[1]} — · ${w[2]} —`;
+ // Replace the homepage legacy placeholder with this single reliable display.
+ if(home){const old=node.querySelector('.article-stats');if(old)old.hidden=true;}
+}
+function render(){const r=root();if(!r)return;const nodes=home?r.querySelectorAll('a.article-card'):directory?r.querySelectorAll('li'):r.querySelectorAll(':scope > article, :scope > div, :scope > li');nodes.forEach(n=>{const d=details(n);if(d)controls(n,d)});}
+let scheduled=false;function schedule(){if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;render()})}
+const r=root();if(r)new MutationObserver(m=>{if(m.some(x=>x.addedNodes.length||x.removedNodes.length))schedule()}).observe(r,{childList:true});
+new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+async function load(){try{const client=window.lyyAuth?.createClient?.(url,key);if(!client)return;const {data,error}=await client.rpc('article_public_stats');if(error)throw error;stats.clear();for(const x of data||[])stats.set(String(x.article_id),{views:Number(x.views)||0,comments:Number(x.comments)||0,likes:Number(x.likes)||0});ready=true;render();}catch(e){console.warn('Article engagement unavailable',e)}}
+render();load();window.addEventListener('pageshow',()=>{render();load()});
+})();
