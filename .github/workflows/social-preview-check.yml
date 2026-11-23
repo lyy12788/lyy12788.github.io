@@ -1,0 +1,45 @@
+name: Social preview checks
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'player.html'
+      - 'articles.html'
+      - 'member-articles.html'
+      - 'forum.html'
+      - 'images/share-*.jpg'
+      - 'tests/test_social_preview.py'
+      - '.github/workflows/social-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate share preview metadata and images
+        run: python3 tests/test_social_preview.py
+      - name: Serve static site and validate HTTP responses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/share-preview-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if curl --silent --fail http://127.0.0.1:8765/index.html -o /dev/null; then break; fi
+            sleep 1
+          done
+          for file in index.html player.html articles.html member-articles.html forum.html; do
+            curl --fail --silent --show-error "http://127.0.0.1:8765/$file" -o /tmp/social-preview-page.html
+            grep -q 'property="og:image"' /tmp/social-preview-page.html
+          done
+          for file in share-home.jpg share-article.jpg share-forum.jpg; do
+            curl --fail --silent --show-error -D /tmp/social-preview-headers "http://127.0.0.1:8765/images/$file" -o /tmp/social-preview-image.jpg
+            grep -qi '^Content-type: image/jpeg' /tmp/social-preview-headers
+            test -s /tmp/social-preview-image.jpg
+          done

@@ -1,0 +1,39 @@
+name: Build isolated social share preview ZIP
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/build_social_preview.py'
+      - '.github/workflows/build-social-preview.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build preview-only metadata ZIP
+        run: python3 scripts/build_social_preview.py --output social-share25-preview.zip
+      - name: Verify ZIP and isolated OG URLs
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          with zipfile.ZipFile("social-share25-preview.zip") as z:
+              names = z.namelist()
+              assert "index.html" in names
+              for page in ("index.html", "player.html", "articles.html", "member-articles.html", "forum.html"):
+                  data = z.read(page).decode("utf-8")
+                  assert 'property="og:image" content="https://social-share25.lyy12788-isolated-preview.pages.dev/images/' in data, page
+                  assert 'name="twitter:image" content="https://social-share25.lyy12788-isolated-preview.pages.dev/images/' in data, page
+                  assert 'property="og:url" content="https://social-share25.lyy12788-isolated-preview.pages.dev/' in data, page
+              for img in ("share-home.jpg", "share-article.jpg", "share-forum.jpg"):
+                  assert "images/" + img in names
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: social-share25-preview
+          path: social-share25-preview.zip
+          retention-days: 14
