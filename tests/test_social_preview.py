@@ -42,6 +42,26 @@ class SocialPreviewTests(unittest.TestCase):
                 canonical = [x.get('href') for x in parser.links if x.get('rel') == 'canonical']
                 self.assertEqual(canonical, ['https://lyy12788.com/'])
 
+    def test_section_fallback_previews(self):
+        for name, image_name in (
+            ('member-articles.html', 'share-article.jpg'),
+            ('articles.html', 'share-article.jpg'),
+            ('forum.html', 'share-forum.jpg'),
+        ):
+            with self.subTest(page=name):
+                parser = MetaParser()
+                parser.feed((ROOT / name).read_text(encoding='utf-8'))
+                self.assertEqual(parser.values('property', 'og:image'),
+                                 ['https://lyy12788.com/images/' + image_name])
+                self.assertEqual(parser.values('name', 'twitter:image'),
+                                 parser.values('property', 'og:image'))
+                self.assertEqual(parser.values('property', 'og:url'),
+                                 ['https://lyy12788.com/' + name])
+                self.assertEqual(parser.values('name', 'twitter:card'),
+                                 ['summary_large_image'])
+                for key in ('og:title', 'og:description', 'og:image:alt'):
+                    self.assertEqual(len(parser.values('property', key)), 1)
+
     def test_default_share_images(self):
         for filename in ('share-home.jpg', 'share-article.jpg', 'share-forum.jpg'):
             with self.subTest(image=filename):
