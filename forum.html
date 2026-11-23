@@ -409,7 +409,7 @@ async function loadImageReviews(){
    const b=el('button',label);b.type='button';
    b.onclick=async()=>{
     const note=prompt('审核说明（至少5字）：');if(note===null)return;if(note.trim().length<5){alert('请填写至少5字的说明');return}
-    if(!confirm('确认将此图片标记为「'+label+'」？这不会自动发布图片。'))return;
+    if(!confirm((window.lyyLanguage?.translate('确认将此图片标记为「')||'确认将此图片标记为「')+(window.lyyLanguage?.translate(label)||label)+(window.lyyLanguage?.translate('」？这不会自动发布图片。')||'」？这不会自动发布图片。')))return;
     const {error:e}=await db.from('forum_image_reviews').update({status,reviewer_id:user.id,reviewed_at:new Date().toISOString(),review_note:note.trim()}).eq('id',item.id).eq('status','pending');
     if(e)alert('审核失败：'+e.message);else loadImageReviews();
    };d.append(b);
