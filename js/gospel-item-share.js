@@ -2,7 +2,7 @@
 (()=>{
   'use strict';
   const list=document.getElementById('drive-list');
-  if(!list)return;
+  if(!list||window.LYY_SHARE_FLAGS?.audio!==true)return;
   const params=new URLSearchParams(location.hash.replace(/^#/,''));
   const target=params.get('audio');
   const labels={zh:{share:'分享',copied:'链接已复制',failed:'无法复制链接'},en:{share:'Share',copied:'Link copied',failed:'Could not copy link'},ko:{share:'공유',copied:'링크 복사됨',failed:'링크 복사 실패'},ja:{share:'共有',copied:'リンクをコピーしました',failed:'リンクをコピーできません'}};
