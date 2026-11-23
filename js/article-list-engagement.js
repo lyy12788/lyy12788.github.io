@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const page=document.documentElement.dataset.lyyPage;
 const home=page==='index',directory=page==='articles',members=page==='member-articles';
-if(!home&&!directory&&!members)return;
+if(home||(!directory&&!members))return;
 const root=()=>document.querySelector(home?'#article-list':directory?'#article-directory-list':'#list');
 const lang=()=>document.documentElement.lang.toLowerCase();
 const words=()=>{const l=lang();return l.startsWith('ko')?['조회','댓글','좋아요','공유','링크 복사됨','링크 복사','로그인 후 이용할 수 있습니다','좋아요 실패']:l.startsWith('ja')?['閲覧','コメント','いいね','共有','リンクをコピーしました','リンクをコピー','ログインしてください','いいねに失敗しました']:l.startsWith('en')?['Views','Comments','Likes','Share','Link copied','Copy link','Please sign in first','Like failed']:l==='zh-tw'?['閱讀','評論','讚','分享','連結已複製','複製連結','請先登入','按讚失敗']:['阅读','评论','点赞','分享','链接已复制','复制链接','请先登录','点赞失败']};
