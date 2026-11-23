@@ -20,12 +20,12 @@ test('published article has escaped title, excerpt and canonical reader link',as
 });
 test('unpublished or missing rows are never previewed',async()=>{
  for(const row of [null,{id,title:'private',body:'secret',status:'draft'}]){
-  const {response}=await call({row});assert.equal(response.status,row?404:404);assert.doesNotMatch(await response.text(),/secret/);
+  const {response}=await call({row});assert.equal(response.status,404);assert.doesNotMatch(await response.text(),/secret/);
  }
 });
 test('forum uses published forum posts and forum reader route',async()=>{
  const {response,requested}=await call({path:url.replace('/article/','/forum/'),row:{id,title:'Forum',body:'Forum body',status:'published'}});
- assert.match(requested.request,/forum_posts/);const html=await response.text();assert.match(html,/forum.html#post=/);assert.match(html,/share-forum.jpg);
+ assert.match(requested.request,/forum_posts/);const html=await response.text();assert.match(html,/forum[.]html#post=/);assert.match(html,/share-forum.jpg);
 });
 test('invalid ids, origins, and methods do not query database',async()=>{
  for(const path of ['https://share-preview.example.com/share/article/bad','https://evil.example/share/article/'+id]){
