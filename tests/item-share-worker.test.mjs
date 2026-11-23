@@ -4,9 +4,9 @@ import worker from '../cloudflare/item-share-worker.mjs';
 const id='123e4567-e89b-42d3-a456-426614174000';
 const env={PUBLIC_SITE_ORIGIN:'https://lyy12788.com',SHARE_ORIGIN:'https://share-preview.example.com',SUPABASE_URL:'https://example.supabase.co',SUPABASE_PUBLISHABLE_KEY:'test-public-key'};
 const url='https://share-preview.example.com/share/article/'+id;
-async function call({path=url,row={id,title:'公开标题 <测试>',body:'摘要内容 & 详情',status:'published'},method='GET'}={}) {
+async function call({path=url,row={id,title:'公开标题 <测试>',body:'摘要内容 & 详情',status:'published'},method='GET',upstreamStatus=200}={}) {
   const original=globalThis.fetch;let requested;
-  globalThis.fetch=async (request,options)=>{requested={request:String(request),options};return new Response(JSON.stringify(row?[row]:[]),{headers:{'content-type':'application/json'}})};
+  globalThis.fetch=async (request,options)=>{requested={request:String(request),options};return new Response(JSON.stringify(row?[row]:[]),{status:upstreamStatus,headers:{'content-type':'application/json'}})};
   try{return {response:await worker.fetch(new Request(path,{method}),env),requested}} finally {globalThis.fetch=original}
 }
 test('published article has escaped title, excerpt and canonical reader link',async()=>{
@@ -55,4 +55,11 @@ test('public preview response disables shared caching',async()=>{
  const {response}=await call();
  assert.equal(response.headers.get('Cache-Control'),'no-store');
  assert.equal(response.headers.get('X-Content-Type-Options'),'nosniff');
+});
+
+test('upstream redirects are rejected without following them from Cloudflare',async()=>{
+ const {response,requested}=await call({upstreamStatus:302});
+ assert.equal(requested.options.redirect,'manual');
+ assert.equal(response.status,503);
+ assert.equal(await response.text(),'Service unavailable');
 });

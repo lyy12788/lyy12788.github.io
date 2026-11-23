@@ -34,7 +34,7 @@ export default {
     query.searchParams.set('limit','1');
     let rows;
     try {
-      const response = await fetch(query,{headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY,Accept:'application/json'},redirect:'error',signal:AbortSignal.timeout(6000)});
+      const response = await fetch(query,{headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY,Accept:'application/json'},redirect:'manual',signal:AbortSignal.timeout(6000)});
       if (!response.ok) return errorResponse(503);
       rows = await response.json();
     } catch { return errorResponse(503); }
