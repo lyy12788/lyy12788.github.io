@@ -1,0 +1,90 @@
+name: Item share cards isolated checks
+on:
+  pull_request:
+    branches:
+      - feature/social-share-preview-20261123
+  push:
+    branches:
+      - feature/item-share-cards-20261123
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run isolated public share endpoint tests
+        run: node --test tests/item-share-worker.test.mjs
+      - name: Existing share metadata regression
+        run: python3 tests/test_social_preview.py
+      - name: Preview deployment isolation guard
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('wrangler.item-share-preview.toml').read_text()
+          assert 'workers_dev = true' in text
+          assert 'main = "cloudflare/item-share-worker.mjs"' in text
+          assert not any(line.strip().startswith(('route =', 'routes =', 'account_id =', 'zone_id =')) for line in text.splitlines())
+          assert 'SUPABASE_PUBLISHABLE_KEY = ' not in text
+          print('Preview worker config is isolated; no production route or key embedded')
+          PY
+      - name: Gospel audio share syntax and integration checks
+        run: |
+          node --check js/gospel-item-share.js
+          python3 - <<'PY'
+          from pathlib import Path
+          html=Path('gospel.html').read_text()
+          js=Path('js/gospel-item-share.js').read_text()
+          assert '<script defer src="/js/gospel-item-share.js"></script>' in html
+          assert "new URL('/gospel.html',location.origin)" in js
+          assert "row.dataset.sermonId" in js
+          assert "navigator.share" in js and "navigator.clipboard.writeText" in js
+          assert "storage_path" not in js and "mediaBase" not in js
+          print('Gospel share script linked; no media file URL included')
+          PY
+      - name: Article and forum share integration checks
+        run: |
+          node --check js/content-item-share.js
+          python3 - <<'PY'
+          from pathlib import Path
+          for page in ('member-articles.html','forum.html'):
+              assert '<script defer src="/js/content-item-share.js"></script>' in Path(page).read_text()
+          js=Path('js/content-item-share.js').read_text()
+          assert "navigator.share" in js and "navigator.clipboard.writeText" in js
+          assert "uuid.test(id)" in js
+          assert "dataset.itemId===id" in js
+          assert "storage_path" not in js
+          print('Article and forum share UI integration verified')
+          PY
+      - name: Default-off sharing gates and source integrity
+        run: |
+          node --check js/share-feature-flags.js
+          python3 - <<'PY'
+          from pathlib import Path
+          flags=Path('js/share-feature-flags.js').read_text()
+          for name in ('article','forum','audio'):
+              assert name+':false' in flags, name
+          for page,script in (('member-articles.html','content-item-share.js'),('forum.html','content-item-share.js'),('gospel.html','gospel-item-share.js')):
+              html=Path(page).read_text()
+              assert html.index('/js/share-feature-flags.js') < html.index('/js/'+script)
+          assert 'LYY_SHARE_FLAGS' in Path('js/content-item-share.js').read_text()
+          assert 'LYY_SHARE_FLAGS' in Path('js/gospel-item-share.js').read_text()
+          print('All sharing controls gated off by default')
+          PY
+      - name: Five-language share UI regression
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for path in ('js/content-item-share.js','js/gospel-item-share.js'):
+              source=Path(path).read_text()
+              for key in ("'zh-tw'",'zh:', 'en:', 'ko:', 'ja:'):
+                  assert key in source, (path,key)
+              assert "MutationObserver" in source
+              assert "attributeFilter:['lang']" in source
+              assert 'LYY_SHARE_FLAGS' in source
+          print('All five site languages, live language changes and disabled-by-default release flags covered')
+          PY

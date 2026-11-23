@@ -1,0 +1,11 @@
+# Dedicated PREVIEW worker only. Never add production routes or replace the website worker.
+name = "lyy12788-item-share-isolated-preview"
+main = "cloudflare/item-share-worker.mjs"
+compatibility_date = "2026-11-23"
+workers_dev = true
+
+# Preview credentials and origins are deliberately NOT committed here.
+# Configure SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, PUBLIC_SITE_ORIGIN,
+# SHARE_ORIGIN in the Cloudflare preview Worker settings before testing.
+# SHARE_ORIGIN must match the deployed https://*.workers.dev origin exactly.
+# Use the independent test Supabase project, never the production project.
