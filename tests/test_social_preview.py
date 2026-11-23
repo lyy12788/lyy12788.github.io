@@ -34,10 +34,23 @@ class SocialPreviewTests(unittest.TestCase):
                 self.assertEqual(parser.values('property','og:url'), ['https://lyy12788.com/'])
                 image = parser.values('property','og:image')[0]
                 self.assertEqual(urlparse(image).scheme, 'https')
+                self.assertEqual(urlparse(image).netloc, 'lyy12788.com')
+                self.assertEqual(urlparse(image).path, '/images/share-home.jpg')
+                self.assertEqual(parser.values('name','twitter:image'), [image])
                 self.assertEqual(parser.values('property','og:image:width'), ['1200'])
                 self.assertEqual(parser.values('property','og:image:height'), ['630'])
                 canonical = [x.get('href') for x in parser.links if x.get('rel') == 'canonical']
                 self.assertEqual(canonical, ['https://lyy12788.com/'])
+
+    def test_default_share_images(self):
+        for filename in ('share-home.jpg', 'share-article.jpg', 'share-forum.jpg'):
+            with self.subTest(image=filename):
+                path = ROOT / 'images' / filename
+                self.assertTrue(path.is_file(), str(path))
+                data = path.read_bytes()
+                self.assertTrue(data.startswith(b'\\xff\\xd8\\xff'), filename)
+                self.assertTrue(data.endswith(b'\\xff\\xd9'), filename)
+                self.assertLess(len(data), 1024 * 1024, filename)
 
 if __name__ == '__main__':
     unittest.main()
