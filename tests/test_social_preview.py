@@ -86,6 +86,9 @@ class SocialPreviewTests(unittest.TestCase):
                                  parser.values('property', 'og:image'))
                 self.assertEqual(parser.values('property', 'og:url'),
                                  ['https://lyy12788.com/' + name])
+                self.assertEqual(
+                    [x.get('href') for x in parser.links if x.get('rel') == 'canonical'],
+                    ['https://lyy12788.com/' + name])
                 self.assertEqual(parser.values('name', 'twitter:card'),
                                  ['summary_large_image'])
                 for key in ('og:title', 'og:description', 'og:image:alt'):
