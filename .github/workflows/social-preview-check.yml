@@ -1,0 +1,25 @@
+name: Social preview checks
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'player.html'
+      - 'articles.html'
+      - 'member-articles.html'
+      - 'forum.html'
+      - 'images/share-*.jpg'
+      - 'tests/test_social_preview.py'
+      - '.github/workflows/social-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate share preview metadata and images
+        run: python3 tests/test_social_preview.py
