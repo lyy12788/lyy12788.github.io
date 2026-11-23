@@ -10,7 +10,7 @@ const paths=[
 ];
 for(const [pathname,shouldActivate] of paths){
   const context={
-    location:{pathname},
+    location:{pathname,hash:pathname.startsWith('/forum')?'#post=11111111-1111-4111-8111-111111111111':''},
     window:{LYY_SHARE_FLAGS:{article:true,forum:true}},
     document:{documentElement:{lang:'zh-CN'},body:{}},
     MutationObserver:class {observe(){}},
@@ -23,7 +23,6 @@ for(const [pathname,shouldActivate] of paths){
   context.document.querySelectorAll=()=>{triggered=true;return []};
   context.document.getElementById=()=>{triggered=true;return null};
   context.window.addEventListener=()=>{};
-  context.location.hash='';
   vm.runInNewContext(source,context,{filename:'content-item-share.js'});
   assert.equal(triggered,shouldActivate,pathname);
 }
