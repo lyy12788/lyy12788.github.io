@@ -17,7 +17,7 @@ function add(target,id,type,title){
  const old=target.querySelector('.lyy-item-share');if(old){if(old.dataset.itemId===id)return;old.remove()}
  const btn=document.createElement('button');btn.type='button';btn.className='lyy-item-share';
  btn.style.cssText='margin:6px 8px 6px 0;padding:6px 10px;font:inherit;font-size:13px;background:transparent;color:inherit;border:1px solid currentColor;border-radius:7px;cursor:pointer';
- btn.dataset.itemId=id;btn.textContent='↗ '+strings()[0];
+ btn.dataset.itemId=id;btn.dataset.shareLabel='true';btn.textContent='↗ '+strings()[0];
  const url=new URL(type==='article'?'/member-articles.html':'/forum.html',location.origin);
  url.hash=(type==='article'?'article=':'post=')+encodeURIComponent(id);
  btn.addEventListener('click',()=>share(btn,title,url.href));
@@ -44,5 +44,6 @@ let queued=false;
 const schedule=()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;render()})};
 new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden']});
 window.addEventListener('hashchange',schedule);
+new MutationObserver(()=>{document.querySelectorAll('.lyy-item-share[data-share-label]').forEach(btn=>btn.textContent='↗ '+strings()[0])}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
 })();
