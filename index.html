@@ -649,7 +649,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  const OWNER_PREVIEW_ENABLED=true;
  const children=Array.from(root.children);
  let nav=null,content=null,managementObserver=null;
- function disable(){if(!nav)return;managementObserver?.disconnect();for(const el of children){el.removeAttribute('data-account-view');el.removeAttribute('data-layout-inactive');root.append(el);}document.getElementById('owner-profile-role')?.remove();nav.querySelectorAll('.owner-nav-icon').forEach(el=>el.remove());document.getElementById('auth-logout').querySelector('.owner-nav-icon')?.remove();ownerEntry.querySelector('.owner-nav-icon')?.remove();nav.remove();content.remove();nav=null;content=null;root.classList.remove('account-layout','account-layout-owner','account-layout-managing');}
+ function disable(){if(!nav)return;managementObserver?.disconnect();for(const el of children){el.removeAttribute('data-account-view');el.removeAttribute('data-layout-inactive');root.append(el);}nav.remove();content.remove();nav=null;content=null;root.classList.remove('account-layout','account-layout-owner','account-layout-managing');}
  function enable(){if(nav)return;
  nav=document.createElement('nav');content=document.createElement('div');nav.id='account-layout-nav';content.id='account-layout-content';
  const adminPanel=document.getElementById('admin-member-panel'),adminDetail=document.getElementById('admin-member-detail');
@@ -662,23 +662,19 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  content.append(el);}
  const overview=document.createElement('section');overview.id='owner-profile-overview';overview.dataset.accountView='profile';
  const heading=document.createElement('strong');heading.textContent='基本信息';overview.append(heading);
- const dl=document.createElement('dl');const fields=[['公开昵称','account-nickname'],['个人简介','account-bio'],['邮箱','auth-member-email'],['注册日期','account-joined']];const values=[];
+ const dl=document.createElement('dl');const fields=[['公开昵称','account-nickname'],['个人简介','account-bio'],['个人网站链接（可选）','account-website'],['社交媒体主页链接（可选）','account-social'],['注册日期','account-joined']];const values=[];
  for(const [label,id] of fields){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.setAttribute('data-user-content','');dl.append(dt,dd);values.push([id,dd]);}overview.append(dl);
- function refreshOverview(){for(const [id,dd] of values){const el=document.getElementById(id);const value=(id==='auth-member-email'?(el?.textContent||'').replace(/^[^:：]*[:：]\s*/,''):(el?.value??el?.textContent))||'—';if(dd.textContent!==value)dd.textContent=value;}}
+ function refreshOverview(){for(const [id,dd] of values){const el=document.getElementById(id);const value=(el?.value??el?.textContent)||'—';if(dd.textContent!==value)dd.textContent=value;}}
  const edit=document.createElement('button');edit.type='button';edit.className='account-secondary';edit.textContent='编辑资料';edit.onclick=()=>select('edit');overview.append(edit);content.append(overview);
  function select(key){refreshOverview();adminPanel.hidden=true;adminDetail.hidden=true;for(const el of content.querySelectorAll('[data-account-view]'))el.toggleAttribute('data-layout-inactive',el.dataset.accountView!==key);for(const b of nav.querySelectorAll('button[data-view]'))b.setAttribute('aria-pressed',String(b.dataset.view===(key==='edit'?'profile':key)));if(key==='security'){const d=document.getElementById('account-security-details');if(d)d.open=true;}}
  for(const [key,label] of [['profile','个人资料'],['security','账户安全'],['privacy','隐私设置']]){const b=document.createElement('button');b.type='button';b.dataset.view=key;b.textContent=label;b.onclick=()=>select(key);nav.append(b);}
  for(const [label,url] of [['我的文章','/member-articles.html#mine'],['我的帖子','/forum.html#mine'],['消息中心','/notifications.html']]){const a=document.createElement('a');a.textContent=label;a.href=url;if(window.parent!==window&&new URLSearchParams(location.search).has('account_embed'))a.target='_top';if(label==='消息中心'){const badge=document.createElement('span');badge.className='lyy-unread-badge';badge.hidden=true;a.append(' ',badge);}nav.append(a);}
- nav.append(ownerEntry,document.getElementById('auth-logout'));
- const role=document.createElement('p');role.id='owner-profile-role';role.textContent='站长';document.getElementById('account-display-name').parentElement.append(role);
- const paths=['M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M4 21v-2a8 8 0 0 1 16 0v2','M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6z','M4 7h16v14H4z M9 7V4h6v3','M5 3h14v18H5z M8 8h8 M8 12h8','M3 4h18v13H9l-6 4z','M18 8a6 6 0 0 0-12 0v6l-2 3h16l-2-3z M10 21h4','M4 6h16v14H4z M8 3v6 M16 3v6','M4 4h10v16H4z M11 12h10 M17 8l4 4-4 4'];
- const controls=Array.from(nav.querySelectorAll('button,a'));controls.forEach((el,i)=>{const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('class','owner-nav-icon');svg.setAttribute('aria-hidden','true');const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',paths[i]||paths[0]);svg.append(p);el.prepend(svg);});
- root.append(nav,content);root.classList.add('account-layout','account-layout-owner');select('profile');
+ nav.append(ownerEntry,document.getElementById('auth-logout'));root.append(nav,content);root.classList.add('account-layout','account-layout-owner');select('profile');
  const refreshTimer=setInterval(()=>{if(!overview.isConnected){clearInterval(refreshTimer);return;}if(!overview.hasAttribute('data-layout-inactive'))refreshOverview();},1000);
  function syncManagement(){root.classList.toggle('account-layout-managing',!ownerEntry.hidden&&(!adminPanel.hidden||!adminDetail.hidden));}
  managementObserver=new MutationObserver(syncManagement);for(const el of [adminPanel,adminDetail])managementObserver.observe(el,{attributes:true,attributeFilter:['hidden']});syncManagement();
  }
- function sync(){if(OWNER_PREVIEW_ENABLED&&!ownerEntry.hidden&&!root.hidden)enable();else disable();}
+ function sync(){if(OWNER_PREVIEW_ENABLED&&!ownerEntry.hidden&&!root.hidden){try{enable();}catch(error){console.error('Owner layout fallback',error);disable();}}else disable();}
  const observer=new MutationObserver(sync);for(const el of [ownerEntry,root])observer.observe(el,{attributes:true,attributeFilter:['hidden']});sync();
 
 })();
