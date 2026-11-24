@@ -98,10 +98,13 @@ const show=id=>{closeOwnAccountPopup();for(const x of ['home','auth','account','
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==unifiedAccountDialog?.querySelector('iframe')?.contentWindow)return;if(e.data?.type==='lyy-close-account')closeUnifiedAccountDialog()});
 let unifiedAccountDialog=null;
 function closeUnifiedAccountDialog(){
- if(!unifiedAccountDialog)return;
- if(unifiedAccountDialog.open)unifiedAccountDialog.close();
+ if(!unifiedAccountDialog||!unifiedAccountDialog.open)return;
+ const returnToMemberSpace=location.hash==='#account'&&
+  new URLSearchParams(location.search).get('accountReturn')==='member-space';
+ unifiedAccountDialog.close();
  const frame=unifiedAccountDialog.querySelector('iframe');
  if(frame)frame.src='about:blank';
+ if(returnToMemberSpace){location.replace('/member-space-preview.html');return}
  if(location.hash==='#account')history.replaceState(null,'',location.pathname+location.search+'#home');
 }
 function openUnifiedAccountDialog(){
