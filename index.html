@@ -492,6 +492,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 #account-layout-content .account-summary{margin:0 0 8px}
 #account-layout-content [data-account-view][data-layout-inactive]{display:none!important}
 #account-layout-nav #auth-logout{margin-top:10px}
+#account-layout-nav .lyy-unread-badge:not([hidden]){display:inline-block;min-width:8px;min-height:8px;border-radius:50%;background:#d53b43;color:white;font-size:11px;text-align:center;padding:0 3px}
 @media(max-width:600px) and (orientation:portrait){#auth-member.account-layout{grid-template-columns:minmax(0,1fr);gap:8px}#account-layout-nav{flex-direction:row;overflow-x:auto;border-inline-end:0;border-bottom:1px solid var(--line,#536780);padding:0 0 5px}#account-layout-nav button,#account-layout-nav a{width:auto;flex:0 0 auto;white-space:nowrap}#account-layout-nav #auth-logout{margin:0}}
 @media(max-height:500px) and (orientation:landscape){#auth-member.account-layout{grid-template-columns:minmax(115px,1fr) minmax(0,3fr);gap:8px}}
 </style></head>
@@ -620,7 +621,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  for(const [key,els] of Object.entries(views))for(const el of els)el.dataset.accountView=key;
  function select(key){for(const el of content.querySelectorAll('[data-account-view]'))el.toggleAttribute('data-layout-inactive',el.dataset.accountView!==key);for(const b of nav.querySelectorAll('button[data-view]'))b.setAttribute('aria-pressed',String(b.dataset.view===key));if(key==='security'){const d=document.getElementById('account-security-details');if(d)d.open=true;}}
  for(const [key,label] of [['profile','个人资料'],['security','账户安全'],['points','会员等级与积分'],['privacy','隐私设置']]){const b=document.createElement('button');b.type='button';b.dataset.view=key;b.textContent=label;b.onclick=()=>select(key);nav.append(b);}
- for(const [label,url] of [['我的文章','/member-articles.html#write'],['我的帖子','/forum.html#my-posts'],['消息中心','/notifications.html']]){const a=document.createElement('a');a.textContent=label;a.href=url;nav.append(a);}
+ for(const [label,url] of [['我的文章','/member-articles.html#mine'],['我的帖子','/forum.html#mine'],['消息中心','/notifications.html']]){const a=document.createElement('a');a.textContent=label;a.href=url;if(window.parent!==window&&new URLSearchParams(location.search).has('account_embed'))a.target='_top';if(label==='消息中心'){const badge=document.createElement('span');badge.className='lyy-unread-badge';badge.hidden=true;a.append(' ',badge);}nav.append(a);}
  nav.append(document.getElementById('auth-logout'));root.append(nav,content);root.classList.add('account-layout');select('profile');
 })();
 </script><div id="admin-modal" class="modal-backdrop" hidden><div class="admin-box" role="dialog" aria-modal="true" aria-labelledby="admin-title"><div class="auth-top"><h2 id="admin-title">评论管理</h2><button class="close-btn" id="admin-close" type="button" aria-label="关闭">×</button></div><p class="muted">仅管理员可查看举报记录并删除违规评论。删除不可恢复。</p><button class="plain-btn" id="admin-refresh" type="button">刷新举报列表</button><div id="admin-status" class="status"></div><div id="admin-reports"></div></div></div>
