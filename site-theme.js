@@ -37,7 +37,19 @@
   };
   const colorProperty = /^(?:color|background(?:-color|-image)?|border(?:-(?:top|right|bottom|left|block|block-start|block-end|inline|inline-start|inline-end))?(?:-color)?|outline(?:-color)?|box-shadow|text-shadow|text-decoration(?:-color)?|caret-color|accent-color|fill|stroke)$/;
   const untouched = '[data-no-theme],.post-body,.comment-body,.user-content,[data-user-content],.forum-post-content,.forum-comment-text,[id^="oauth-"]';
-  let settings = read();
+  // An account iframe opened by member space inherits its independent appearance.
+  // Never persist this override to the main site's shared appearance storage.
+  const accountParams = new URLSearchParams(location.search);
+  const accountMode = accountParams.get('space_skin');
+  let spaceAccount = false;
+  try {
+    spaceAccount = window.parent !== window && accountParams.get('account_embed') === '1' &&
+      window.parent.location.origin === location.origin &&
+      ['/member-space-preview', '/member-space-preview.html'].includes(window.parent.location.pathname) &&
+      ['light', 'dark'].includes(accountMode);
+  } catch {}
+  const accountAppearance = spaceAccount ? { palette: 'pine', mode: accountMode } : null;
+  let settings = accountAppearance || read();
   let menu;
 
   function read() {
@@ -450,6 +462,7 @@
 
   window.addEventListener('storage', event => {
     if (event.key !== storageKey && event.key !== null) return;
+    if (accountAppearance) return;
     settings = read();
     apply();
   });

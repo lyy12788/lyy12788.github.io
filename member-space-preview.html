@@ -1,0 +1,162 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>会员个人空间 · 站长测试</title><link rel="stylesheet" href="/member-space.css">
+</head>
+<body>
+<main>
+  <header class="space-bar">
+    <a href="/" id="main-site">主站</a>
+    <div class="space-tools">
+      <a href="/forum.html?accountReturn=member-space#account" id="back" data-player-local-action>← 返回我的账户</a>
+      <button id="skin-toggle" type="button" hidden></button>
+    </div>
+  </header>
+  <p id="skin-status" class="muted" role="status"></p>
+  <p id="status" role="status" aria-live="polite">正在验证站长权限……</p>
+  <div id="content" hidden>
+    <aside class="space-sidebar">
+      <nav aria-labelledby="profile-title">
+        <h2 id="profile-title">个人主页</h2>
+        <a id="profile-link" href="#profile">个人主页</a>
+        <a id="articles-link" href="#article-list">我的文章</a>
+        <a id="posts-link" href="#post-list">我的论坛帖子</a>
+      </nav>
+      <a class="space-action" href="/forum.html?accountReturn=member-space#account" id="edit-link" data-player-local-action>编辑个人资料与头像</a>
+    </aside>
+    <div class="space-feed">
+      <section id="profile" aria-labelledby="display-name">
+        <div class="profile-heading">
+          <div class="avatar" aria-hidden="true"><span id="avatar-fallback"></span><img id="avatar" alt="" hidden></div>
+          <div>
+            <h1 id="display-name"></h1>
+            <p id="public-id" class="muted"></p>
+          </div>
+        </div>
+        <p id="profile-bio"></p>
+        <p class="muted" id="privacy-note">本页面仅供站长测试，尚未向普通会员开放。</p>
+      </section>
+      <section id="article-list" aria-labelledby="articles-title">
+        <div class="section-heading"><h2 id="articles-title">我的文章</h2><a href="/member-articles.html?write=1&from=member-space" id="write-link">写文章 / 管理草稿</a></div>
+        <div id="articles"></div>
+      </section>
+      <section id="post-list" aria-labelledby="posts-title">
+        <div class="section-heading"><h2 id="posts-title">我的论坛帖子</h2><a href="/forum.html?from=member-space#mine" id="forum-link">前往论坛管理</a></div>
+        <div id="posts"></div>
+      </section>
+    </div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="/auth-session.js?v=2"></script><script>
+'use strict';
+const $=id=>document.getElementById(id);
+const translations={
+zh:{title:'会员个人空间 · 站长测试',loading:'正在验证站长权限……',denied:'此功能仅向站长测试账号开放。',login:'请先登录站长账号。',error:'读取失败，请稍后重试。',profile:'个人主页',privacy:'本页面仅供站长测试，尚未向普通会员开放。',edit:'编辑个人资料与头像',articles:'我的文章',posts:'我的论坛帖子',write:'写文章 / 管理草稿',forum:'前往论坛管理',mainSite:'主站',back:'← 返回我的账户',empty:'暂无内容',id:'会员ID：'},
+en:{title:'Member space · Owner preview',loading:'Verifying owner access…',denied:'This preview is available to the site owner only.',login:'Sign in as the site owner first.',error:'Could not load. Please try again.',profile:'Personal homepage',privacy:'Owner-only preview. Not available to members yet.',edit:'Edit profile and avatar',articles:'My articles',posts:'My forum posts',write:'Write articles / manage drafts',forum:'Manage forum posts',mainSite:'Main site',back:'← Back to my account',empty:'No content yet',id:'Member ID: '},
+ko:{title:'회원 공간 · 사이트 소유자 미리보기',loading:'소유자 권한 확인 중…',denied:'이 기능은 사이트 소유자만 테스트할 수 있습니다.',login:'사이트 소유자 계정으로 로그인하세요.',error:'불러오지 못했습니다. 다시 시도하세요.',profile:'개인 홈페이지',privacy:'소유자 전용 테스트이며 일반 회원에게 공개되지 않았습니다.',edit:'프로필 및 아바타 편집',articles:'내 글',posts:'내 포럼 게시물',write:'글 작성 / 초안 관리',forum:'포럼 글 관리',mainSite:'메인 사이트',back:'← 내 계정으로',empty:'내용이 없습니다',id:'회원 ID: '},
+ja:{title:'会員スペース · サイト所有者プレビュー',loading:'所有者権限を確認しています…',denied:'このプレビューはサイト所有者専用です。',login:'所有者アカウントでログインしてください。',error:'読み込みに失敗しました。',profile:'個人ホームページ',privacy:'所有者専用テストです。一般会員には公開されていません。',edit:'プロフィールと画像を編集',articles:'自分の記事',posts:'自分のフォーラム投稿',write:'記事を書く / 下書き管理',forum:'フォーラム投稿を管理',mainSite:'メインサイト',back:'← アカウントに戻る',empty:'コンテンツはありません',id:'会員ID：'},
+tw:{title:'會員個人空間 · 站長測試',loading:'正在驗證站長權限……',denied:'此功能僅向站長測試帳號開放。',login:'請先登入站長帳號。',error:'讀取失敗，請稍後重試。',profile:'個人主頁',privacy:'本頁面僅供站長測試，尚未向普通會員開放。',edit:'編輯個人資料與頭像',articles:'我的文章',posts:'我的論壇帖子',write:'寫文章 / 管理草稿',forum:'前往論壇管理',mainSite:'主站',back:'← 返回我的帳戶',empty:'暫無內容',id:'會員ID：'}};
+const savedLanguage=(()=>{try{return localStorage.getItem('lyy-site-language')}catch{return null}})();const locale=(savedLanguage||navigator.language||document.documentElement.lang||'zh').toLowerCase();let lang=locale.startsWith('ko')?'ko':locale.startsWith('ja')?'ja':locale.includes('tw')||locale.includes('hk')||locale.includes('hant')?'tw':locale.startsWith('en')?'en':'zh';let t=translations[lang];document.documentElement.lang=({'zh':'zh-CN',tw:'zh-TW',en:'en',ko:'ko',ja:'ja'})[lang];document.title=t.title;
+const skinLabels={zh:['深色皮肤','浅色皮肤'],tw:['深色皮膚','淺色皮膚'],en:['Dark theme','Light theme'],ko:['어두운 테마','밝은 테마'],ja:['ダークテーマ','ライトテーマ']};
+function initSkin(db,user){
+ const key='lyy-member-space-skin:'+user.id;
+ let skin=user.user_metadata?.member_space_skin;
+ if(skin!=='light'&&skin!=='dark'){
+  try{skin=localStorage.getItem(key)}catch{}
+ }
+ if(skin!=='dark')skin='light';
+ const button=$('skin-toggle');
+ function apply(){
+  document.documentElement.dataset.skin=skin;
+  button.textContent=skinLabels[lang][skin==='dark'?1:0];
+  button.setAttribute('aria-pressed',String(skin==='dark'));
+ }
+ apply();
+ button.addEventListener('click',async()=>{
+  const next=skin==='dark'?'light':'dark';
+  button.disabled=true;
+  try{
+   const {error}=await db.auth.updateUser({data:{member_space_skin:next}});
+   if(error)throw error;
+   skin=next;
+   apply();
+   $('skin-status').textContent='';
+   try{localStorage.setItem(key,skin)}catch{}
+  }catch{
+   $('skin-status').textContent=t.error;
+  }finally{button.disabled=false}
+ });
+ button.hidden=false;
+}
+for(const [id,key] of Object.entries({'profile-link':'profile','articles-link':'articles','posts-link':'posts',status:'loading','profile-title':'profile','privacy-note':'privacy','edit-link':'edit','articles-title':'articles','posts-title':'posts','write-link':'write','forum-link':'forum',back:'back','main-site':'mainSite'}))$(id).textContent=t[key];
+const statusLabels={draft:['草稿','草稿','Draft','초안','下書き'],pending:['待审核','待審核','Pending review','검토 대기','審査待ち'],published:['已发布','已發布','Published','게시됨','公開済み'],rejected:['未通过','未通過','Rejected','반려됨','却下'],hidden:['已隐藏','已隱藏','Hidden','숨김','非表示'],deleted:['已删除','已刪除','Deleted','삭제됨','削除済み']};function statusText(v){return statusLabels[v]?.[['zh','tw','en','ko','ja'].indexOf(lang)]||(v?({zh:'其他状态',tw:'其他狀態',en:'Other status',ko:'기타 상태',ja:'その他の状態'})[lang]:'')}function addRows(container,items,prefix){container.replaceChildren();if(!items.length){const p=document.createElement('p');p.className='muted';p.textContent=t.empty;container.append(p);return}for(const item of items){const row=document.createElement('div');row.className='item';const a=document.createElement('a');a.textContent=item.title||t.empty;a.href=item.status==='published'?prefix+encodeURIComponent(item.id):prefix.includes('member-articles')?'/member-articles.html?write=1&from=member-space':'/forum.html?from=member-space#mine';const meta=document.createElement('div');meta.className='muted';meta.textContent=[statusText(item.status),item.created_at?new Date(item.created_at).toLocaleDateString(document.documentElement.lang):null].filter(Boolean).join(' · ');row.append(a,meta);container.append(row)}}
+function renderProfile(user, profile) {
+ const metadata=user.user_metadata||{};
+ const name=String(metadata.comment_nickname||'').trim()||profile?.display_name||t.profile;
+ $('display-name').textContent=name;
+ $('avatar-fallback').textContent=Array.from(name)[0]?.toUpperCase()||'';
+ $('profile-bio').textContent=String(metadata.bio||'').trim();
+ $('public-id').textContent=profile?.show_public_id&&profile?.public_id?t.id+profile.public_id:'';
+ const avatar=$('avatar');
+ avatar.hidden=true;
+ avatar.onload=()=>{avatar.hidden=false};
+ avatar.onerror=()=>{avatar.hidden=true};
+ if(typeof metadata.avatar_url==='string'&&/^https:\/\//i.test(metadata.avatar_url)){
+  if(avatar.getAttribute('src')===metadata.avatar_url&&avatar.complete&&avatar.naturalWidth)avatar.hidden=false;
+  else avatar.src=metadata.avatar_url;
+ }else avatar.removeAttribute('src');
+}
+
+let accountDialog=null, accountOpener=null, accountRefresh=null;
+function closeSpaceAccount(){
+ if(!accountDialog?.open)return;
+ accountDialog.close();
+ accountDialog.querySelector('iframe').src='about:blank';
+ accountOpener?.focus({preventScroll:true});
+ if(accountRefresh)void accountRefresh();
+}
+function openSpaceAccount(event){
+ event.preventDefault();
+ if($('content').hidden)return;
+ accountOpener=event.currentTarget;
+ if(!accountDialog){
+  accountDialog=document.createElement('dialog');
+  accountDialog.id='space-account-dialog';
+  accountDialog.setAttribute('aria-label',t.back);
+  const frame=document.createElement('iframe');
+  frame.title=t.back;frame.referrerPolicy='same-origin';
+  accountDialog.append(frame);document.body.append(accountDialog);
+  accountDialog.addEventListener('cancel',e=>{e.preventDefault();closeSpaceAccount()});
+  accountDialog.addEventListener('click',e=>{if(e.target===accountDialog)closeSpaceAccount()});
+ }
+ accountDialog.querySelector('iframe').src='/?account_embed=1&appearance=4&tablet_ui=1&locale_ui=2&phone_ui=1&space_skin='+(document.documentElement.dataset.skin==='dark'?'dark':'light')+'#account';
+ if(!accountDialog.open)accountDialog.showModal();
+}
+for(const id of ['back','edit-link'])$(id).addEventListener('click',openSpaceAccount);
+window.addEventListener('message',e=>{
+ if(e.origin===location.origin&&e.source===accountDialog?.querySelector('iframe')?.contentWindow&&e.data?.type==='lyy-close-account')closeSpaceAccount();
+});
+
+function savePosition(uid) {
+ try{sessionStorage.setItem('lyy-member-space-scroll:'+uid,String(Math.max(0,window.scrollY)))}catch{}
+}
+function restorePosition(uid) {
+ if(location.hash){
+  document.getElementById(location.hash.slice(1))?.scrollIntoView();
+  return;
+ }
+ let position=0;
+ try{position=Number(sessionStorage.getItem('lyy-member-space-scroll:'+uid))||0}catch{}
+ if(position<=0)return;
+ // Wait until the authenticated feed has entered layout before restoring a deep scroll.
+ requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo({top:position,behavior:'auto'})));
+}
+(async()=>{try{const db=window.lyyAuth.createClient('https://mkchupvmervxkskvjyhz.supabase.co','sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z');const {data:auth,error:authError}=await db.auth.getUser();if(authError||!auth?.user){$('status').textContent=t.login;return}const {data:owner,error:roleError}=await db.rpc('is_site_admin');if(roleError||owner!==true){$('status').textContent=t.denied;return}const uid=auth.user.id;let profileData;db.auth.onAuthStateChange((event,session)=>{if(event==='USER_UPDATED'&&session?.user?.id===uid)renderProfile(session.user, profileData);if((event==='SIGNED_IN'||event==='SIGNED_OUT')&&session?.user?.id!==uid){$('content').hidden=true;$('skin-toggle').hidden=true;location.reload()}});const [profile,articles,posts]=await Promise.all([db.from('forum_profiles').select('display_name,public_id,show_public_id').eq('user_id',uid).maybeSingle(),db.from('member_articles').select('id,title,status,created_at').eq('author_id',uid).order('created_at',{ascending:false}).limit(30),db.from('forum_posts').select('id,title,status,created_at').eq('author_id',uid).order('created_at',{ascending:false}).limit(30)]);if(profile.error||articles.error||posts.error){$('status').textContent=t.error;return}profileData=profile.data;accountRefresh=async()=>{const {data}=await db.auth.getUser();if(data?.user?.id!==uid){location.reload();return}const {data:owner}=await db.rpc('is_site_admin');if(owner!==true){location.reload();return}const fresh=await db.from('forum_profiles').select('display_name,public_id,show_public_id').eq('user_id',uid).maybeSingle();if(!fresh.error)profileData=fresh.data;renderProfile(data.user,profileData)};renderProfile(auth.user,profileData);addRows($('articles'),articles.data||[],'/member-articles.html?from=member-space#article=');addRows($('posts'),posts.data||[],'/forum.html?from=member-space#post=');initSkin(db,auth.user);$('content').hidden=false;$('status').textContent='';restorePosition(uid);window.addEventListener('pagehide',()=>savePosition(uid));window.addEventListener('click',event=>{const link=event.target.closest?.('a[href]');if(link&&link.origin===location.origin&&link.pathname!==location.pathname)savePosition(uid)},true);window.addEventListener('pageshow',event=>{if(event.persisted){restorePosition(uid);void db.auth.getUser().then(({data})=>{if(data?.user?.id===uid)renderProfile(data.user,profileData);else location.reload()});}});}catch(e){$('status').textContent=t.error}})();
+window.addEventListener('message',event=>{
+ if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='lyy-language')return;
+ const locale=event.data.lang;
+ if(!['zh-CN','zh-TW','en','ko','ja'].includes(locale)||locale===document.documentElement.lang)return;
+ try{localStorage.setItem('lyy-site-language',locale)}catch{return}
+ location.reload();
+});
+window.addEventListener('storage',event=>{
+ if(event.key==='lyy-site-language'&&event.newValue!==document.documentElement.lang)location.reload();
+});
+</script></body></html>
