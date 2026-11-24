@@ -506,7 +506,16 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 #account-layout-content [data-account-view][data-layout-inactive]{display:none!important}
 #account-layout-nav #auth-logout{margin-top:10px}
 #account-layout-nav .lyy-unread-badge:not([hidden]){display:inline-block;min-width:8px;min-height:8px;border-radius:50%;background:#d53b43;color:white;font-size:11px;text-align:center;padding:0 3px}
-@media(max-width:600px) and (orientation:portrait){#auth-member.account-layout{grid-template-columns:minmax(0,1fr);gap:8px}#account-layout-nav{flex-direction:row;overflow-x:auto;border-inline-end:0;border-bottom:1px solid var(--line,#536780);padding:0 0 5px}#account-layout-nav button,#account-layout-nav a{width:auto;flex:0 0 auto;white-space:nowrap}#account-layout-nav #auth-logout{margin:0}}
+@media(max-width:600px) and (orientation:portrait){#auth-member.account-layout{grid-template-columns:minmax(88px,30%) minmax(0,1fr);gap:8px}#account-layout-nav{gap:3px;padding-inline-end:5px}#account-layout-nav button,#account-layout-nav a{font-size:12px;padding:8px 4px;white-space:normal}#account-layout-content{font-size:13px}#account-layout-content .account-summary{flex-wrap:wrap;gap:6px}#account-layout-content .account-details{display:block}#account-layout-content .account-details>div{display:block;margin:6px 0}#account-layout-content .account-summary .account-avatar{width:44px;height:44px}#account-layout-content input,#account-layout-content textarea{padding:7px;min-width:0;width:100%}#account-layout-content [data-lyy-turnstile]{max-width:100%;overflow-x:auto}}
+#owner-profile-overview{border:1px solid var(--line);border-radius:8px;padding:12px;margin:8px 0}
+#owner-profile-overview dl{margin:8px 0;display:grid;gap:8px}
+#owner-profile-overview dt{font-size:12px;color:var(--muted)}
+#owner-profile-overview dd{margin:0;overflow-wrap:anywhere;white-space:pre-wrap}
+#owner-profile-overview button{margin-top:8px}
+#account-layout-content .account-summary .account-avatar{display:flex}
+#auth-member.account-layout-owner #account-layout-content .account-details{grid-template-columns:1fr}
+#auth-member.account-layout-owner #account-layout-content .account-details [data-lyy-turnstile]{max-width:100%;overflow-x:auto}
+#auth-member.account-layout-managing #owner-profile-overview{display:none!important}
 @media(max-height:500px) and (orientation:landscape){#auth-member.account-layout{grid-template-columns:minmax(115px,1fr) minmax(0,3fr);gap:8px}}
 </style></head>
 <body><script>if(new URLSearchParams(location.search).has('account_embed')&&window.parent!==window)document.body.classList.add('lyy-account-embed');</script>
@@ -631,12 +640,20 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  if(el.id==='account-level-panel')el.dataset.accountView='points';
  else if(el.classList.contains('account-security-section'))el.dataset.accountView='security';
  else if(el.id==='home-member-id-area')el.dataset.accountView='privacy';
- else if(el!==adminPanel&&el!==adminDetail&&!el.classList.contains('account-summary'))el.dataset.accountView='profile';
+ else if(el.classList.contains('account-details'))el.dataset.accountView='security';
+ else if(el!==adminPanel&&el!==adminDetail&&!el.classList.contains('account-summary'))el.dataset.accountView='edit';
  content.append(el);}
- function select(key){adminPanel.hidden=true;adminDetail.hidden=true;for(const el of content.querySelectorAll('[data-account-view]'))el.toggleAttribute('data-layout-inactive',el.dataset.accountView!==key);for(const b of nav.querySelectorAll('button[data-view]'))b.setAttribute('aria-pressed',String(b.dataset.view===key));if(key==='security'){const d=document.getElementById('account-security-details');if(d)d.open=true;}}
+ const overview=document.createElement('section');overview.id='owner-profile-overview';overview.dataset.accountView='profile';
+ const heading=document.createElement('strong');heading.textContent='基本信息';overview.append(heading);
+ const dl=document.createElement('dl');const fields=[['公开昵称','account-nickname'],['个人简介','account-bio'],['个人网站链接（可选）','account-website'],['社交媒体主页链接（可选）','account-social'],['注册日期','account-joined']];const values=[];
+ for(const [label,id] of fields){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.setAttribute('data-user-content','');dl.append(dt,dd);values.push([id,dd]);}overview.append(dl);
+ function refreshOverview(){for(const [id,dd] of values){const el=document.getElementById(id);const value=(el?.value??el?.textContent)||'—';if(dd.textContent!==value)dd.textContent=value;}}
+ const edit=document.createElement('button');edit.type='button';edit.className='account-secondary';edit.textContent='编辑资料';edit.onclick=()=>select('edit');overview.append(edit);content.append(overview);
+ function select(key){refreshOverview();adminPanel.hidden=true;adminDetail.hidden=true;for(const el of content.querySelectorAll('[data-account-view]'))el.toggleAttribute('data-layout-inactive',el.dataset.accountView!==key);for(const b of nav.querySelectorAll('button[data-view]'))b.setAttribute('aria-pressed',String(b.dataset.view===(key==='edit'?'profile':key)));if(key==='security'){const d=document.getElementById('account-security-details');if(d)d.open=true;}}
  for(const [key,label] of [['profile','个人资料'],['security','账户安全'],['privacy','隐私设置']]){const b=document.createElement('button');b.type='button';b.dataset.view=key;b.textContent=label;b.onclick=()=>select(key);nav.append(b);}
  for(const [label,url] of [['我的文章','/member-articles.html#mine'],['我的帖子','/forum.html#mine'],['消息中心','/notifications.html']]){const a=document.createElement('a');a.textContent=label;a.href=url;if(window.parent!==window&&new URLSearchParams(location.search).has('account_embed'))a.target='_top';if(label==='消息中心'){const badge=document.createElement('span');badge.className='lyy-unread-badge';badge.hidden=true;a.append(' ',badge);}nav.append(a);}
  nav.append(ownerEntry,document.getElementById('auth-logout'));root.append(nav,content);root.classList.add('account-layout','account-layout-owner');select('profile');
+ const refreshTimer=setInterval(()=>{if(!overview.isConnected){clearInterval(refreshTimer);return;}if(!overview.hasAttribute('data-layout-inactive'))refreshOverview();},1000);
  function syncManagement(){root.classList.toggle('account-layout-managing',!ownerEntry.hidden&&(!adminPanel.hidden||!adminDetail.hidden));}
  managementObserver=new MutationObserver(syncManagement);for(const el of [adminPanel,adminDetail])managementObserver.observe(el,{attributes:true,attributeFilter:['hidden']});syncManagement();
  }
