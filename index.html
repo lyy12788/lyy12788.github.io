@@ -487,6 +487,10 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 #auth-member.account-layout{display:grid;grid-template-columns:minmax(140px,1fr) minmax(0,3fr);gap:12px;align-items:start}
 #auth-member[hidden]{display:none!important}
 #account-layout-nav [hidden]{display:none!important}
+#account-layout-nav #admin-member-entry{position:static;margin:0;width:100%}
+#account-layout-nav #admin-members-open.compact-member-manage{width:100%;justify-content:flex-start;border:0;background:transparent;color:inherit;padding:9px 8px}
+#auth-member.account-layout-managing #account-layout-content>[data-account-view]{display:none!important}
+#auth-member.account-layout-managing #account-layout-content>.account-summary{display:none!important}
 #auth-member.account-layout-owner #account-level-panel,#auth-member.account-layout-owner #nickname-change-rule,#auth-member.account-layout-owner #nickname-change-status{display:none!important}
 #account-layout-nav{display:flex;flex-direction:column;gap:5px;min-width:0;border-inline-end:1px solid var(--line,#536780);padding-inline-end:9px}
 #account-layout-nav button,#account-layout-nav a{display:block;width:100%;text-align:start;padding:9px 8px;border:0;border-radius:6px;background:transparent;color:inherit;font:inherit;text-decoration:none;overflow-wrap:anywhere;cursor:pointer}
@@ -633,6 +637,13 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  for(const [label,url] of [['我的文章','/member-articles.html#mine'],['我的帖子','/forum.html#mine'],['消息中心','/notifications.html']]){const a=document.createElement('a');a.textContent=label;a.href=url;if(window.parent!==window&&new URLSearchParams(location.search).has('account_embed'))a.target='_top';if(label==='消息中心'){const badge=document.createElement('span');badge.className='lyy-unread-badge';badge.hidden=true;a.append(' ',badge);}nav.append(a);}
  nav.append(document.getElementById('auth-logout'));root.append(nav,content);root.classList.add('account-layout');select('profile');
  const ownerEntry=document.getElementById('admin-member-entry');
+ nav.insertBefore(ownerEntry,document.getElementById('auth-logout'));
+ const adminPanel=document.getElementById('admin-member-panel'),adminDetail=document.getElementById('admin-member-detail');
+ function syncManagement(){const active=!ownerEntry.hidden&&(!adminPanel.hidden||!adminDetail.hidden);root.classList.toggle('account-layout-managing',active);}
+ const managementObserver=new MutationObserver(syncManagement);
+ for(const el of [ownerEntry,adminPanel,adminDetail])managementObserver.observe(el,{attributes:true,attributeFilter:['hidden']});
+ nav.addEventListener('click',event=>{if(event.target.closest('button[data-view]')){adminPanel.hidden=true;adminDetail.hidden=true;syncManagement();}});
+ syncManagement();
  function syncRole(){const owner=!ownerEntry.hidden;root.classList.toggle('account-layout-owner',owner);const points=nav.querySelector('[data-view="points"]');points.hidden=owner;if(owner&&points.getAttribute('aria-pressed')==='true')select('profile');}
  new MutationObserver(syncRole).observe(ownerEntry,{attributes:true,attributeFilter:['hidden']});syncRole();
 })();
