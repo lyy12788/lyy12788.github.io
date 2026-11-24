@@ -487,7 +487,11 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 #account-layout-nav{display:flex;flex-direction:column;gap:5px;min-width:0;border-inline-end:1px solid var(--line,#536780);padding-inline-end:9px}
 #account-layout-nav button,#account-layout-nav a{display:block;width:100%;text-align:start;padding:9px 8px;border:0;border-radius:6px;background:transparent;color:inherit;font:inherit;text-decoration:none;overflow-wrap:anywhere;cursor:pointer}
 #account-layout-nav button[aria-pressed="true"]{background:var(--panel2,#25394c);font-weight:700;box-shadow:inset 3px 0 var(--gold,#d6ac42)}
-#account-layout-content{min-width:0}
+#account-layout-content{min-width:0;overflow-wrap:anywhere}
+#account-layout-content #admin-member-entry{position:static;margin:0 0 8px;text-align:end}
+#account-layout-content input,#account-layout-content textarea,#account-layout-content select,#account-layout-content canvas{max-width:100%}
+#account-layout-content .account-avatar-row{flex-wrap:wrap}
+#account-layout-content #account-bio{background:var(--panel2,#081827)!important;color:var(--text,#fff)!important;border-color:var(--line,#536780)!important}
 #account-layout-content .account-section{margin:8px 0;padding:10px 0;border-radius:0}
 #account-layout-content .account-summary{margin:0 0 8px}
 #account-layout-content [data-account-view][data-layout-inactive]{display:none!important}
@@ -1013,7 +1017,7 @@ $('article-search').addEventListener('input',()=>{articleLimit=12;renderArticles
  }
 })();
 </script>
-<script src="/article-publish-entry.js?v=6" defer></script><script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/edition-i18n.js?v=1" defer></script><script src="/site-i18n.js?v=20261125-point-reason" defer></script><script src="/edition-home.js?v=1" defer></script><script src="/notification-bell.js?v=6" defer></script><script src="/turnstile-auth.js?v=4" defer></script>
+<script src="/article-publish-entry.js?v=6" defer></script><script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/edition-i18n.js?v=1" defer></script><script src="/site-i18n.js?v=20261125-account-layout" defer></script><script src="/edition-home.js?v=1" defer></script><script src="/notification-bell.js?v=6" defer></script><script src="/turnstile-auth.js?v=4" defer></script>
 <script defer src="/swipe-navigation.js?v=2"></script>
 <style>
 /* Accessible password visibility controls */
