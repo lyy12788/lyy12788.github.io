@@ -126,7 +126,7 @@ function openSpaceAccount(event){
   accountDialog.addEventListener('cancel',e=>{e.preventDefault();closeSpaceAccount()});
   accountDialog.addEventListener('click',e=>{if(e.target===accountDialog)closeSpaceAccount()});
  }
- accountDialog.querySelector('iframe').src='/?account_embed=1&appearance=4&tablet_ui=1&locale_ui=2&phone_ui=1#account';
+ accountDialog.querySelector('iframe').src='/?account_embed=1&appearance=4&tablet_ui=1&locale_ui=2&phone_ui=1&space_skin='+(document.documentElement.dataset.skin==='dark'?'dark':'light')+'#account';
  if(!accountDialog.open)accountDialog.showModal();
 }
 for(const id of ['back','edit-link'])$(id).addEventListener('click',openSpaceAccount);
