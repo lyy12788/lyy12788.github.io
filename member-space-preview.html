@@ -1,19 +1,50 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>会员个人空间 · 站长测试</title><style>:root{color-scheme:light;--bg:#fafafa;--fg:#242424;--muted:#666;--line:#dedede;font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--fg)}:root[data-skin="dark"]{color-scheme:dark;--bg:#191919;--fg:#ededed;--muted:#aaa;--line:#393939}*{box-sizing:border-box}body{margin:0}main{max-width:860px;margin:auto;padding:20px clamp(16px,4vw,32px)}a{color:inherit;text-underline-offset:3px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}header p{margin:0;display:flex;align-items:center;gap:16px;flex-wrap:wrap}section{padding:14px 0;border-top:1px solid var(--line)}h1{font-size:clamp(20px,4vw,26px);font-weight:650}h2{font-size:18px;font-weight:600}.muted{color:var(--muted)}.item{padding:10px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.item:last-child{border:0}.item a{font-weight:550}button{font:inherit;color:inherit;background:transparent;border:1px solid var(--line);padding:7px 12px;border-radius:6px;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offset:3px}[hidden]{display:none!important} 
-:root{--bg:#f3f6fa;--fg:#243449;--muted:#607084;--line:#d9e2ec;--surface:#fff;--accent:#315e8a}
-:root[data-skin="dark"]{--bg:#151e2a;--fg:#e5edf6;--muted:#a6b5c8;--line:#354458;--surface:#202c3b;--accent:#a4c8f0}
-main{max-width:1200px;padding:24px clamp(12px,3vw,32px)}
-header{padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
-h1{margin:24px 0 16px}#content{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:18px;align-items:start}
-.card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
-.card h2{margin:0 0 12px}.profile-card{grid-row:span 2;overflow-wrap:anywhere}
-#display-name{font-size:1.25rem;font-weight:650;margin:12px 0 6px}
-#public-id:empty,#status:empty,#skin-status:empty{display:none}
-.item{padding:12px 0}.item a,#edit-link,#write-link,#forum-link{color:var(--accent)}
-.item .muted{font-size:.85rem;margin-top:4px}
-button{background:var(--surface);min-height:40px}header a{overflow-wrap:anywhere}
-@media(max-width:700px) and (orientation:portrait){main{padding:12px}#content{grid-template-columns:minmax(0,1fr);gap:10px}.profile-card{grid-row:auto}.card{padding:12px}header{padding:10px;gap:8px}header p{gap:10px}h1{margin:16px 0 12px}.item{padding:9px 0}}
-@media(max-width:900px) and (orientation:landscape){main{padding:10px 14px}#content{grid-template-columns:minmax(0,1fr) minmax(0,2.5fr);gap:10px}.card{padding:12px}h1{margin:12px 0}}
-</style></head><body><main><header><p><a href="/" id="main-site">主站</a><a href="/forum.html?accountReturn=member-space#account" id="back">← 返回我的账户</a></p><button id="skin-toggle" type="button" hidden></button></header><p id="skin-status" class="muted" role="status"></p><h1 id="title">会员个人空间 · 站长测试</h1><p id="status" role="status" aria-live="polite">正在验证站长权限……</p><div id="content" hidden><section class="card profile-card"><h2 id="profile-title">个人主页</h2><p id="display-name"></p><p id="public-id" class="muted"></p><p class="muted" id="privacy-note">本页面仅供站长测试，尚未向普通会员开放。</p><p><a href="/forum.html?accountReturn=member-space#account" id="edit-link">编辑个人资料与头像</a></p></section><section class="card"><h2 id="articles-title">我的文章</h2><div id="articles"></div><p><a href="/member-articles.html?write=1" id="write-link">写文章 / 管理草稿</a></p></section><section class="card"><h2 id="posts-title">我的论坛帖子</h2><div id="posts"></div><p><a href="/forum.html#mine" id="forum-link">前往论坛管理</a></p></section></div></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="/auth-session.js?v=2"></script><script>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>会员个人空间 · 站长测试</title><link rel="stylesheet" href="/member-space.css">
+</head>
+<body>
+<main>
+  <header class="space-bar">
+    <a href="/" id="main-site">主站</a>
+    <div class="space-tools">
+      <a href="/forum.html?accountReturn=member-space#account" id="back">← 返回我的账户</a>
+      <button id="skin-toggle" type="button" hidden></button>
+    </div>
+  </header>
+  <p id="skin-status" class="muted" role="status"></p>
+  <p id="status" role="status" aria-live="polite">正在验证站长权限……</p>
+  <div id="content" hidden>
+    <aside class="space-sidebar">
+      <nav aria-labelledby="profile-title">
+        <h2 id="profile-title">个人主页</h2>
+        <a id="profile-link" href="#profile">个人主页</a>
+        <a id="articles-link" href="#article-list">我的文章</a>
+        <a id="posts-link" href="#post-list">我的论坛帖子</a>
+      </nav>
+      <a class="space-action" href="/forum.html?accountReturn=member-space#account" id="edit-link">编辑个人资料与头像</a>
+    </aside>
+    <div class="space-feed">
+      <section id="profile" aria-labelledby="display-name">
+        <div class="profile-heading">
+          <div class="avatar" aria-hidden="true"><span id="avatar-fallback"></span><img id="avatar" alt="" hidden></div>
+          <div>
+            <h1 id="display-name"></h1>
+            <p id="public-id" class="muted"></p>
+          </div>
+        </div>
+        <p id="profile-bio"></p>
+        <p class="muted" id="privacy-note">本页面仅供站长测试，尚未向普通会员开放。</p>
+      </section>
+      <section id="article-list" aria-labelledby="articles-title">
+        <div class="section-heading"><h2 id="articles-title">我的文章</h2><a href="/member-articles.html?write=1" id="write-link">写文章 / 管理草稿</a></div>
+        <div id="articles"></div>
+      </section>
+      <section id="post-list" aria-labelledby="posts-title">
+        <div class="section-heading"><h2 id="posts-title">我的论坛帖子</h2><a href="/forum.html#mine" id="forum-link">前往论坛管理</a></div>
+        <div id="posts"></div>
+      </section>
+    </div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="/auth-session.js?v=2"></script><script>
 'use strict';
 const $=id=>document.getElementById(id);
 const translations={
@@ -54,9 +85,38 @@ function initSkin(db,user){
  });
  button.hidden=false;
 }
-for(const [id,key] of Object.entries({title:'title',status:'loading','profile-title':'profile','privacy-note':'privacy','edit-link':'edit','articles-title':'articles','posts-title':'posts','write-link':'write','forum-link':'forum',back:'back','main-site':'mainSite'}))$(id).textContent=t[key];
+for(const [id,key] of Object.entries({'profile-link':'profile','articles-link':'articles','posts-link':'posts',status:'loading','profile-title':'profile','privacy-note':'privacy','edit-link':'edit','articles-title':'articles','posts-title':'posts','write-link':'write','forum-link':'forum',back:'back','main-site':'mainSite'}))$(id).textContent=t[key];
 const statusLabels={draft:['草稿','草稿','Draft','초안','下書き'],pending:['待审核','待審核','Pending review','검토 대기','審査待ち'],published:['已发布','已發布','Published','게시됨','公開済み'],rejected:['未通过','未通過','Rejected','반려됨','却下'],hidden:['已隐藏','已隱藏','Hidden','숨김','非表示']};function statusText(v){return statusLabels[v]?.[['zh','tw','en','ko','ja'].indexOf(lang)]||v||''}function addRows(container,items,prefix){container.replaceChildren();if(!items.length){const p=document.createElement('p');p.className='muted';p.textContent=t.empty;container.append(p);return}for(const item of items){const row=document.createElement('div');row.className='item';const a=document.createElement('a');a.textContent=item.title||t.empty;a.href=item.status==='published'?prefix+encodeURIComponent(item.id):prefix.includes('member-articles')?'/member-articles.html?write=1':'/forum.html#mine';const meta=document.createElement('div');meta.className='muted';meta.textContent=[statusText(item.status),item.created_at?new Date(item.created_at).toLocaleDateString(document.documentElement.lang):null].filter(Boolean).join(' · ');row.append(a,meta);container.append(row)}}
-(async()=>{try{const db=window.lyyAuth.createClient('https://mkchupvmervxkskvjyhz.supabase.co','sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z');const {data:auth,error:authError}=await db.auth.getUser();if(authError||!auth?.user){$('status').textContent=t.login;return}const {data:owner,error:roleError}=await db.rpc('is_site_admin');if(roleError||owner!==true){$('status').textContent=t.denied;return}const uid=auth.user.id;db.auth.onAuthStateChange((event,session)=>{if((event==='SIGNED_IN'||event==='SIGNED_OUT')&&session?.user?.id!==uid){$('content').hidden=true;$('skin-toggle').hidden=true;location.reload()}});const [profile,articles,posts]=await Promise.all([db.from('forum_profiles').select('display_name,public_id,show_public_id').eq('user_id',uid).maybeSingle(),db.from('member_articles').select('id,title,status,created_at').eq('author_id',uid).order('created_at',{ascending:false}).limit(30),db.from('forum_posts').select('id,title,status,created_at').eq('author_id',uid).order('created_at',{ascending:false}).limit(30)]);if(profile.error||articles.error||posts.error){$('status').textContent=t.error;return}$('display-name').textContent=profile.data?.display_name||auth.user.email?.split('@')[0]||'';$('public-id').textContent=profile.data?.show_public_id&&profile.data?.public_id?t.id+profile.data.public_id:'';addRows($('articles'),articles.data||[],'/member-articles.html#article=');addRows($('posts'),posts.data||[],'/forum.html#post=');initSkin(db,auth.user);$('content').hidden=false;$('status').textContent='';}catch(e){$('status').textContent=t.error}})();
+function renderProfile(user, profile) {
+ const metadata=user.user_metadata||{};
+ const name=String(metadata.comment_nickname||'').trim()||profile?.display_name||t.profile;
+ $('display-name').textContent=name;
+ $('avatar-fallback').textContent=Array.from(name)[0]?.toUpperCase()||'';
+ $('profile-bio').textContent=String(metadata.bio||'').trim();
+ $('public-id').textContent=profile?.show_public_id&&profile?.public_id?t.id+profile.public_id:'';
+ const avatar=$('avatar');
+ avatar.hidden=true;
+ avatar.onload=()=>{avatar.hidden=false};
+ avatar.onerror=()=>{avatar.hidden=true};
+ if(typeof metadata.avatar_url==='string'&&/^https:\/\//i.test(metadata.avatar_url)){
+  if(avatar.getAttribute('src')===metadata.avatar_url&&avatar.complete&&avatar.naturalWidth)avatar.hidden=false;
+  else avatar.src=metadata.avatar_url;
+ }else avatar.removeAttribute('src');
+}
+function savePosition(uid) {
+ try{sessionStorage.setItem('lyy-member-space-scroll:'+uid,String(window.scrollY))}catch{}
+}
+function restorePosition(uid) {
+ if(location.hash){
+  document.getElementById(location.hash.slice(1))?.scrollIntoView();
+  return;
+ }
+ try{
+  const position=Number(sessionStorage.getItem('lyy-member-space-scroll:'+uid));
+  if(position>0)window.scrollTo(0,position);
+ }catch{}
+}
+(async()=>{try{const db=window.lyyAuth.createClient('https://mkchupvmervxkskvjyhz.supabase.co','sb_publishable_V3Gvd8EAOox1Se5XJBrmKQ_iRDLJm4Z');const {data:auth,error:authError}=await db.auth.getUser();if(authError||!auth?.user){$('status').textContent=t.login;return}const {data:owner,error:roleError}=await db.rpc('is_site_admin');if(roleError||owner!==true){$('status').textContent=t.denied;return}const uid=auth.user.id;let profileData;db.auth.onAuthStateChange((event,session)=>{if(event==='USER_UPDATED'&&session?.user?.id===uid)renderProfile(session.user, profileData);if((event==='SIGNED_IN'||event==='SIGNED_OUT')&&session?.user?.id!==uid){$('content').hidden=true;$('skin-toggle').hidden=true;location.reload()}});const [profile,articles,posts]=await Promise.all([db.from('forum_profiles').select('display_name,public_id,show_public_id').eq('user_id',uid).maybeSingle(),db.from('member_articles').select('id,title,status,created_at').eq('author_id',uid).order('created_at',{ascending:false}).limit(30),db.from('forum_posts').select('id,title,status,created_at').eq('author_id',uid).order('created_at',{ascending:false}).limit(30)]);if(profile.error||articles.error||posts.error){$('status').textContent=t.error;return}profileData=profile.data;renderProfile(auth.user,profileData);addRows($('articles'),articles.data||[],'/member-articles.html#article=');addRows($('posts'),posts.data||[],'/forum.html#post=');initSkin(db,auth.user);$('content').hidden=false;$('status').textContent='';restorePosition(uid);window.addEventListener('pagehide',()=>savePosition(uid));window.addEventListener('pageshow',event=>{if(event.persisted){restorePosition(uid);void db.auth.getUser().then(({data})=>{if(data?.user?.id===uid)renderProfile(data.user,profileData);else location.reload()});}});}catch(e){$('status').textContent=t.error}})();
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='lyy-language')return;
  const locale=event.data.lang;
