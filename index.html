@@ -522,10 +522,10 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 #auth-member.owner-reference-active>.owner-reference-shell{display:contents}
 #auth-member.owner-reference-active>[data-owner-inactive]{display:none!important}
 #auth-member.owner-reference-active>:not(.owner-reference-shell){grid-column:2;min-width:0;overflow-wrap:anywhere}
-.owner-reference-nav{grid-column:1;grid-row:1/span 20;display:flex;flex-direction:column;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px;min-width:0}
+.owner-reference-nav{grid-column:1;grid-row:1/span 2;display:flex;flex-direction:column;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px;min-width:0}
 .owner-reference-nav button,.owner-reference-nav a{font:inherit;font-size:13px;display:block;text-align:start;padding:9px 5px;border:0;border-radius:6px;background:transparent;color:var(--text);overflow-wrap:anywhere}
 .owner-reference-nav button[aria-pressed=true]{background:var(--panel2);font-weight:700}
-.owner-reference-main{grid-column:2;min-width:0;display:grid;gap:8px}
+.owner-reference-main{grid-column:2;grid-row:1;min-width:0;display:grid;gap:8px}.owner-reference-main:has(>.owner-reference-header[hidden]):has(>.owner-reference-card[hidden]){display:none}
 .owner-reference-header,.owner-reference-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px;min-width:0}
 .owner-reference-header{display:flex;align-items:center;gap:10px}
 .owner-reference-header p{font-size:12px;margin:3px 0;color:var(--muted)}
@@ -648,7 +648,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 (function(){
  const root=document.getElementById('auth-member'),owner=document.getElementById('admin-member-entry');if(!root||!owner)return;
  const original=Array.from(root.children);let shell=null,timer=null;
- function restore(){if(timer){clearInterval(timer);timer=null;}shell?.remove();shell=null;root.classList.remove('owner-reference-active');for(const el of original)el.removeAttribute('data-owner-inactive');}
+ function restore(){if(timer){clearInterval(timer);timer=null;}shell?.remove();shell=null;root.classList.remove('owner-reference-active');delete root.dataset.ownerReferenceView;for(const el of original)el.removeAttribute('data-owner-inactive');}
  function mount(){if(shell)return;try{
  const node=document.createElement('div');node.className='owner-reference-shell';
  const nav=document.createElement('nav'),main=document.createElement('div');nav.className='owner-reference-nav';main.className='owner-reference-main';node.append(nav,main);
@@ -656,15 +656,15 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  const card=document.createElement('section');card.className='owner-reference-card';const title=document.createElement('strong');title.textContent='基本信息';card.append(title);const dl=document.createElement('dl');card.append(dl);
  const rows=[['公开昵称','account-nickname'],['个人简介','account-bio'],['邮箱','auth-member-email'],['注册日期','account-joined']].map(([label,id])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.setAttribute('data-user-content','');dl.append(dt,dd);return [id,dd];});
  const edit=document.createElement('button');edit.type='button';edit.textContent='编辑资料';card.append(edit);main.append(header,card);
- function showOriginal(key){for(const el of original){const visible=key==='edit'?(el.classList.contains('account-profile-section')||!!el.querySelector('#account-avatar-file')):key==='security'?(el.classList.contains('account-security-section')||el.classList.contains('account-details')):key==='privacy'?el.id==='home-member-id-area':key==='manage'?['admin-member-panel','admin-member-detail'].includes(el.id):false;el.toggleAttribute('data-owner-inactive',!visible);}header.hidden=key!=='profile';card.hidden=key!=='profile';root.dataset.ownerReferenceView=key;for(const button of nav.querySelectorAll('button[data-view]'))button.setAttribute('aria-pressed',String(button.dataset.view===key));if(key==='security')document.getElementById('account-security-details').open=true;}
+ function showOriginal(key){for(const el of original){const visible=key==='edit'?(el.classList.contains('account-profile-section')||!!el.querySelector('#account-avatar-file')):key==='security'?(el.classList.contains('account-security-section')||el.classList.contains('account-details')):key==='privacy'?el.id==='home-member-id-area':key==='manage'?['admin-member-panel','admin-member-detail'].includes(el.id):false;el.toggleAttribute('data-owner-inactive',!visible);}header.hidden=key!=='profile';card.hidden=key!=='profile';root.dataset.ownerReferenceView=key;for(const button of nav.querySelectorAll('button[data-view]'))button.setAttribute('aria-pressed',String(button.dataset.view===key));if(key==='security')document.getElementById('account-security-details').open=true;if(key!=='manage'){document.getElementById('admin-member-panel').hidden=true;document.getElementById('admin-member-detail').hidden=true;}}
  function button(label,key,action){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.view=key;b.onclick=action||(()=>showOriginal(key));nav.append(b);}
  button('个人资料','profile');button('账户安全','security');
  for(const [label,url] of [['我的文章','/member-articles.html#mine'],['我的帖子','/forum.html#mine'],['消息中心','/notifications.html']]){const link=document.createElement('a');link.textContent=label;link.href=url;if(window.parent!==window)link.target='_top';if(label==='消息中心'){const badge=document.createElement('span');badge.className='lyy-unread-badge';badge.hidden=true;link.append(badge);}nav.append(link);}
  button('隐私设置','privacy');button('会员管理','manage',()=>{showOriginal('manage');document.getElementById('admin-members-open').click();});button('退出登录','logout',()=>document.getElementById('auth-logout').click());edit.onclick=()=>showOriginal('edit');
  function refresh(){const n=document.getElementById('account-display-name')?.textContent||'';if(name.textContent!==n)name.textContent=n;const image=document.getElementById('account-avatar-image');const src=image&&!image.hidden?image.getAttribute('src'):null;if(src){let img=avatar.querySelector('img');if(!img){img=document.createElement('img');img.alt='';avatar.replaceChildren(img);}if(img.getAttribute('src')!==src)img.src=src;}else if(avatar.textContent!==n.slice(0,1)||avatar.querySelector('img'))avatar.textContent=n.slice(0,1);for(const [id,dd] of rows){const el=document.getElementById(id);let v=(el?.value??el?.textContent)||'—';if(id==='auth-member-email')v=v.replace(/^[^:：]*[:：]\s*/,'');if(dd.textContent!==v)dd.textContent=v;}}
- root.prepend(node);shell=node;root.classList.add('owner-reference-active');showOriginal('profile');refresh();timer=setInterval(refresh,1000);
+ shell=node;root.prepend(node);root.classList.add('owner-reference-active');showOriginal('profile');refresh();timer=setInterval(refresh,1000);
  }catch(error){console.error('Owner reference layout',error);restore();}}
- function sync(){if(!root.hidden&&!owner.hidden)mount();else restore();}
+ function sync(){if(!root.hidden&&!owner.hidden)mount();else if(shell)restore();}
  const observer=new MutationObserver(sync);for(const el of [root,owner])observer.observe(el,{attributes:true,attributeFilter:['hidden']});sync();
 
 })();
