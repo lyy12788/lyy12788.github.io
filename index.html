@@ -486,6 +486,8 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 @media(max-width:760px){#auth-modal:has(#auth-member:not([hidden])) .auth-box{width:100%;max-width:none}}
 #auth-member.account-layout{display:grid;grid-template-columns:minmax(140px,1fr) minmax(0,3fr);gap:12px;align-items:start}
 #auth-member[hidden]{display:none!important}
+#account-layout-nav [hidden]{display:none!important}
+#auth-member.account-layout-owner #account-level-panel,#auth-member.account-layout-owner #nickname-change-rule,#auth-member.account-layout-owner #nickname-change-status{display:none!important}
 #account-layout-nav{display:flex;flex-direction:column;gap:5px;min-width:0;border-inline-end:1px solid var(--line,#536780);padding-inline-end:9px}
 #account-layout-nav button,#account-layout-nav a{display:block;width:100%;text-align:start;padding:9px 8px;border:0;border-radius:6px;background:transparent;color:inherit;font:inherit;text-decoration:none;overflow-wrap:anywhere;cursor:pointer}
 #account-layout-nav button[aria-pressed="true"]{background:var(--panel2,#25394c);font-weight:700;box-shadow:inset 3px 0 var(--gold,#d6ac42)}
@@ -630,6 +632,9 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  for(const [key,label] of [['profile','个人资料'],['security','账户安全'],['points','会员等级与积分'],['privacy','隐私设置']]){const b=document.createElement('button');b.type='button';b.dataset.view=key;b.textContent=label;b.onclick=()=>select(key);nav.append(b);}
  for(const [label,url] of [['我的文章','/member-articles.html#mine'],['我的帖子','/forum.html#mine'],['消息中心','/notifications.html']]){const a=document.createElement('a');a.textContent=label;a.href=url;if(window.parent!==window&&new URLSearchParams(location.search).has('account_embed'))a.target='_top';if(label==='消息中心'){const badge=document.createElement('span');badge.className='lyy-unread-badge';badge.hidden=true;a.append(' ',badge);}nav.append(a);}
  nav.append(document.getElementById('auth-logout'));root.append(nav,content);root.classList.add('account-layout');select('profile');
+ const ownerEntry=document.getElementById('admin-member-entry');
+ function syncRole(){const owner=!ownerEntry.hidden;root.classList.toggle('account-layout-owner',owner);const points=nav.querySelector('[data-view="points"]');points.hidden=owner;if(owner&&points.getAttribute('aria-pressed')==='true')select('profile');}
+ new MutationObserver(syncRole).observe(ownerEntry,{attributes:true,attributeFilter:['hidden']});syncRole();
 })();
 </script><div id="admin-modal" class="modal-backdrop" hidden><div class="admin-box" role="dialog" aria-modal="true" aria-labelledby="admin-title"><div class="auth-top"><h2 id="admin-title">评论管理</h2><button class="close-btn" id="admin-close" type="button" aria-label="关闭">×</button></div><p class="muted">仅管理员可查看举报记录并删除违规评论。删除不可恢复。</p><button class="plain-btn" id="admin-refresh" type="button">刷新举报列表</button><div id="admin-status" class="status"></div><div id="admin-reports"></div></div></div>
 <script>
