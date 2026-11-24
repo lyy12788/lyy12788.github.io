@@ -517,23 +517,6 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 #auth-member.account-layout-owner #account-layout-content .account-details [data-lyy-turnstile]{max-width:100%;overflow-x:auto}
 #auth-member.account-layout-managing #owner-profile-overview{display:none!important}
 @media(max-height:500px) and (orientation:landscape){#auth-member.account-layout{grid-template-columns:minmax(115px,1fr) minmax(0,3fr);gap:8px}}
-
-#auth-member.account-layout-owner{grid-template-columns:minmax(0,31%) minmax(0,1fr);gap:10px;align-items:start}
-#auth-member.account-layout-owner #account-layout-nav{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 5px;gap:4px}
-#auth-member.account-layout-owner #account-layout-nav button,#auth-member.account-layout-owner #account-layout-nav a{display:flex;align-items:center;gap:6px;font-size:13px;padding:10px 6px;line-height:1.4}
-#auth-member.account-layout-owner #account-layout-nav #auth-logout{border:0;background:transparent;margin:0}
-#auth-member.account-layout-owner #account-layout-content>.account-summary{display:flex!important;align-items:center;flex-wrap:nowrap;gap:10px;padding:14px 10px!important;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin:0 0 10px}
-#auth-member.account-layout-owner.account-layout-managing #account-layout-content>.account-summary{display:none!important}
-#auth-member.account-layout-owner #account-avatar{display:flex!important;flex:0 0 52px;width:52px;height:52px;border-radius:50%;overflow:hidden;align-items:center;justify-content:center}
-#auth-member.account-layout-owner #account-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-#auth-member.account-layout-owner #auth-member-email{display:none}
-#owner-profile-overview{background:var(--panel);margin:0;padding:12px 10px;border-radius:10px}
-#owner-profile-overview dl{grid-template-columns:minmax(0,37%) minmax(0,1fr);gap:0;margin:10px 0}
-#owner-profile-overview dt,#owner-profile-overview dd{padding:9px 3px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.5;align-content:center}
-#owner-profile-overview button{display:block;margin:12px auto 0;border:1px solid var(--gold);border-radius:20px;padding:6px 14px;background:transparent;color:var(--text)}
-#owner-profile-role{font-size:12px;color:var(--muted);margin:3px 0 0}
-#account-layout-nav .owner-nav-icon{flex:none;width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-@media(max-width:600px){#auth-member.account-layout-owner{gap:7px;grid-template-columns:minmax(0,32%) minmax(0,1fr)}#auth-member.account-layout-owner #account-layout-nav{padding:5px 3px}#auth-member.account-layout-owner #account-layout-nav button,#auth-member.account-layout-owner #account-layout-nav a{font-size:12px;padding:9px 3px;gap:4px}#owner-profile-overview{padding:9px 6px}#owner-profile-overview dt,#owner-profile-overview dd{font-size:12px;padding:8px 2px}#auth-member.account-layout-owner #account-avatar{flex-basis:44px;width:44px;height:44px}}
 </style></head>
 <body><script>if(new URLSearchParams(location.search).has('account_embed')&&window.parent!==window)document.body.classList.add('lyy-account-embed');</script>
 <div class="sitebar"><div class="wrap navrow"><a class="brand" href="#home"><span>真实之声</span><small>说出心声 · 听见彼此</small></a><nav class="navlinks" id="navlinks" aria-label="网站导航"><a href="#home">首页</a><a href="/forum.html">公共论坛</a><a href="#community-feed">最新讨论</a><a href="/articles.html">文章专区</a><a href="/library.html">资料库</a><a href="https://famelack.com/" target="_blank" data-external-bypass="true" rel="noopener noreferrer">全球直播</a><a href="/aid.html">公益援助</a><a href="/suggestions.html">网站建议</a><a href="#about">关于平台</a></nav><div class="nav-actions"><button class="mini-btn gold" id="nav-login" type="button">注册 / 登录</button><button class="mini-btn" id="nav-user" type="button" hidden>我的账户 <span id="nav-member-level" class="nav-member-level" hidden></span></button><a class="mini-btn" id="nav-member-space" href="/member-space.html">会员空间</a><button class="mini-btn" id="nav-admin" type="button" hidden>评论管理</button><button class="mini-btn menu-toggle" id="menu-toggle" type="button" aria-label="展开菜单">☰</button></div></div></div>
@@ -646,7 +629,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 <script>
 (function(){
  const root=document.getElementById('auth-member'),ownerEntry=document.getElementById('admin-member-entry');if(!root||!ownerEntry)return;
- const OWNER_PREVIEW_ENABLED=true;
+ const OWNER_PREVIEW_ENABLED=false;
  const children=Array.from(root.children);
  let nav=null,content=null,managementObserver=null;
  function disable(){if(!nav)return;managementObserver?.disconnect();for(const el of children){el.removeAttribute('data-account-view');el.removeAttribute('data-layout-inactive');root.append(el);}nav.remove();content.remove();nav=null;content=null;root.classList.remove('account-layout','account-layout-owner','account-layout-managing');}
@@ -674,7 +657,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  function syncManagement(){root.classList.toggle('account-layout-managing',!ownerEntry.hidden&&(!adminPanel.hidden||!adminDetail.hidden));}
  managementObserver=new MutationObserver(syncManagement);for(const el of [adminPanel,adminDetail])managementObserver.observe(el,{attributes:true,attributeFilter:['hidden']});syncManagement();
  }
- function sync(){if(OWNER_PREVIEW_ENABLED&&!ownerEntry.hidden&&!root.hidden){try{enable();}catch(error){console.error('Owner layout fallback',error);disable();}}else disable();}
+ function sync(){if(OWNER_PREVIEW_ENABLED&&!ownerEntry.hidden&&!root.hidden)enable();else disable();}
  const observer=new MutationObserver(sync);for(const el of [ownerEntry,root])observer.observe(el,{attributes:true,attributeFilter:['hidden']});sync();
 
 })();
