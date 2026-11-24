@@ -528,7 +528,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 .owner-reference-main{grid-column:2;grid-row:1;min-width:0;display:grid;gap:8px}.owner-reference-main:has(>.owner-reference-header[hidden]):has(>.owner-reference-card[hidden]){display:none}
 .owner-reference-header,.owner-reference-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px;min-width:0}
 .owner-reference-header{display:flex;align-items:center;gap:10px}
-.owner-reference-header p{font-size:12px;margin:3px 0;color:var(--muted)}
+.owner-reference-header #member-home-coming-soon{margin-left:auto!important;margin-right:0!important;align-self:center;flex:none;font-size:12px!important;padding:5px 8px!important}.owner-reference-header p{font-size:12px;margin:3px 0;color:var(--muted)}
 .owner-reference-avatar{width:48px;height:48px;flex:none;border-radius:50%;overflow:hidden;background:var(--panel2);display:grid;place-items:center}
 .owner-reference-avatar img{width:100%;height:100%;object-fit:cover}
 .owner-reference-card dl{display:grid;grid-template-columns:35% minmax(0,1fr);margin:8px 0}
@@ -647,12 +647,12 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 <script>
 (function(){
  const root=document.getElementById('auth-member'),owner=document.getElementById('admin-member-entry');if(!root||!owner)return;
- const original=Array.from(root.children);let shell=null,timer=null;
- function restore(){if(timer){clearInterval(timer);timer=null;}shell?.remove();shell=null;root.classList.remove('owner-reference-active');delete root.dataset.ownerReferenceView;for(const el of original)el.removeAttribute('data-owner-inactive');}
+ const original=Array.from(root.children);let shell=null,timer=null;const home=document.getElementById('member-home-coming-soon'),homeParent=home.parentNode,homeNext=home.nextSibling;
+ function restore(){if(timer){clearInterval(timer);timer=null;}if(home.parentNode!==homeParent)homeParent.insertBefore(home,homeNext);home.setAttribute('data-i18n','memberHomeButton');home.textContent='个人主页';shell?.remove();shell=null;root.classList.remove('owner-reference-active');delete root.dataset.ownerReferenceView;for(const el of original)el.removeAttribute('data-owner-inactive');}
  function mount(){if(shell)return;try{
  const node=document.createElement('div');node.className='owner-reference-shell';
  const nav=document.createElement('nav'),main=document.createElement('div');nav.className='owner-reference-nav';main.className='owner-reference-main';node.append(nav,main);
- const header=document.createElement('div');header.className='owner-reference-header';const avatar=document.createElement('div');avatar.className='owner-reference-avatar';const identity=document.createElement('div'),name=document.createElement('strong'),role=document.createElement('p');role.textContent='站长';identity.append(name,role);header.append(avatar,identity);
+ const header=document.createElement('div');header.className='owner-reference-header';const avatar=document.createElement('div');avatar.className='owner-reference-avatar';const identity=document.createElement('div'),name=document.createElement('strong'),role=document.createElement('p');role.textContent='站长';identity.append(name,role);header.append(avatar,identity);home.removeAttribute('data-i18n');home.textContent='我的主页';header.append(home);
  const card=document.createElement('section');card.className='owner-reference-card';const title=document.createElement('strong');title.textContent='基本信息';card.append(title);const dl=document.createElement('dl');card.append(dl);
  const rows=[['公开昵称','account-nickname'],['个人简介','account-bio'],['邮箱','auth-member-email'],['注册日期','account-joined']].map(([label,id])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.setAttribute('data-user-content','');dl.append(dt,dd);return [id,dd];});
  const edit=document.createElement('button');edit.type='button';edit.textContent='编辑资料';card.append(edit);main.append(header,card);
@@ -1057,7 +1057,7 @@ $('article-search').addEventListener('input',()=>{articleLimit=12;renderArticles
  }
 })();
 </script>
-<script src="/article-publish-entry.js?v=6" defer></script><script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/edition-i18n.js?v=1" defer></script><script src="/site-i18n.js?v=20261125-owner42" defer></script><script src="/edition-home.js?v=1" defer></script><script src="/notification-bell.js?v=20261125-account" defer></script><script src="/turnstile-auth.js?v=4" defer></script>
+<script src="/article-publish-entry.js?v=6" defer></script><script src="/external-link-guard.js?v=2" defer></script><script src="/persistent-player-entry.js?v=20261118-3" defer></script><script src="/edition-i18n.js?v=1" defer></script><script src="/site-i18n.js?v=20261125-owner43" defer></script><script src="/edition-home.js?v=1" defer></script><script src="/notification-bell.js?v=20261125-account" defer></script><script src="/turnstile-auth.js?v=4" defer></script>
 <script defer src="/swipe-navigation.js?v=2"></script>
 <style>
 /* Accessible password visibility controls */
