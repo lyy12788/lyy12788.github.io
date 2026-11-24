@@ -527,8 +527,8 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 .owner-reference-nav button[aria-pressed=true]{background:var(--panel2);font-weight:700}
 .owner-reference-main{grid-column:2;grid-row:1;min-width:0;display:grid;gap:8px}.owner-reference-main:has(>.owner-reference-header[hidden]):has(>.owner-reference-card[hidden]){display:none}
 .owner-reference-header,.owner-reference-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px;min-width:0}
-.owner-reference-header{display:flex;align-items:center;gap:10px}
-.owner-reference-header #member-home-coming-soon{margin-left:auto!important;margin-right:0!important;align-self:center;flex:none;font-size:14px!important;padding:5px 8px!important}#auth-member.owner-reference-is-owner #nickname-change-rule,#auth-member.owner-reference-is-owner #nickname-change-status{display:none!important}.owner-reference-header p{font-size:14px;margin:3px 0;color:var(--muted)}
+.owner-reference-header{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.owner-reference-header>div:nth-child(2){min-width:0;flex:1;overflow-wrap:anywhere}
+.owner-reference-header #member-home-coming-soon{display:inline-flex!important;visibility:visible!important;align-items:center;justify-content:center;margin-left:auto!important;margin-right:0!important;align-self:center;flex:none;font-size:14px!important;padding:5px 8px!important}#auth-member.owner-reference-is-owner #nickname-change-rule,#auth-member.owner-reference-is-owner #nickname-change-status{display:none!important}.owner-reference-header p{font-size:14px;margin:3px 0;color:var(--muted)}
 .owner-reference-avatar{width:48px;height:48px;flex:none;border-radius:50%;overflow:hidden;background:var(--panel2);display:grid;place-items:center}
 .owner-reference-avatar img{width:100%;height:100%;object-fit:cover}
 .owner-reference-card dl{display:grid;grid-template-columns:35% minmax(0,1fr);margin:8px 0}
@@ -652,7 +652,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  function mount(){if(shell)return;try{const isOwner=!owner.hidden;mountedOwner=isOwner;
  const node=document.createElement('div');node.className='owner-reference-shell';
  const nav=document.createElement('nav'),main=document.createElement('div');nav.className='owner-reference-nav';main.className='owner-reference-main';node.append(nav,main);
- const header=document.createElement('div');header.className='owner-reference-header';const avatar=document.createElement('div');avatar.className='owner-reference-avatar';const identity=document.createElement('div'),name=document.createElement('strong'),role=document.createElement('p');role.textContent=isOwner?'站长':'普通会员';identity.append(name,role);header.append(avatar,identity);home.removeAttribute('data-i18n');home.textContent='我的主页';header.append(home);
+ const header=document.createElement('div');header.className='owner-reference-header';const avatar=document.createElement('div');avatar.className='owner-reference-avatar';const identity=document.createElement('div'),name=document.createElement('strong'),role=document.createElement('p');role.textContent=isOwner?'站长':'普通会员';identity.append(name,role);header.append(avatar,identity);home.removeAttribute('data-i18n');home.textContent='我的主页';home.hidden=false;header.append(home);
  const card=document.createElement('section');card.className='owner-reference-card';const title=document.createElement('strong');title.textContent='基本信息';card.append(title);const dl=document.createElement('dl');card.append(dl);
  const rows=[['公开昵称','account-nickname'],['个人简介','account-bio'],['邮箱','auth-member-email'],['注册日期','account-joined']].map(([label,id])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.setAttribute('data-user-content','');dl.append(dt,dd);return [id,dd];});
  const edit=document.createElement('button');edit.type='button';edit.textContent='编辑资料';card.append(edit);main.append(header,card);
