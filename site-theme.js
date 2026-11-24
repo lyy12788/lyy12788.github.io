@@ -45,7 +45,7 @@
   try {
     spaceAccount = window.parent !== window && accountParams.get('account_embed') === '1' &&
       window.parent.location.origin === location.origin &&
-      window.parent.location.pathname === '/member-space-preview.html' &&
+      ['/member-space-preview', '/member-space-preview.html'].includes(window.parent.location.pathname) &&
       ['light', 'dark'].includes(accountMode);
   } catch {}
   const accountAppearance = spaceAccount ? { palette: 'pine', mode: accountMode } : null;
