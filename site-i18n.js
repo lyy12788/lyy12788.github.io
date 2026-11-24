@@ -2227,6 +2227,7 @@ Object.assign(data,{
  '内容管理员':['內容管理員','Content moderator','콘텐츠 관리자','コンテンツ管理者'],
  '网站管理员':['網站管理員','Site administrator','사이트 관리자','サイト管理者'],
  '有效论坛评论':['有效論壇留言','Qualifying forum comment','유효한 포럼 댓글','有効なフォーラムコメント'],
+ '优质发帖基础分':['優質發帖基礎分','Base points for quality posts','양질의 게시글 기본 포인트','質の高い投稿の基本ポイント'],
  '已达到最高成长等级':['已達到最高成長等級','You have reached the highest level','최고 등급에 도달했습니다','最高ランクに達しています'],
  '当前等级由管理员指定，积分仍会继续累计':['目前等級由管理員指定，積分仍會繼續累計','An administrator set your current level. You can still earn points.','관리자가 현재 등급을 지정했습니다. 포인트는 계속 적립됩니다.','現在のランクは管理者が指定しました。ポイントは引き続き貯まります。'],
  '暂时无法加载积分：':['暫時無法載入積分：','Could not load points: ','포인트를 불러올 수 없습니다: ','ポイントを読み込めませんでした：']
