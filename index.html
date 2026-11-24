@@ -517,6 +517,23 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
 #auth-member.account-layout-owner #account-layout-content .account-details [data-lyy-turnstile]{max-width:100%;overflow-x:auto}
 #auth-member.account-layout-managing #owner-profile-overview{display:none!important}
 @media(max-height:500px) and (orientation:landscape){#auth-member.account-layout{grid-template-columns:minmax(115px,1fr) minmax(0,3fr);gap:8px}}
+
+#auth-member.account-layout-owner{grid-template-columns:minmax(0,31%) minmax(0,1fr);gap:10px;align-items:start}
+#auth-member.account-layout-owner #account-layout-nav{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 5px;gap:4px}
+#auth-member.account-layout-owner #account-layout-nav button,#auth-member.account-layout-owner #account-layout-nav a{display:flex;align-items:center;gap:6px;font-size:13px;padding:10px 6px;line-height:1.4}
+#auth-member.account-layout-owner #account-layout-nav #auth-logout{border:0;background:transparent;margin:0}
+#auth-member.account-layout-owner #account-layout-content>.account-summary{display:flex!important;align-items:center;flex-wrap:nowrap;gap:10px;padding:14px 10px!important;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin:0 0 10px}
+#auth-member.account-layout-owner.account-layout-managing #account-layout-content>.account-summary{display:none!important}
+#auth-member.account-layout-owner #account-avatar{display:flex!important;flex:0 0 52px;width:52px;height:52px;border-radius:50%;overflow:hidden;align-items:center;justify-content:center}
+#auth-member.account-layout-owner #account-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+#auth-member.account-layout-owner #auth-member-email{display:none}
+#owner-profile-overview{background:var(--panel);margin:0;padding:12px 10px;border-radius:10px}
+#owner-profile-overview dl{grid-template-columns:minmax(0,37%) minmax(0,1fr);gap:0;margin:10px 0}
+#owner-profile-overview dt,#owner-profile-overview dd{padding:9px 3px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.5;align-content:center}
+#owner-profile-overview button{display:block;margin:12px auto 0;border:1px solid var(--gold);border-radius:20px;padding:6px 14px;background:transparent;color:var(--text)}
+#owner-profile-role{font-size:12px;color:var(--muted);margin:3px 0 0}
+#account-layout-nav .owner-nav-icon{flex:none;width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:600px){#auth-member.account-layout-owner{gap:7px;grid-template-columns:minmax(0,32%) minmax(0,1fr)}#auth-member.account-layout-owner #account-layout-nav{padding:5px 3px}#auth-member.account-layout-owner #account-layout-nav button,#auth-member.account-layout-owner #account-layout-nav a{font-size:12px;padding:9px 3px;gap:4px}#owner-profile-overview{padding:9px 6px}#owner-profile-overview dt,#owner-profile-overview dd{font-size:12px;padding:8px 2px}#auth-member.account-layout-owner #account-avatar{flex-basis:44px;width:44px;height:44px}}
 </style></head>
 <body><script>if(new URLSearchParams(location.search).has('account_embed')&&window.parent!==window)document.body.classList.add('lyy-account-embed');</script>
 <div class="sitebar"><div class="wrap navrow"><a class="brand" href="#home"><span>真实之声</span><small>说出心声 · 听见彼此</small></a><nav class="navlinks" id="navlinks" aria-label="网站导航"><a href="#home">首页</a><a href="/forum.html">公共论坛</a><a href="#community-feed">最新讨论</a><a href="/articles.html">文章专区</a><a href="/library.html">资料库</a><a href="https://famelack.com/" target="_blank" data-external-bypass="true" rel="noopener noreferrer">全球直播</a><a href="/aid.html">公益援助</a><a href="/suggestions.html">网站建议</a><a href="#about">关于平台</a></nav><div class="nav-actions"><button class="mini-btn gold" id="nav-login" type="button">注册 / 登录</button><button class="mini-btn" id="nav-user" type="button" hidden>我的账户 <span id="nav-member-level" class="nav-member-level" hidden></span></button><a class="mini-btn" id="nav-member-space" href="/member-space.html">会员空间</a><button class="mini-btn" id="nav-admin" type="button" hidden>评论管理</button><button class="mini-btn menu-toggle" id="menu-toggle" type="button" aria-label="展开菜单">☰</button></div></div></div>
@@ -632,7 +649,7 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  const OWNER_PREVIEW_ENABLED=true;
  const children=Array.from(root.children);
  let nav=null,content=null,managementObserver=null;
- function disable(){if(!nav)return;managementObserver?.disconnect();for(const el of children){el.removeAttribute('data-account-view');el.removeAttribute('data-layout-inactive');root.append(el);}nav.remove();content.remove();nav=null;content=null;root.classList.remove('account-layout','account-layout-owner','account-layout-managing');}
+ function disable(){if(!nav)return;managementObserver?.disconnect();for(const el of children){el.removeAttribute('data-account-view');el.removeAttribute('data-layout-inactive');root.append(el);}document.getElementById('owner-profile-role')?.remove();nav.querySelectorAll('.owner-nav-icon').forEach(el=>el.remove());document.getElementById('auth-logout').querySelector('.owner-nav-icon')?.remove();ownerEntry.querySelector('.owner-nav-icon')?.remove();nav.remove();content.remove();nav=null;content=null;root.classList.remove('account-layout','account-layout-owner','account-layout-managing');}
  function enable(){if(nav)return;
  nav=document.createElement('nav');content=document.createElement('div');nav.id='account-layout-nav';content.id='account-layout-content';
  const adminPanel=document.getElementById('admin-member-panel'),adminDetail=document.getElementById('admin-member-detail');
@@ -645,14 +662,18 @@ body.lyy-account-embed #auth-member{max-width:100%!important}
  content.append(el);}
  const overview=document.createElement('section');overview.id='owner-profile-overview';overview.dataset.accountView='profile';
  const heading=document.createElement('strong');heading.textContent='基本信息';overview.append(heading);
- const dl=document.createElement('dl');const fields=[['公开昵称','account-nickname'],['个人简介','account-bio'],['个人网站链接（可选）','account-website'],['社交媒体主页链接（可选）','account-social'],['注册日期','account-joined']];const values=[];
+ const dl=document.createElement('dl');const fields=[['公开昵称','account-nickname'],['个人简介','account-bio'],['邮箱','auth-member-email'],['注册日期','account-joined']];const values=[];
  for(const [label,id] of fields){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.setAttribute('data-user-content','');dl.append(dt,dd);values.push([id,dd]);}overview.append(dl);
- function refreshOverview(){for(const [id,dd] of values){const el=document.getElementById(id);const value=(el?.value??el?.textContent)||'—';if(dd.textContent!==value)dd.textContent=value;}}
+ function refreshOverview(){for(const [id,dd] of values){const el=document.getElementById(id);const value=(id==='auth-member-email'?(el?.textContent||'').replace(/^[^:：]*[:：]\s*/,''):(el?.value??el?.textContent))||'—';if(dd.textContent!==value)dd.textContent=value;}}
  const edit=document.createElement('button');edit.type='button';edit.className='account-secondary';edit.textContent='编辑资料';edit.onclick=()=>select('edit');overview.append(edit);content.append(overview);
  function select(key){refreshOverview();adminPanel.hidden=true;adminDetail.hidden=true;for(const el of content.querySelectorAll('[data-account-view]'))el.toggleAttribute('data-layout-inactive',el.dataset.accountView!==key);for(const b of nav.querySelectorAll('button[data-view]'))b.setAttribute('aria-pressed',String(b.dataset.view===(key==='edit'?'profile':key)));if(key==='security'){const d=document.getElementById('account-security-details');if(d)d.open=true;}}
  for(const [key,label] of [['profile','个人资料'],['security','账户安全'],['privacy','隐私设置']]){const b=document.createElement('button');b.type='button';b.dataset.view=key;b.textContent=label;b.onclick=()=>select(key);nav.append(b);}
  for(const [label,url] of [['我的文章','/member-articles.html#mine'],['我的帖子','/forum.html#mine'],['消息中心','/notifications.html']]){const a=document.createElement('a');a.textContent=label;a.href=url;if(window.parent!==window&&new URLSearchParams(location.search).has('account_embed'))a.target='_top';if(label==='消息中心'){const badge=document.createElement('span');badge.className='lyy-unread-badge';badge.hidden=true;a.append(' ',badge);}nav.append(a);}
- nav.append(ownerEntry,document.getElementById('auth-logout'));root.append(nav,content);root.classList.add('account-layout','account-layout-owner');select('profile');
+ nav.append(ownerEntry,document.getElementById('auth-logout'));
+ const role=document.createElement('p');role.id='owner-profile-role';role.textContent='站长';document.getElementById('account-display-name').parentElement.append(role);
+ const paths=['M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M4 21v-2a8 8 0 0 1 16 0v2','M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6z','M4 7h16v14H4z M9 7V4h6v3','M5 3h14v18H5z M8 8h8 M8 12h8','M3 4h18v13H9l-6 4z','M18 8a6 6 0 0 0-12 0v6l-2 3h16l-2-3z M10 21h4','M4 6h16v14H4z M8 3v6 M16 3v6','M4 4h10v16H4z M11 12h10 M17 8l4 4-4 4'];
+ const controls=Array.from(nav.querySelectorAll('button,a'));controls.forEach((el,i)=>{const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('class','owner-nav-icon');svg.setAttribute('aria-hidden','true');const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',paths[i]||paths[0]);svg.append(p);el.prepend(svg);});
+ root.append(nav,content);root.classList.add('account-layout','account-layout-owner');select('profile');
  const refreshTimer=setInterval(()=>{if(!overview.isConnected){clearInterval(refreshTimer);return;}if(!overview.hasAttribute('data-layout-inactive'))refreshOverview();},1000);
  function syncManagement(){root.classList.toggle('account-layout-managing',!ownerEntry.hidden&&(!adminPanel.hidden||!adminDetail.hidden));}
  managementObserver=new MutationObserver(syncManagement);for(const el of [adminPanel,adminDetail])managementObserver.observe(el,{attributes:true,attributeFilter:['hidden']});syncManagement();
