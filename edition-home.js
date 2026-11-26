@@ -206,9 +206,18 @@
       else document.querySelector('#lyy-theme-control summary')?.click();
       return;
     }
-    if(action==='bookmark'||action==='copy'||action==='save'){
+    if(action==='copy'){
+      const url='https://lyy12788.com/';
+      const button=event.target.closest('[data-edition-action="copy"]');
+      const fallback=()=>window.prompt(word('请复制链接：'),url);
+      const done=()=>{button.textContent=word('已复制');setTimeout(()=>{button.textContent=word('复制链接');},1800);};
+      const legacy=()=>{const field=document.createElement('textarea');field.value=url;field.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(field);field.select();let ok=false;try{ok=document.execCommand('copy');}catch{}finally{field.remove();}if(ok)done();else fallback();};
+      if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(done,legacy);else legacy();
+      return;
+    }
+    if(action==='bookmark'||action==='save'){
       if(action==='save'&&!user){account();return;}
-      byId('article-publish-entry').nextElementSibling?.querySelectorAll('button')[action==='copy'?1:0]?.click();
+      byId('article-publish-entry').nextElementSibling?.querySelectorAll('button')[0]?.click();
       return;
     }
     if(!user){account();return;}
